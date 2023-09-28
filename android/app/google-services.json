@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "231759824675",
+    "project_id": "chatappforschool",
+    "storage_bucket": "chatappforschool.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231759824675:android:e877e2024b60c4a918ae96",
+        "android_client_info": {
+          "package_name": "com.example.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN5GVogk7vOhCnRQuH8LHeu_CpXQszQho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
