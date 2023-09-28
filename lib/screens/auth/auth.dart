@@ -9,8 +9,22 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreen extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Text('test'),
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Welcome to the chat',
+              style: TextStyle(color: Colors.white),
+            ),
+            TextButton(
+              onPressed: () => {},
+              child: Text('Login'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

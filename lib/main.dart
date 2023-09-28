@@ -1,3 +1,4 @@
+import 'package:chatapp/colors.dart';
 import 'package:chatapp/screens/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,8 +18,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: AuthScreen(),
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: AppColors.primaryColor,
+        scaffoldBackgroundColor: AppColors.backgroundColor,
+      ),
+      home: const AuthScreen(),
     );
   }
 }
