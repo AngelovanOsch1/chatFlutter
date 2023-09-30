@@ -1,34 +1,32 @@
+name: Flutter Lint
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+
 jobs:
-  build:
-    name: Build Android
-    if: github.event.pull_request.draft == false
+  lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+
     steps:
-      1️⃣
-      - name: ⬇️ Checkout repository
-        uses: actions/checkout@v3
-      - name: ⚙️ Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: flutter-action/setup-flutter@v2
+
+      - name: Run Flutter Lint
+        run: flutter analyze
+
+      - name: Fail on lint errors
+        if: ${{ steps.lint.outputs.error-count }} > 0
+        uses: actions/github-script@v5
         with:
-          channel: 'stable'
-          cache: true
-      - name: ⚙️ Setup Melos
-        uses: bluefireteam/melos-action@v2
-      - name: ⚙️ Install dependencies for all packages
-        run: melos build:pub_get:all
-      2️⃣
-      - name: ⚙️ Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: "12.x"
-          cache: 'gradle'
-        id: java
-      3️⃣
-      - name: 🤖🔨 Build Android app
-        run: |
-          pushd app/
-          flutter build appbundle --debug --flavor dev -t lib/main_dev.dart
-          popd
-        shell: bash
+          script: |
+            github.actions.createIssue({
+              title: 'Lint errors found',
+              body: 'Please fix the lint errors before merging this pull request.',
+              assignees: ['@${{ github.actor }}']
+            })
