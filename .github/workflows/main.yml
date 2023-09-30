@@ -1,0 +1,25 @@
+name: Flutter Lint
+
+on:
+  push:
+    branches:
+      - main # Change this to your main branch name
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@latest # Use the latest version available
+        with:
+          flutter-version: stable # You can change this to a specific Flutter version
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Lint
+        run: flutter analyze
