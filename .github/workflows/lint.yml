@@ -14,12 +14,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Flutter
-        uses: subosito/flutter-action
-        with:
-          flutter-version: stable # You can change this to a specific Flutter version
-
-      - name: Install Dependencies
-        run: flutter pub get
+        run: |
+          docker run --rm -v $PWD:/app -w /app cirrusci/flutter:stable flutter pub get
+        env:
+          FLUTTER_ROOT: /usr/local/flutter
 
       - name: Run Lint
-        run: flutter analyze
+        run: |
+          docker run --rm -v $PWD:/app -w /app cirrusci/flutter:stable flutter analyze
