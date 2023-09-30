@@ -23,7 +23,7 @@ class _AuthScreen extends State<AuthScreen> {
               padding: const EdgeInsets.only(top: 30),
               child: TextButton(
                 onPressed: () => {},
-                child: const Text('Logi'),
+                child: const Text('Login'),
               ),
             ),
           ],
