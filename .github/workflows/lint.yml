@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        
+      - name: Install Flutter
+        run: |
+          git clone https://github.com/flutter/flutter.git -b stable
+          export PATH="$PWD/flutter/bin:$PATH"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2 # Specify a valid version, e.g., v5
