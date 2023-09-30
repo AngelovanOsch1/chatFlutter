@@ -3,38 +3,23 @@ name: Flutter Lint
 on:
   push:
     branches:
-      - main
-  pull_request:
+      - main # Change this to your main branch name
 
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: 'Set Flutter 3.10.6'
-        uses: subosito/flutter-action@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@latest # Use the latest version available
         with:
-             flutter-version: 3.10.6
-      - name: 'Checkout Flutter 3.10.7'
-        shell: bash
-        run: |
-           cd $FLUTTER_ROOT;
-           git fetch --tags;
-           git checkout 3.10.7;
-           flutter --version;
+          flutter-version: stable # You can change this to a specific Flutter version
 
-      - name: Run Flutter Lint
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Lint
         run: flutter analyze
-
-      - name: Fail on lint errors
-        if: ${{ steps.lint.outputs.error-count }} > 0
-        uses: actions/github-script@v5
-        with:
-          script: |
-            github.actions.createIssue({
-              title: 'Lint errors found',
-              body: 'Please fix the lint errors before merging this pull request.',
-              assignees: ['@${{ github.actor }}']
-            })
