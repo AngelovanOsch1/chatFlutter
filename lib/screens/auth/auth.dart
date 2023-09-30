@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
+
   @override
   State<AuthScreen> createState() => _AuthScreen();
 }
@@ -14,13 +15,16 @@ class _AuthScreen extends State<AuthScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Welcome to the chat',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.red),
             ),
-            TextButton(
-              onPressed: () => {},
-              child: Text('Login'),
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: TextButton(
+                onPressed: () => {},
+                child: const Text('Login'),
+              ),
             ),
           ],
         ),
