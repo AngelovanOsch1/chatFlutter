@@ -3,30 +3,23 @@ name: Flutter Lint
 on:
   push:
     branches:
-      - main
-      - develop
-  pull_request:
+      - main # Change this to your main branch name
 
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Set up Flutter
-        uses: flutter-action/setup-flutter@v2
-
-      - name: Run Flutter Lint
-        run: flutter analyze
-
-      - name: Fail on lint errors
-        if: ${{ steps.lint.outputs.error-count }} > 0
-        uses: actions/github-script@v5
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v6
         with:
-          script: |
-            github.actions.createIssue({
-              title: 'Lint errors found',
-              body: 'Please fix the lint errors before merging this pull request.',
-              assignees: ['@${{ github.actor }}']
-            })
+          flutter-version: stable # You can change this to a specific Flutter version
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Lint
+        run: flutter analyze
