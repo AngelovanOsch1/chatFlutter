@@ -1,10 +1,9 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:async';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+export 'auth_utils.dart';
 
 class FirebaseFunctions {
   FirebaseFunctions._();

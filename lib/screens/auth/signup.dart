@@ -8,6 +8,14 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  TextEditingController? _firstName;
+  TextEditingController? _lastName;
+  TextEditingController? _email;
+  TextEditingController? _password;
+  TextEditingController? _repeatPassword;
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +31,7 @@ class _SignupState extends State<Signup> {
         child: Padding(
           padding: const EdgeInsets.only(top: 80, right: 30, left: 30),
           child: Form(
+            key: _formKey,
             child: Column(
               children: [
                 const Text(
@@ -38,7 +47,13 @@ class _SignupState extends State<Signup> {
                     children: [
                       Flexible(
                         child: TextFormField(
-                          controller: null,
+                          controller: _firstName,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
                           decoration: const InputDecoration(
                             hintText: 'First name',
                             labelText: 'First name',
@@ -52,7 +67,13 @@ class _SignupState extends State<Signup> {
                       ),
                       Flexible(
                         child: TextFormField(
-                          controller: null,
+                          controller: _lastName,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
                           decoration: const InputDecoration(
                             hintText: 'Last name',
                             labelText: 'Last name',
@@ -67,7 +88,13 @@ class _SignupState extends State<Signup> {
                 Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
-                    controller: null,
+                    controller: _email,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     decoration: const InputDecoration(
                       hintText: 'Email',
                       labelText: 'Email',
@@ -79,7 +106,13 @@ class _SignupState extends State<Signup> {
                 Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
-                    controller: null,
+                    controller: _password,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     decoration: const InputDecoration(
                       hintText: 'Password',
                       labelText: 'Password',
@@ -91,7 +124,13 @@ class _SignupState extends State<Signup> {
                 Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
-                    controller: null,
+                    controller: _repeatPassword,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     decoration: const InputDecoration(
                       hintText: 'Repeat password',
                       labelText: 'Repeat password',
@@ -103,7 +142,9 @@ class _SignupState extends State<Signup> {
                 Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _register();
+                    },
                     child: const Text('Signup'),
                   ),
                 )
@@ -113,5 +154,17 @@ class _SignupState extends State<Signup> {
         ),
       ),
     );
+  }
+
+  _register() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    String firstName = _firstName!.text.trim();
+    String lastName = _lastName!.text.trim();
+    String email = _email!.text.trim();
+    String password = _password!.text.trim();
+    String repeatPassword = _repeatPassword!.text.trim();
   }
 }
