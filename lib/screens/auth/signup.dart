@@ -1,4 +1,3 @@
-import 'package:chatapp/colors.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -20,55 +19,96 @@ class _SignupState extends State<Signup> {
           icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 80, right: 30, left: 30),
-        child: Form(
-          child: Column(
-            children: [
-              const Text(
-                'Register',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 120),
-                child: TextFormField(
-                  controller: null,
-                  decoration: const InputDecoration(
-                    hintText: 'Username',
-                    labelText: 'Username',
-                    filled: true,
-                    fillColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 80, right: 30, left: 30),
+          child: Form(
+            child: Column(
+              children: [
+                const Text(
+                  'Register',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 35,
+                      fontWeight: FontWeight.w700),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 120),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: TextFormField(
+                          controller: null,
+                          decoration: const InputDecoration(
+                            hintText: 'First name',
+                            labelText: 'First name',
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 30),
+                      ),
+                      Flexible(
+                        child: TextFormField(
+                          controller: null,
+                          decoration: const InputDecoration(
+                            hintText: 'Last name',
+                            labelText: 'Last name',
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: TextFormField(
-                  controller: null,
-                  decoration: const InputDecoration(
-                    hintText: 'Password',
-                    labelText: 'Password',
-                    filled: true,
-                    fillColor: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: TextFormField(
+                    controller: null,
+                    decoration: const InputDecoration(
+                      hintText: 'Email',
+                      labelText: 'Email',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: TextFormField(
-                  controller: null,
-                  decoration: const InputDecoration(
-                    hintText: 'Repeat password',
-                    labelText: 'Repeat password',
-                    filled: true,
-                    fillColor: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: TextFormField(
+                    controller: null,
+                    decoration: const InputDecoration(
+                      hintText: 'Password',
+                      labelText: 'Password',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: TextFormField(
+                    controller: null,
+                    decoration: const InputDecoration(
+                      hintText: 'Repeat password',
+                      labelText: 'Repeat password',
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: const Text('Signup'),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
