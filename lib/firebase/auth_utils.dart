@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 export 'auth_utils.dart';
 
-class FirebaseFunctions {
-  FirebaseFunctions._();
+class FirebaseFunction {
+  FirebaseFunction._();
 
-  static final FirebaseFunctions instance = FirebaseFunctions._();
+  static final FirebaseFunction instance = FirebaseFunction._();
 
   StreamSubscription? authListener;
 

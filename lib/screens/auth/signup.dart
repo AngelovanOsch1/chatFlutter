@@ -1,3 +1,4 @@
+import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -8,11 +9,11 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  TextEditingController? _firstName;
-  TextEditingController? _lastName;
-  TextEditingController? _email;
-  TextEditingController? _password;
-  TextEditingController? _repeatPassword;
+  final _firstName = TextEditingController();
+  final _lastName = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _repeatPassword = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -161,10 +162,19 @@ class _SignupState extends State<Signup> {
       return;
     }
 
-    String firstName = _firstName!.text.trim();
-    String lastName = _lastName!.text.trim();
-    String email = _email!.text.trim();
-    String password = _password!.text.trim();
-    String repeatPassword = _repeatPassword!.text.trim();
+    String? firstName = _firstName.text.trim();
+    String? lastName = _lastName.text.trim();
+    String? email = _email.text.trim();
+    String? password = _password.text.trim();
+    String? repeatPassword = _repeatPassword.text.trim();
+
+    if (password != repeatPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password do not match!'),
+        ),
+      );
+    }
+    // FirebaseFunction.instance.createUser(context, email!, password!);
   }
 }
