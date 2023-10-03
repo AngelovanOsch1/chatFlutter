@@ -38,15 +38,16 @@ class FirebaseFunction {
     }
   }
 
-  Future createUser(
+  Future<UserCredential?> createUser(
       BuildContext context, String email, String password) async {
     try {
-      await context
+      UserCredential userCredential = await context
           .read<Repository>()
           .getAuth
           .createUserWithEmailAndPassword(email: email, password: password);
+      return userCredential;
     } on FirebaseAuthException catch (e) {
-      String error = e.toString();
+      String error = e.code;
       switch (error) {
         case 'email-already-in-use':
           ScaffoldMessenger.of(context).showSnackBar(
@@ -66,12 +67,11 @@ class FirebaseFunction {
         case 'weak-password':
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Password should at least be 5 characters long'),
+              content: Text('Password should at least be 6 characters long'),
             ),
           );
           break;
         default:
-          debugPrint(e.toString());
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content:
@@ -80,6 +80,7 @@ class FirebaseFunction {
           );
       }
     }
+    return null;
   }
 
   Future<void> signOut(BuildContext context) async {

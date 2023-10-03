@@ -1,4 +1,6 @@
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -192,26 +194,38 @@ class _SignupState extends State<Signup> {
       return;
     }
 
-    String? firstName = _firstName.text.trim();
-    String? lastName = _lastName.text.trim();
-    String? email = _email.text.trim();
-    String? password = _password.text.trim();
-    String? repeatPassword = _repeatPassword.text.trim();
+    String firstName = _firstName.text.trim();
+    String lastName = _lastName.text.trim();
+    String email = _email.text.trim();
+    String password = _password.text.trim();
+    String repeatPassword = _repeatPassword.text.trim();
 
     if (password != repeatPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Password do not match!'),
+          content: Text('Passwords do not match!'),
+        ),
+      );
+      return;
+    }
+
+    UserCredential? userCredential =
+        await FirebaseFunction.instance.createUser(context, email, password);
+
+    if (userCredential != null) {
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+
+      await users.doc(userCredential.user?.uid).set({
+        'name': '$firstName $lastName',
+        'email': email,
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Oops, something went wrong. Please try again later'),
         ),
       );
     }
-
-    FirebaseFunction.instance.createUser(context, email, password);
-
-    // FirebaseFunction.instance.createUser(context, email, password);
-    // try {
-    //   UserCredential userCredential = await FirebaseAuth.instance
-    //       .createUserWithEmailAndPassword(email: email, password: password);
-    // } catch (e) {}
   }
 }
