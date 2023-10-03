@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
-class Repository {
-  Repository(this._auth, this._firestore);
+class Repository extends ChangeNotifier {
+  Repository(this.auth, this.firestore);
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   FirebaseAuth get getAuth {
-    return _auth;
+    return auth;
   }
 
   FirebaseFirestore get getFirestore {
-    return _firestore;
+    return firestore;
   }
 }

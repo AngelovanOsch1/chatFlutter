@@ -1,8 +1,11 @@
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/screens/auth/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase/firebase_options.dart';
 
 Future<void> main() async {
@@ -12,7 +15,13 @@ Future<void> main() async {
   );
   FirebaseFirestore.instance.settings =
       const Settings(persistenceEnabled: true);
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) =>
+          Repository(FirebaseAuth.instance, FirebaseFirestore.instance),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

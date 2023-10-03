@@ -1,5 +1,4 @@
 import 'package:chatapp/firebase/auth_utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -189,8 +188,6 @@ class _SignupState extends State<Signup> {
   }
 
   Future<void> _register(BuildContext context) async {
-    debugPrint('test');
-
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -208,6 +205,9 @@ class _SignupState extends State<Signup> {
         ),
       );
     }
+
+    FirebaseFunction.instance.createUser(context, email, password);
+
     // FirebaseFunction.instance.createUser(context, email, password);
     // try {
     //   UserCredential userCredential = await FirebaseAuth.instance
