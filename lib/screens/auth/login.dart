@@ -8,6 +8,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  bool _passwordVisible = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +38,12 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.only(top: 120),
                   child: TextFormField(
                     controller: null,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
                     decoration: const InputDecoration(
                       hintText: 'Email',
                       labelText: 'Email',
@@ -48,11 +56,31 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
                     controller: null,
-                    decoration: const InputDecoration(
+                    obscureText: _passwordVisible,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
                       hintText: 'Password',
                       labelText: 'Password',
                       filled: true,
                       fillColor: Colors.white,
+                      suffixIcon: IconButton(
+                        icon: Icon(_passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          setState(
+                            () {
+                              _passwordVisible = !_passwordVisible;
+                            },
+                          );
+                        },
+                      ),
+
                     ),
                   ),
                 ),

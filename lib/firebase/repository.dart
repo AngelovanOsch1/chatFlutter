@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 class Repository {
   Repository(this._auth, this._firestore);
 
-  final FirebaseAuth _auth;
-  final FirebaseFirestore _firestore;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   FirebaseAuth get getAuth {
     return _auth;

@@ -1,4 +1,5 @@
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
@@ -14,6 +15,9 @@ class _SignupState extends State<Signup> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _repeatPassword = TextEditingController();
+
+  bool _passwordVisible = true;
+  bool _repeatPasswordVisible = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -108,17 +112,30 @@ class _SignupState extends State<Signup> {
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
                     controller: _password,
+                    obscureText: _passwordVisible,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
                       }
                       return null;
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Password',
                       labelText: 'Password',
                       filled: true,
                       fillColor: Colors.white,
+                      suffixIcon: IconButton(
+                        icon: Icon(_passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          setState(
+                            () {
+                              _passwordVisible = !_passwordVisible;
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -126,17 +143,31 @@ class _SignupState extends State<Signup> {
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
                     controller: _repeatPassword,
+                    obscureText: _repeatPasswordVisible,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
                       }
                       return null;
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Repeat password',
                       labelText: 'Repeat password',
                       filled: true,
                       fillColor: Colors.white,
+                      suffixIcon: IconButton(
+                        icon: Icon(_repeatPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          setState(
+                            () {
+                              _repeatPasswordVisible = !_repeatPasswordVisible;
+                            },
+                          );
+                        },
+                      ),
+
                     ),
                   ),
                 ),
@@ -144,7 +175,7 @@ class _SignupState extends State<Signup> {
                   padding: const EdgeInsets.only(top: 30),
                   child: TextButton(
                     onPressed: () {
-                      _register();
+                      _register(context);
                     },
                     child: const Text('Signup'),
                   ),
@@ -157,7 +188,9 @@ class _SignupState extends State<Signup> {
     );
   }
 
-  _register() {
+  Future<void> _register(BuildContext context) async {
+    debugPrint('test');
+
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -175,6 +208,10 @@ class _SignupState extends State<Signup> {
         ),
       );
     }
-    // FirebaseFunction.instance.createUser(context, email!, password!);
+    // FirebaseFunction.instance.createUser(context, email, password);
+    // try {
+    //   UserCredential userCredential = await FirebaseAuth.instance
+    //       .createUserWithEmailAndPassword(email: email, password: password);
+    // } catch (e) {}
   }
 }

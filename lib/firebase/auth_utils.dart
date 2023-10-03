@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 export 'auth_utils.dart';
 
@@ -45,9 +46,40 @@ class FirebaseFunction {
           .read<Repository>()
           .getAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-      Navigator.pushReplacementNamed(context, '/homescreen');
-    } catch (e) {
-      debugPrint('error while creating account: ${e.toString()}');
+    } on FirebaseAuthException catch (e) {
+      String error = e.toString();
+      switch (error) {
+        case 'email-already-in-use':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  'There is already a registered user with this email address'),
+            ),
+          );
+          break;
+        case 'invalid-email':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Email address is not valid email address'),
+            ),
+          );
+          break;
+        case 'weak-password':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Password should at least be 5 characters long'),
+            ),
+          );
+          break;
+        default:
+          debugPrint(e.toString());
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content:
+                  Text('Oops, something went wrong. Please try again later'),
+            ),
+          );
+      }
     }
   }
 
