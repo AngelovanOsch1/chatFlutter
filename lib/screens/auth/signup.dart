@@ -221,11 +221,7 @@ class _SignupState extends State<Signup> {
         'email': email,
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Oops, something went wrong. Please try again later'),
-        ),
-      );
+      debugPrint('ERROR: Signup account: ${userCredential.toString()}');
     }
   }
 }
