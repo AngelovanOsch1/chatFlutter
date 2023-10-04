@@ -1,7 +1,11 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -19,6 +23,8 @@ class _SignupState extends State<Signup> {
 
   bool _passwordVisible = true;
   bool _repeatPasswordVisible = true;
+
+  File? _imageFile;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -47,6 +53,7 @@ class _SignupState extends State<Signup> {
                       fontSize: 35,
                       fontWeight: FontWeight.w700),
                 ),
+                _buildImagePicker(),
                 Padding(
                   padding: const EdgeInsets.only(top: 120),
                   child: Row(
@@ -189,16 +196,49 @@ class _SignupState extends State<Signup> {
     );
   }
 
+  Widget _buildImagePicker() {
+    return Column(
+      children: <Widget>[
+        if (_imageFile != null) ...[
+          Image.file(
+            _imageFile!,
+            width: 200,
+            height: 200,
+            fit: BoxFit.cover,
+          ),
+          const SizedBox(height: 10),
+        ],
+        ElevatedButton(
+          onPressed: () => _pickImage(ImageSource.gallery),
+          child: const Text('Pick an Image'),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+
+    setState(() {
+      if (pickedFile != null) {
+        _imageFile = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   Future<void> _register(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    String firstName = _firstName.text.trim();
-    String lastName = _lastName.text.trim();
-    String email = _email.text.trim();
-    String password = _password.text.trim();
-    String repeatPassword = _repeatPassword.text.trim();
+    final String firstName = _firstName.text.trim();
+    final String lastName = _lastName.text.trim();
+    final String email = _email.text.trim();
+    final String password = _password.text.trim();
+    final String repeatPassword = _repeatPassword.text.trim();
+    String storageLocation = '';
 
     if (password != repeatPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -213,12 +253,29 @@ class _SignupState extends State<Signup> {
         await FirebaseFunction.instance.createUser(context, email, password);
 
     if (userCredential != null) {
+      final String uid = userCredential.user?.uid ?? '';
+
+      final Reference userDirectory = FirebaseStorage.instance
+          .ref()
+          .child('user_data/$uid/images/profile_photo/profile_photo');
+
+      try {
+        await userDirectory.putFile(_imageFile!);
+        final TaskSnapshot uploadTask =
+            await userDirectory.putFile(_imageFile!);
+        storageLocation = await uploadTask.ref.getDownloadURL();
+        print('Image uploaded successfully.');
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
+  
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
 
       await users.doc(userCredential.user?.uid).set({
         'name': '$firstName $lastName',
         'email': email,
+        'profilePhoto': storageLocation,         
       });
     } else {
       debugPrint('ERROR: Signup account: ${userCredential.toString()}');

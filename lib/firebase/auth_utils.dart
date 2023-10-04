@@ -41,13 +41,13 @@ class FirebaseFunction {
   Future<UserCredential?> createUser(
       BuildContext context, String email, String password) async {
     try {
-      UserCredential userCredential = await context
+      final UserCredential userCredential = await context
           .read<Repository>()
           .getAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      String error = e.code;
+      final String error = e.code;
       switch (error) {
         case 'email-already-in-use':
           ScaffoldMessenger.of(context).showSnackBar(
