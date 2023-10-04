@@ -1,4 +1,5 @@
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/homescreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -120,6 +121,7 @@ class _LoginState extends State<Login> {
 
     UserCredential? userCredential =
         await FirebaseFunction.instance.signIn(context, email, password);
+    UserModel('angelo', 'y', 'y', 'y,', true, 'y');
 
     if (userCredential != null) {
       Navigator.pushReplacement(

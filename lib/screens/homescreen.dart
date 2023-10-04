@@ -1,3 +1,4 @@
+import 'package:chatapp/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class Homescreen extends StatefulWidget {
@@ -6,12 +7,14 @@ class Homescreen extends StatefulWidget {
   @override
   State<Homescreen> createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<Homescreen> {
+ 
+  @override
+  void initState() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      body: Column(children: []),
     );
   }
 }

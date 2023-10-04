@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:chatapp/firebase/repository.dart';
+import 'package:chatapp/models/user_model.dart';
+import 'package:chatapp/screens/auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,9 +21,16 @@ class FirebaseFunction {
         .authStateChanges()
         .listen((User? user) async {
       if (user == null) {
-        Navigator.pushNamed(context, 'login');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AuthScreen(),
+          ),
+        );
         return;
       }
+      debugPrint(authListener.toString());
+      debugPrint(user.toString());
     });
   }
 
@@ -35,6 +44,8 @@ class FirebaseFunction {
       return userCredential;
     } on FirebaseAuthException catch (e) {
       final String error = e.code;
+      debugPrint(e.code.toString());
+      debugPrint(error);
       switch (error) {
         case 'invalid-email':
           ScaffoldMessenger.of(context).showSnackBar(
@@ -51,7 +62,7 @@ class FirebaseFunction {
             ),
           );
           break;
-        case 'user-not-found':
+        case 'INVALID_LOGIN_CREDENTIALS':
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Invalid credentials'),
@@ -59,7 +70,6 @@ class FirebaseFunction {
           );
           break;
         default:
-          debugPrint(error);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content:
