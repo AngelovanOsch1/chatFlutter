@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:chatapp/screens/homescreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -277,8 +277,14 @@ class _SignupState extends State<Signup> {
         'email': email,
         'profilePhoto': storageLocation,         
       });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Homescreen(),
+        ),
+      );
     } else {
-      debugPrint('ERROR: Signup account: ${userCredential.toString()}');
+      debugPrint('ERROR: createUser: ${userCredential.toString()}');
     }
   }
 }

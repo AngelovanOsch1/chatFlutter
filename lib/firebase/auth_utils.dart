@@ -25,17 +25,50 @@ class FirebaseFunction {
     });
   }
 
-  Future<void> signIn(
+  Future<UserCredential?> signIn(
       BuildContext context, String email, String password) async {
     try {
-      await context
+      UserCredential userCredential = await context
           .read<Repository>()
           .getAuth
           .signInWithEmailAndPassword(email: email, password: password);
-      Navigator.pushReplacementNamed(context, '/homescreen');
-    } catch (e) {
-      debugPrint('error while signing in: ${e.toString()}');
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      final String error = e.code;
+      switch (error) {
+        case 'invalid-email':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invalid email address'),
+            ),
+          );
+          break;
+        case 'user-disabled':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  'This account is disabled. Please contact us if you think this was a mistake'),
+            ),
+          );
+          break;
+        case 'user-not-found':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invalid credentials'),
+            ),
+          );
+          break;
+        default:
+          debugPrint(error);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content:
+                  Text('Oops, something went wrong. Please try again later'),
+            ),
+          );
+      }
     }
+    return null;
   }
 
   Future<UserCredential?> createUser(
