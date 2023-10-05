@@ -30,17 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(  
-      theme: ThemeData(
-          colorScheme: ThemeData().colorScheme.copyWith(primary: Colors.white),
-        primaryColor: AppColors.primaryColor,
-        scaffoldBackgroundColor: AppColors.backgroundColor,
-          appBarTheme:
-              const AppBarTheme(color: AppColors.backgroundColor, elevation: 0),
-          inputDecorationTheme: const InputDecorationTheme(
-            labelStyle: TextStyle(color: Colors.black),
-            hintStyle: TextStyle(color: Colors.black),
-          ),
-        ),
+      theme: themeData,
         home: const AuthScreen()
     );
   }

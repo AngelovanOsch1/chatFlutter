@@ -61,19 +61,7 @@ class _AuthScreen extends State<AuthScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 30),
               child: TextButton(
-                style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(
-                    const Size(250, 60),
-                  ),
-                  backgroundColor: MaterialStateProperty.resolveWith(
-                    (states) => const Color(0X8FFF3985),
-                  ),
-                  shape: MaterialStateProperty.resolveWith(
-                    (states) => RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                  ),
-                ),
+                
                 onPressed: () => {
                   Navigator.push(
                     context,
@@ -92,7 +80,6 @@ class _AuthScreen extends State<AuthScreen> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
