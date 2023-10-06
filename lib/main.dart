@@ -1,6 +1,8 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/screens/auth/auth.dart';
+import 'package:chatapp/screens/auth/login.dart';
+import 'package:chatapp/screens/auth/signup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(  
       theme: themeData,
-        home: const AuthScreen()
+      home: const AuthScreen(),
+      routes: {'login': (context) => const Login(), 'signup': (context) => const Signup()},
     );
   }
 }

@@ -1,5 +1,4 @@
-import 'package:chatapp/screens/auth/login.dart';
-import 'package:chatapp/screens/auth/signup.dart';
+import 'package:chatapp/colors.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -13,74 +12,80 @@ class _AuthScreen extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Welcome to the chat',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 35,
-                  fontWeight: FontWeight.w900),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 90),
-              child: TextButton(
-                style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(
-                    const Size(250, 60),
-                  ),
-                  backgroundColor: MaterialStateProperty.resolveWith(
-                    (states) => const Color(0X8FFF3985),
-                  ),
-                  shape: MaterialStateProperty.resolveWith(
-                    (states) => RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 100, right: 50, left: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text.rich(
+                TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(text: 'Welcome to ', style: textTheme.headlineLarge),
+                    TextSpan(
+                      text: 'chat ',
+                      style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary),
                     ),
-                  ),
-                ),
-                onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Login(),
-                    ),
-                  )
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 7.5),
+                    TextSpan(text: '!', style: textTheme.headlineLarge),
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: TextButton(
-                
-                onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Signup(),
-                    ),
-                  )
-                },
-                child: const Text(
-                  'Register',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 7.5),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc consequat consectetur purus, ut aliquam lorem vestibulum ac.',
+                  style: textTheme.headlineSmall!.copyWith(fontSize: 16),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Divider(
+                  color: colorScheme.onBackground,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 60),
+                child: TextButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.resolveWith(
+                      (states) => const Size(320, 45),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'login');
+                  },
+                  child: Text(
+                    'Login',
+                    style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: TextButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.resolveWith(
+                      (states) => const Size(320, 45),
+                    ),
+                    backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        side: const BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'signup');
+                  },
+                  child: Text(
+                    'Sign up',
+                    style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
