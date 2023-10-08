@@ -1,18 +1,17 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
-import 'package:chatapp/screens/homescreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<Signup> createState() => _SignupState();
+  State<SignupScreen> createState() => _SignupScreen();
 }
 
-class _SignupState extends State<Signup> {
+class _SignupScreen extends State<SignupScreen> {
   final _firstName = TextEditingController();
   final _lastName = TextEditingController();
   final _email = TextEditingController();
@@ -26,6 +25,7 @@ class _SignupState extends State<Signup> {
   // File? _imageFile;
 
   final _formKey = GlobalKey<FormState>();
+  bool _isInvalid = false;
 
   @override
   void dispose() {
@@ -104,16 +104,6 @@ class _SignupState extends State<Signup> {
                                 decoration: InputDecoration(
                                   labelText: 'First name',
                                   labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: colorScheme.error),
-                                  ),
-                                  errorMaxLines: 2,
                                 ),
                               ),
                             ),
@@ -146,16 +136,6 @@ class _SignupState extends State<Signup> {
                                 decoration: InputDecoration(
                                   labelText: 'Last name',
                                   labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: colorScheme.error),
-                                  ),
-                                  errorMaxLines: 2,
                                 ),
                               ),
                             ),
@@ -185,15 +165,6 @@ class _SignupState extends State<Signup> {
                   decoration: InputDecoration(
                     labelText: 'Email address',
                     labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: colorScheme.error),
-                    ),
                   ),
                 ),
                 Padding(
@@ -216,15 +187,6 @@ class _SignupState extends State<Signup> {
                   decoration: InputDecoration(
                     labelText: 'Telephone number',
                     labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: colorScheme.error),
-                    ),
                   ),
                 ),
                 Padding(
@@ -248,17 +210,8 @@ class _SignupState extends State<Signup> {
                   decoration: InputDecoration(
                     labelText: 'Password',
                     labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: colorScheme.error),
-                    ),
                     suffixIcon: IconButton(
-                      color: colorScheme.onBackground,
+                      color: _isInvalid ? colorScheme.error : colorScheme.onBackground,
                       icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                       onPressed: () {
                         setState(
@@ -291,17 +244,8 @@ class _SignupState extends State<Signup> {
                   decoration: InputDecoration(
                     labelText: 'Repeat password',
                     labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: colorScheme.error),
-                    ),
                     suffixIcon: IconButton(
-                      color: colorScheme.onBackground,
+                      color: _isInvalid ? colorScheme.error : colorScheme.onBackground,
                       icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                       onPressed: () {
                         setState(
@@ -559,6 +503,9 @@ class _SignupState extends State<Signup> {
 
   Future<void> _register(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
+      setState(() {
+        _isInvalid = true;
+      });
       return;
     }
 
@@ -603,11 +550,10 @@ class _SignupState extends State<Signup> {
         'telephoneNumber': telephoneNumber,
         // 'profilePhoto': storageLocation,
       });
-      Navigator.pushReplacement(
+      Navigator.pushNamedAndRemoveUntil(
         context,
-        MaterialPageRoute(
-          builder: (context) => const Homescreen(),
-        ),
+        '/',
+        (route) => false,
       );
     } else {
       debugPrint('ERROR: createUser: ${userCredential.toString()}');

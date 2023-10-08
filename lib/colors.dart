@@ -4,20 +4,20 @@ final ThemeData themeData = ThemeData(
     fontFamily: 'interFontFamily',
     scaffoldBackgroundColor: colorScheme.background,
     appBarTheme: AppBarTheme(color: colorScheme.background, elevation: 0),
-    // inputDecorationTheme: InputDecorationTheme(
-    //   filled: false,
-    //   labelStyle: TextStyle(color: colorScheme.onBackground),
-    //   hintStyle: TextStyle(color: colorScheme.onBackground),
-    //   border: OutlineInputBorder(
-    //     borderRadius: BorderRadius.circular(50),
-    //     borderSide: const BorderSide(color: Colors.white),
-    //   ),
-
-    //   focusedBorder: OutlineInputBorder(
-    //     borderRadius: BorderRadius.circular(60.0),
-    //     borderSide: BorderSide(color: Colors.red), // Focused border color
-    //   ),
-    // ),
+  inputDecorationTheme: InputDecorationTheme(
+    errorMaxLines: 2,
+    labelStyle: TextStyle(color: colorScheme.onBackground),
+    hintStyle: TextStyle(color: colorScheme.onBackground),
+    border: const OutlineInputBorder(),
+    enabledBorder: const OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.white),
+    ),
+    focusedBorder: const OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.white),
+    ),
+  ),
+  colorScheme: colorScheme,
+  snackBarTheme: SnackBarThemeData(backgroundColor: colorScheme.onBackground),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith((states) => colorScheme.primary),
@@ -29,7 +29,8 @@ final ThemeData themeData = ThemeData(
         textStyle: MaterialStateProperty.all<TextStyle>(textTheme.headlineLarge!),
       ),
     ),
-    dividerColor: colorScheme.onBackground);
+  dividerColor: colorScheme.onBackground,
+);
 
 const TextTheme textTheme = TextTheme(
   headlineLarge: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900), //black
@@ -37,7 +38,7 @@ const TextTheme textTheme = TextTheme(
   headlineSmall: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400), //regular
 );
 
-const colorScheme = ColorScheme(
+ColorScheme colorScheme = const ColorScheme(
   brightness: Brightness.light,
   primary: Color(0XFF85CB33),
   onPrimary: Color(0XFFFFFFFF),
@@ -48,8 +49,9 @@ const colorScheme = ColorScheme(
   background: Color(0XFF2E294E),
   onBackground: Color(0XFF9A9A9A),
   surface: Color(0XFFFFFFFF),
-  onSurface: Color(0XFFFFFFFF),
+  onSurface: Color(0XFF5C5875),
 );
 
 Color myMessage = const Color(0XFF716E87);
 Color friendsMessage = const Color(0XFFDCFFB2);
+Color bottomNavigationBar = const Color(0XFF5C5875);

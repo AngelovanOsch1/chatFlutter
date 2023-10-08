@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:chatapp/firebase/repository.dart';
-import 'package:chatapp/models/user_model.dart';
-import 'package:chatapp/screens/auth/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,16 +19,13 @@ class FirebaseFunction {
         .authStateChanges()
         .listen((User? user) async {
       if (user == null) {
-        Navigator.pushReplacement(
+        Navigator.pushNamedAndRemoveUntil(
           context,
-          MaterialPageRoute(
-            builder: (context) => const AuthScreen(),
-          ),
-        );
+          'landingScreen',
+          (route) => false,
+        );        
         return;
       }
-      debugPrint(authListener.toString());
-      debugPrint(user.toString());
     });
   }
 
@@ -129,7 +124,12 @@ class FirebaseFunction {
   Future<void> signOut(BuildContext context) async {
     try {
       await context.read<Repository>().getAuth.signOut();
-      Navigator.pushReplacementNamed(context, '/homescreen');
+      debugPrint('test123');
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        'landingScreen',
+        (route) => false,
+      );
     } catch (e) {
       debugPrint('error while signing out: ${e.toString()}');
     }

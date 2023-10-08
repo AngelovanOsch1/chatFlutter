@@ -1,14 +1,9 @@
 import 'package:chatapp/colors.dart';
 import 'package:flutter/material.dart';
 
-class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+class LandingScreen extends StatelessWidget {
+  const LandingScreen({super.key});
 
-  @override
-  State<AuthScreen> createState() => _AuthScreen();
-}
-
-class _AuthScreen extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +47,7 @@ class _AuthScreen extends State<AuthScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, 'login');
+                    Navigator.pushNamed(context, 'loginScreen');
                   },
                   child: Text(
                     'Login',
@@ -76,7 +71,7 @@ class _AuthScreen extends State<AuthScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, 'signup');
+                    Navigator.pushNamed(context, 'signupScreen');
                   },
                   child: Text(
                     'Sign up',

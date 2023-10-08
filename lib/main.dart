@@ -1,8 +1,12 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/repository.dart';
-import 'package:chatapp/screens/auth/auth.dart';
-import 'package:chatapp/screens/auth/login.dart';
-import 'package:chatapp/screens/auth/signup.dart';
+import 'package:chatapp/screens/auth/landing_screen.dart';
+import 'package:chatapp/screens/auth/login_screen.dart';
+import 'package:chatapp/screens/auth/signup_screen.dart';
+import 'package:chatapp/screens/navigationbar/chat_screen.dart';
+import 'package:chatapp/screens/navigationbar/home_screen.dart';
+import 'package:chatapp/screens/navigationbar/navigationbar.dart';
+import 'package:chatapp/screens/navigationbar/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +19,6 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseFirestore.instance.settings =
-      const Settings(persistenceEnabled: true);
   runApp(
     ChangeNotifierProvider(
       create: (context) =>
@@ -33,8 +35,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(  
       theme: themeData,
-      home: const AuthScreen(),
-      routes: {'login': (context) => const Login(), 'signup': (context) => const Signup()},
+      initialRoute: FirebaseAuth.instance.currentUser == null ? 'landingScreen' : '/',
+      routes: {
+        '/': (context) => const NavigationBarClass(),
+        'homeScreen': (context) => const HomeScreen(),
+        'landingScreen': (context) => const LandingScreen(),
+        'loginScreen': (context) => const LoginScreen(),
+        'signupScreen': (context) => const SignupScreen(),
+        'chatScreen': (context) => const ChatScreen(),
+        'profileScreen': (context) => const ProfileSceen(),
+      },
     );
   }
 }

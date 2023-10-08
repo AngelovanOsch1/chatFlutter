@@ -1,24 +1,26 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
-import 'package:chatapp/models/user_model.dart';
-import 'package:chatapp/screens/homescreen.dart';
+import 'package:chatapp/firebase/repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginScreen> createState() => _LoginScreen();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreen extends State<LoginScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
   bool _passwordVisible = true;
 
   final _formKey = GlobalKey<FormState>();
+  bool _isInvalid = false;
 
   @override
   void dispose() {
@@ -30,14 +32,14 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back),
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
         ),
-      ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(top: 20, right: 50, left: 50),
@@ -73,7 +75,7 @@ class _LoginState extends State<Login> {
                   TextFormField(
                     controller: _email,
                     cursorColor: colorScheme.onBackground,
-                    style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
+                    style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
@@ -83,15 +85,6 @@ class _LoginState extends State<Login> {
                     decoration: InputDecoration(
                       labelText: 'Email address',
                       labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: colorScheme.error),
-                      ),
                     ),
                   ),
                   Padding(
@@ -105,7 +98,7 @@ class _LoginState extends State<Login> {
                     controller: _password,
                     obscureText: _passwordVisible,
                     cursorColor: colorScheme.onBackground,
-                    style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
+                    style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
@@ -115,17 +108,8 @@ class _LoginState extends State<Login> {
                     decoration: InputDecoration(
                       labelText: 'Password',
                       labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: colorScheme.error),
-                      ),
                       suffixIcon: IconButton(
-                        color: colorScheme.onBackground,
+                        color: _isInvalid ? colorScheme.error : colorScheme.onBackground,
                         icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                         onPressed: () {
                           setState(
@@ -198,8 +182,7 @@ class _LoginState extends State<Login> {
                                     'Sign up!',
                                     style: textTheme.headlineMedium!.copyWith(fontSize: 12),
                                   ),
-                                )
-                            ),
+                                )),
                           ),
                         ],
                       ),
@@ -288,30 +271,32 @@ class _LoginState extends State<Login> {
         //     ),
         //   ),
         // ),
-    );
+        );
   }
 
   Future<void> _login(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
+      setState(() {
+        _isInvalid = true;
+      });
       return;
     }
 
     final String email = _email.text.trim();
     final String password = _password.text.trim();
 
-    UserCredential? userCredential =
-        await FirebaseFunction.instance.signIn(context, email, password);
-    UserModel('angelo', 'y', 'y', 'y,', true, 'y');
+    UserCredential? userCredential = await FirebaseFunction.instance.signIn(context, email, password);
 
     if (userCredential != null) {
-      Navigator.pushReplacement(
+      DocumentSnapshot userDoc = await context.read<Repository>().getFirestore.collection('users').doc(userCredential.user?.uid).get();
+      Object? userData = userDoc.data();
+      debugPrint(userData.toString());
+
+      Navigator.pushNamedAndRemoveUntil(
         context,
-        MaterialPageRoute(
-          builder: (context) => const Homescreen(),
-        ),
+        '/',
+        (route) => false,
       );
-    } else {
-      // debugPrint('ERROR: signIn: ${userCredential.toString()}');
-    }
+    } else {}
   }
 }
