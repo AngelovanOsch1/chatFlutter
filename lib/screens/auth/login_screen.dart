@@ -171,7 +171,9 @@ class _LoginScreen extends State<LoginScreen> {
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushNamed(context, 'signupScreen');
+                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     border: Border(

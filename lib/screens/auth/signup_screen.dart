@@ -288,7 +288,9 @@ class _SignupScreen extends State<SignupScreen> {
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, 'loginScreen');
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 border: Border(

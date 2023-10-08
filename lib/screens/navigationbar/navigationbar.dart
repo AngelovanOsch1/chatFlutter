@@ -28,7 +28,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
           backgroundColor: colorScheme.background,
           indicatorColor: colorScheme.primary,
           labelTextStyle: MaterialStateProperty.resolveWith(
-            (states) => textTheme.headlineMedium!.copyWith(fontSize: 12),
+            (states) => textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
           ),
         ),
         child: NavigationBar(
@@ -40,24 +40,48 @@ class _NavigationBarClass extends State<NavigationBarClass> {
               this.index = index;
             });
           },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home),
+          destinations: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(color: colorScheme.onBackground),
+                  ),
+                ),
+                child: const NavigationDestination(
+                  icon: Icon(Icons.home),
+                  selectedIcon: Icon(
+                    Icons.home,
+                    color: Colors.white,
+                  ),
+                  label: 'Home',
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(color: colorScheme.onBackground),
+                  ),
+                ),
+                child: const NavigationDestination(
+                  icon: Icon(Icons.chat),
+                  selectedIcon: Icon(
+                    Icons.chat,
+                    color: Colors.white,
+                  ),
+                  label: 'Chat',
+                ),
+              ),
+            ),
+            const NavigationDestination(
+              icon: Icon(
+                Icons.person,
+              ),
               selectedIcon: Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              icon: Icon(
-                Icons.chat,
-                color: Colors.white,
-              ),
-              label: 'Chat',
-            ),
-            NavigationDestination(
-              icon: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
