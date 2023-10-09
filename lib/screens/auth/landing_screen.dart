@@ -9,7 +9,7 @@ class LandingScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 100, right: 50, left: 50),
+          padding: const EdgeInsets.only(top: 100, right: 30, left: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,44 +38,48 @@ class LandingScreen extends StatelessWidget {
                   color: colorScheme.onBackground,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 60),
-                child: TextButton(
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.resolveWith(
-                      (states) => const Size(320, 45),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 60),
+                  child: TextButton(
+                    style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.resolveWith(
+                        (states) => const Size(320, 45),
+                      ),
                     ),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'loginScreen');
-                  },
-                  child: Text(
-                    'Login',
-                    style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'loginScreen');
+                    },
+                    child: Text(
+                      'Login',
+                      style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                    ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: TextButton(
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.resolveWith(
-                      (states) => const Size(320, 45),
-                    ),
-                    backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        side: const BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(5),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: TextButton(
+                    style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.resolveWith(
+                        (states) => const Size(320, 45),
+                      ),
+                      backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          side: const BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                       ),
                     ),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'signupScreen');
-                  },
-                  child: Text(
-                    'Sign up',
-                    style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'signupScreen');
+                    },
+                    child: Text(
+                      'Sign up',
+                      style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                    ),
                   ),
                 ),
               ),

@@ -17,7 +17,10 @@ final ThemeData themeData = ThemeData(
     ),
   ),
   colorScheme: colorScheme,
-  snackBarTheme: SnackBarThemeData(backgroundColor: colorScheme.onBackground),
+  snackBarTheme: SnackBarThemeData(
+    backgroundColor: colorScheme.primary,
+    insetPadding: const EdgeInsets.only(left: 30),
+  ),
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith((states) => colorScheme.primary),

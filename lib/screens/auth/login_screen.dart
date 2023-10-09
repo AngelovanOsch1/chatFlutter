@@ -42,7 +42,7 @@ class _LoginScreen extends State<LoginScreen> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 20, right: 50, left: 50),
+            padding: const EdgeInsets.only(top: 10, right: 30, left: 30),
             child: Form(
               key: _formKey,
               child: Column(
@@ -50,6 +50,7 @@ class _LoginScreen extends State<LoginScreen> {
                 children: [
                   Text.rich(
                     TextSpan(
+                      
                       children: <TextSpan>[
                         TextSpan(
                           text: 'Welcome back ',
@@ -83,8 +84,8 @@ class _LoginScreen extends State<LoginScreen> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      labelText: 'Email address',
-                      labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                      hintText: 'Email address',
+                      hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     ),
                   ),
                   Padding(
@@ -106,8 +107,8 @@ class _LoginScreen extends State<LoginScreen> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      labelText: 'Password',
-                      labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                      hintText: 'Password',
+                      hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                       suffixIcon: IconButton(
                         color: _isInvalid ? colorScheme.error : colorScheme.onBackground,
                         icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
@@ -142,18 +143,20 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 40),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.resolveWith(
-                          (states) => const Size(320, 45),
+                    child: Center(
+                      child: TextButton(
+                        style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.resolveWith(
+                            (states) => const Size(320, 45),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        _login(context);
-                      },
-                      child: Text(
-                        'Login',
-                        style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                        onPressed: () {
+                          _login(context);
+                        },
+                        child: Text(
+                          'Login',
+                          style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                        ),
                       ),
                     ),
                   ),

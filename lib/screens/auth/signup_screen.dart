@@ -51,7 +51,7 @@ class _SignupScreen extends State<SignupScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, right: 50, left: 50),
+          padding: const EdgeInsets.only(top: 20, right: 30, bottom: 50, left: 30),
           child: Form(
             key: _formKey,
             child: Column(
@@ -102,8 +102,9 @@ class _SignupScreen extends State<SignupScreen> {
                                   return null;
                                 },
                                 decoration: InputDecoration(
-                                  labelText: 'First name',
-                                  labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                                  hintText: 'First name',
+                                  hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+
                                 ),
                               ),
                             ),
@@ -134,8 +135,8 @@ class _SignupScreen extends State<SignupScreen> {
                                   return null;
                                 },
                                 decoration: InputDecoration(
-                                  labelText: 'Last name',
-                                  labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                                  hintText: 'Last name',
+                                  hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                                 ),
                               ),
                             ),
@@ -163,8 +164,8 @@ class _SignupScreen extends State<SignupScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Email address',
-                    labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                    hintText: 'Email address',
+                    hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                   ),
                 ),
                 Padding(
@@ -185,8 +186,8 @@ class _SignupScreen extends State<SignupScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Telephone number',
-                    labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                    hintText: 'Telephone number',
+                    hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                   ),
                 ),
                 Padding(
@@ -208,8 +209,8 @@ class _SignupScreen extends State<SignupScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                    hintText: 'Password',
+                    hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     suffixIcon: IconButton(
                       color: _isInvalid ? colorScheme.error : colorScheme.onBackground,
                       icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
@@ -242,8 +243,8 @@ class _SignupScreen extends State<SignupScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'Repeat password',
-                    labelStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                    hintText: 'Repeat password',
+                    hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     suffixIcon: IconButton(
                       color: _isInvalid ? colorScheme.error : colorScheme.onBackground,
                       icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
@@ -257,20 +258,22 @@ class _SignupScreen extends State<SignupScreen> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 70),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.resolveWith(
-                        (states) => const Size(320, 45),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 70),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.resolveWith(
+                          (states) => const Size(320, 45),
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      _register(context);
-                    },
-                    child: Text(
-                      'Sign up',
-                      style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                      onPressed: () {
+                        _register(context);
+                      },
+                      child: Text(
+                        'Sign up',
+                        style: textTheme.headlineLarge!.copyWith(fontSize: 20),
+                      ),
                     ),
                   ),
                 ),
