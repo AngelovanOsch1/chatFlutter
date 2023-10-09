@@ -51,7 +51,7 @@ class _SignupScreen extends State<SignupScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, right: 30, bottom: 50, left: 30),
+          padding: const EdgeInsets.only(top: 10, right: 30, bottom: 50, left: 30),
           child: Form(
             key: _formKey,
             child: Column(
@@ -557,7 +557,7 @@ class _SignupScreen extends State<SignupScreen> {
       });
       Navigator.pushNamedAndRemoveUntil(
         context,
-        '/',
+        'loginLoadingScreen',
         (route) => false,
       );
     } else {

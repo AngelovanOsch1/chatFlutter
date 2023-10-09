@@ -9,26 +9,7 @@ class FirebaseFunction {
   FirebaseFunction._();
 
   static final FirebaseFunction instance = FirebaseFunction._();
-
-  StreamSubscription? authListener;
-
-  Future init(BuildContext context) async {
-    authListener = context
-        .read<Repository>()
-        .getAuth
-        .authStateChanges()
-        .listen((User? user) async {
-      if (user == null) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          'landingScreen',
-          (route) => false,
-        );        
-        return;
-      }
-    });
-  }
-
+  
   Future<UserCredential?> signIn(
       BuildContext context, String email, String password) async {
     try {
@@ -39,8 +20,6 @@ class FirebaseFunction {
       return userCredential;
     } on FirebaseAuthException catch (e) {
       final String error = e.code;
-      debugPrint(e.code.toString());
-      debugPrint(error);
       switch (error) {
         case 'invalid-email':
           ScaffoldMessenger.of(context).showSnackBar(

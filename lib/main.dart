@@ -7,6 +7,7 @@ import 'package:chatapp/screens/navigationbar/chat_screen.dart';
 import 'package:chatapp/screens/navigationbar/home_screen.dart';
 import 'package:chatapp/screens/navigationbar/navigationbar.dart';
 import 'package:chatapp/screens/navigationbar/profile_screen.dart';
+import 'package:chatapp/screens/auth/login_loading_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         'signupScreen': (context) => const SignupScreen(),
         'chatScreen': (context) => const ChatScreen(),
         'profileScreen': (context) => const ProfileSceen(),
+        'loginLoadingScreen': (context) => LoginLoadingScreen(),
       },
     );
   }

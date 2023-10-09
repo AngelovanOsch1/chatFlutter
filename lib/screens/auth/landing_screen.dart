@@ -9,7 +9,7 @@ class LandingScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 100, right: 30, left: 30),
+          padding: const EdgeInsets.only(top: 100, right: 30, bottom: 50, left: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,15 +38,11 @@ class LandingScreen extends StatelessWidget {
                   color: colorScheme.onBackground,
                 ),
               ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 60),
+              Padding(
+                padding: const EdgeInsets.only(top: 60),
+                child: SizedBox(
+                  width: double.infinity,
                   child: TextButton(
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.resolveWith(
-                        (states) => const Size(320, 45),
-                      ),
-                    ),
                     onPressed: () {
                       Navigator.pushNamed(context, 'loginScreen');
                     },
@@ -57,14 +53,12 @@ class LandingScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 40),
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: SizedBox(
+                  width: double.infinity,
                   child: TextButton(
                     style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.resolveWith(
-                        (states) => const Size(320, 45),
-                      ),
                       backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(

@@ -1,17 +1,36 @@
 class UserModel {
-  final String _name;
-  final String _email;
-  final String _telephoneNumber;
-  final String _profilePhoto;
-  final bool _isOnline;
-  final String _uid;
+  Map<String, dynamic> _data = {
+    'name': '',
+    'email': '',
+    'telephoneNumber': '',
+    'profilePhoto': '',
+    'isOnline': false,
+    'uid': '',
+  };
 
-  UserModel(this._name, this._email, this._telephoneNumber, this._profilePhoto, this._isOnline, this._uid);
+  UserModel(
+    String name,
+    String email,
+    String telephoneNumber,
+    String profilePhoto,
+    bool isOnline,
+    String uid,
+  ) {
+    _data['name'] = name;
+    _data['email'] = email;
+    _data['telephoneNumber'] = telephoneNumber;
+    _data['profilePhoto'] = profilePhoto;
+    _data['isOnline'] = isOnline;
+    _data['uid'] = uid;
+  }
 
-  String get name => _name;
-  String get email => _email;
-  String get telephoneNumber => _telephoneNumber;
-  String get profilePhoto => _profilePhoto;
-  bool get isOnline => _isOnline;
-  String get uid => _uid;
+  Map<String, dynamic> get data => _data;
+
+  void setData(Map<String, dynamic> data) {
+    _data = data;
+  }
+
+  Map<String, dynamic> testFunction() {
+    return _data;
+  }
 }

@@ -1,10 +1,7 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
-import 'package:chatapp/firebase/repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -42,7 +39,7 @@ class _LoginScreen extends State<LoginScreen> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 10, right: 30, left: 30),
+            padding: const EdgeInsets.only(top: 10, right: 30, bottom: 50, left: 30),
             child: Form(
               key: _formKey,
               child: Column(
@@ -293,15 +290,9 @@ class _LoginScreen extends State<LoginScreen> {
     UserCredential? userCredential = await FirebaseFunction.instance.signIn(context, email, password);
 
     if (userCredential != null) {
-      DocumentSnapshot userDoc = await context.read<Repository>().getFirestore.collection('users').doc(userCredential.user?.uid).get();
-      Object? userData = userDoc.data();
-      debugPrint(userData.toString());
-
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/',
-        (route) => false,
-      );
-    } else {}
+      Navigator.pushNamed(context, 'loginLoadingScreen');
+    } else {
+      debugPrint('ERROR: signIn: ${userCredential.toString()}');
+    }
   }
 }
