@@ -2,6 +2,7 @@ import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/screens/auth/landing_screen.dart';
 import 'package:chatapp/screens/auth/login_screen.dart';
+import 'package:chatapp/screens/auth/reset_password.dart';
 import 'package:chatapp/screens/auth/signup_screen.dart';
 import 'package:chatapp/screens/navigationbar/chat_screen.dart';
 import 'package:chatapp/screens/navigationbar/home_screen.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         'chatScreen': (context) => const ChatScreen(),
         'profileScreen': (context) => const ProfileSceen(),
         'loginLoadingScreen': (context) => LoginLoadingScreen(),
+        'resetPassword': (context) => const ResetPassword(),
       },
     );
   }

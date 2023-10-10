@@ -19,7 +19,7 @@ class LoginLoadingScreen extends StatelessWidget {
       builder: (context, snapshot) {
           final User? user = snapshot.data;
           return FutureBuilder<DocumentSnapshot>(
-          future: context.read<Repository>().getFirestore.collection('test').doc(user?.uid).get(),
+          future: context.read<Repository>().getFirestore.collection('users').doc(user?.uid).get(),
             builder: (context, userDocSnapshot) {
               if (userDocSnapshot.connectionState == ConnectionState.waiting) {
               return SizedBox(

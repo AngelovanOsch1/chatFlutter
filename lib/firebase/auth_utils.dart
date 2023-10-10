@@ -100,17 +100,48 @@ class FirebaseFunction {
     return null;
   }
 
-  Future<void> signOut(BuildContext context) async {
+  void signOut(BuildContext context) async {
     try {
       await context.read<Repository>().getAuth.signOut();
-      debugPrint('test123');
       Navigator.pushNamedAndRemoveUntil(
         context,
         'landingScreen',
         (route) => false,
       );
     } catch (e) {
-      debugPrint('error while signing out: ${e.toString()}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Oops, something went wrong. Please try again later'),
+        ),
+      );
+    }
+  }
+
+  void resetPassword(BuildContext context, String email) async {
+    try {
+      await context.read<Repository>().getAuth.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Reset link sent to $email'),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      final String error = e.code;
+      switch (error) {
+        case 'invalid-email':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invalid email address'),
+            ),
+          );
+          break;
+        default:
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Oops, something went wrong. Please try again later'),
+            ),
+          );
+      }
     }
   }
 }

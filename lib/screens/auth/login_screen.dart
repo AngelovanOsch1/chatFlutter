@@ -126,17 +126,26 @@ class _LoginScreen extends State<LoginScreen> {
                           backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
                         ),
                         onPressed: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(color: colorScheme.primary),
-                            ),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'resetPassword');
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: colorScheme.primary),
                           ),
-                          child: Text(
-                            'Forgot password!',
-                            style: textTheme.headlineSmall!.copyWith(color: colorScheme.primary),
-                          ),
-                        )),
+                        ),
+                        child: Text(
+                          'Forgot password?',
+                          style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
+                        ),
+                      ),
+                    ),
+                  ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 40),
@@ -184,7 +193,8 @@ class _LoginScreen extends State<LoginScreen> {
                                     'Sign up!',
                                     style: textTheme.headlineMedium!.copyWith(fontSize: 12),
                                   ),
-                                )),
+                            ),
+                          ),
                           ),
                         ],
                       ),
@@ -194,86 +204,8 @@ class _LoginScreen extends State<LoginScreen> {
               ),
             ),
           ),
-        )
-        // body: SingleChildScrollView(
-        //   child: Padding(
-        //     padding: const EdgeInsets.only(top: 80, right: 30, left: 30),
-        //     child: Form(
-        //       key: _formKey,
-        //       child: Column(
-        //         children: [
-        //           const Text(
-        //             'Login',
-        //             style: TextStyle(
-        //                 color: Colors.white,
-        //                 fontSize: 35,
-        //                 fontWeight: FontWeight.w700),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.only(top: 120),
-        //             child: TextFormField(
-        //               controller: _email,
-        //               validator: (value) {
-        //                 if (value == null || value.isEmpty) {
-        //                   return 'Please enter some text';
-        //                 }
-        //                 return null;
-        //               },
-        //               decoration: const InputDecoration(
-        //                 hintText: 'Email',
-        //                 labelText: 'Email',
-        //                 filled: true,
-        //                 fillColor: Colors.white,
-        //               ),
-        //             ),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.only(top: 30),
-        //             child: TextFormField(
-        //               controller: _password,
-        //               obscureText: _passwordVisible,
-        //               validator: (value) {
-        //                 if (value == null || value.isEmpty) {
-        //                   return 'Please enter some text';
-        //                 }
-        //                 return null;
-        //               },
-        //               decoration: InputDecoration(
-        //                 hintText: 'Password',
-        //                 labelText: 'Password',
-        //                 filled: true,
-        //                 fillColor: Colors.white,
-        //                 suffixIcon: IconButton(
-        //                   icon: Icon(_passwordVisible
-        //                       ? Icons.visibility
-        //                       : Icons.visibility_off),
-        //                   onPressed: () {
-        //                     setState(
-        //                       () {
-        //                         _passwordVisible = !_passwordVisible;
-        //                       },
-        //                     );
-        //                   },
-        //                 ),
-
-        //               ),
-        //             ),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.only(top: 30),
-        //             child: TextButton(
-        //               onPressed: () {
-        //                 _login(context);
-        //               },
-        //               child: const Text('Login'),
-        //             ),
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        );
+      ),
+    );
   }
 
   Future<void> _login(BuildContext context) async {
