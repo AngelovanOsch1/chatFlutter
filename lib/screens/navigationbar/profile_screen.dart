@@ -9,9 +9,9 @@ class ProfileSceen extends StatefulWidget {
 }
 
 class _ProfileSceenState extends State<ProfileSceen> {
-  
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Center(
         child: Text('My Profile', style: textTheme.headlineMedium),

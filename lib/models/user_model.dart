@@ -1,5 +1,5 @@
 class UserModel {
-  Map<String, dynamic> _data = {
+  static Map<String, dynamic> _data = {
     'name': '',
     'email': '',
     'telephoneNumber': '',
@@ -30,7 +30,7 @@ class UserModel {
     _data = data;
   }
 
-  Map<String, dynamic> testFunction() {
+  static Map<String, dynamic> testFunction() {
     return _data;
   }
 }

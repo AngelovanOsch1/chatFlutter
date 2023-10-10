@@ -17,51 +17,40 @@ class LoginLoadingScreen extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return SizedBox(
-            height: 60,
-            child: Center(
-              child: CircularProgressIndicator(
-                backgroundColor: colorScheme.onBackground,
-                color: colorScheme.primary,
-                value: 0.5,
-              ),
-            ),
-          );
-        } else {
           final User? user = snapshot.data;
           return FutureBuilder<DocumentSnapshot>(
             future: context.read<Repository>().getFirestore.collection('users').doc(user?.uid).get(),
             builder: (context, userDocSnapshot) {
               if (userDocSnapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox(
-                  height: 60,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: colorScheme.onBackground,
-                      color: colorScheme.primary,
-                      value: 0.5,
-                    ),
+              return SizedBox(
+                height: 60,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: colorScheme.onBackground,
+                    color: colorScheme.primary,
+                    value: 0.5,
                   ),
-                );
-              } else {
-                final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
-                userModel?.setData(userData);
+                ),
+              );
+            }
+            if (userDocSnapshot.connectionState == ConnectionState.done) {
+              final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
+              debugPrint(userData.toString());
+              userModel?.setData(userData);
 
-                WidgetsBinding.instance.addPostFrameCallback(
-                  (_) {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/',
-                      (route) => false,
-                    );
-                  },
-                );
+              WidgetsBinding.instance.addPostFrameCallback(
+                (_) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/',
+                    (route) => false,
+                  );
+                },
+              );
               }
               return Container();
             },
-          );
-        }
+        );
       },
     );
   }
