@@ -19,7 +19,7 @@ class LoginLoadingScreen extends StatelessWidget {
       builder: (context, snapshot) {
           final User? user = snapshot.data;
           return FutureBuilder<DocumentSnapshot>(
-            future: context.read<Repository>().getFirestore.collection('users').doc(user?.uid).get(),
+          future: context.read<Repository>().getFirestore.collection('test').doc(user?.uid).get(),
             builder: (context, userDocSnapshot) {
               if (userDocSnapshot.connectionState == ConnectionState.waiting) {
               return SizedBox(
@@ -34,6 +34,13 @@ class LoginLoadingScreen extends StatelessWidget {
               );
             }
             if (userDocSnapshot.connectionState == ConnectionState.done) {
+              if (userDocSnapshot.data?.data() == null) {
+                return const Scaffold(
+                  body: Center(
+                    child: Text('whoops'),
+                  ),
+                );
+              }
               final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
               debugPrint(userData.toString());
               userModel?.setData(userData);
