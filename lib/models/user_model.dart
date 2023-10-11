@@ -1,36 +1,13 @@
-class UserModel {
-  static Map<String, dynamic> _data = {
-    'name': '',
-    'email': '',
-    'telephoneNumber': '',
-    'profilePhoto': '',
-    'isOnline': false,
-    'uid': '',
-  };
+import 'package:flutter/foundation.dart';
 
-  UserModel(
-    String name,
-    String email,
-    String telephoneNumber,
-    String profilePhoto,
-    bool isOnline,
-    String uid,
-  ) {
-    _data['name'] = name;
-    _data['email'] = email;
-    _data['telephoneNumber'] = telephoneNumber;
-    _data['profilePhoto'] = profilePhoto;
-    _data['isOnline'] = isOnline;
-    _data['uid'] = uid;
-  }
+class UserModel extends ChangeNotifier {
+  Map<String, dynamic>? _userData;
 
-  Map<String, dynamic> get data => _data;
+  Map<String, dynamic>? get userData => _userData;
 
-  void setData(Map<String, dynamic> data) {
-    _data = data;
-  }
-
-  static Map<String, dynamic> testFunction() {
-    return _data;
+  void setData(Map<String, dynamic>? newData) {
+    _userData = newData;
+    debugPrint(newData.toString());
+    notifyListeners();
   }
 }

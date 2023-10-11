@@ -42,7 +42,6 @@ class LoginLoadingScreen extends StatelessWidget {
                 );
               }
               final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
-              debugPrint(userData.toString());
               userModel?.setData(userData);
 
               WidgetsBinding.instance.addPostFrameCallback(

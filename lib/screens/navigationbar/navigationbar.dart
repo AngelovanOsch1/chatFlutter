@@ -16,7 +16,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
   final screens = [
     const HomeScreen(),
     const ChatScreen(),
-    const ProfileSceen(),
+    ProfileSceen(),
   ];
 
   @override

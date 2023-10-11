@@ -1,5 +1,6 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/repository.dart';
+import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/auth/landing_screen.dart';
 import 'package:chatapp/screens/auth/login_screen.dart';
 import 'package:chatapp/screens/auth/reset_password.dart';
@@ -21,10 +22,16 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) =>
-          Repository(FirebaseAuth.instance, FirebaseFirestore.instance),
+runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserModel>(
+          create: (context) => UserModel(),
+        ),
+        ChangeNotifierProvider<Repository>(
+          create: (context) => Repository(FirebaseAuth.instance, FirebaseFirestore.instance),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -45,7 +52,7 @@ class MyApp extends StatelessWidget {
         'loginScreen': (context) => const LoginScreen(),
         'signupScreen': (context) => const SignupScreen(),
         'chatScreen': (context) => const ChatScreen(),
-        'profileScreen': (context) => const ProfileSceen(),
+        'profileScreen': (context) => ProfileSceen(),
         'loginLoadingScreen': (context) => LoginLoadingScreen(),
         'resetPassword': (context) => const ResetPassword(),
       },
