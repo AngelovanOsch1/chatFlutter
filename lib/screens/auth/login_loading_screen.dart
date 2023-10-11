@@ -8,9 +8,7 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class LoginLoadingScreen extends StatelessWidget {
-  UserModel? userModel;
-
-  LoginLoadingScreen({super.key});
+  const LoginLoadingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +39,12 @@ class LoginLoadingScreen extends StatelessWidget {
                   ),
                 );
               }
+
               final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
-              userModel?.setData(userData);
+
+              Future.delayed(Duration.zero, () async {
+                Provider.of<UserDataProvider>(context, listen: false).setUserData(userData);
+              });
 
               WidgetsBinding.instance.addPostFrameCallback(
                 (_) {

@@ -1,13 +1,26 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
-class UserModel extends ChangeNotifier {
-  Map<String, dynamic>? _userData;
+class UserData {
+  late final String name;
+  late final String email;
+  late final String profilePhoto;
+  late final String telephoneNumber;
+  bool isOnline = false;
 
-  Map<String, dynamic>? get userData => _userData;
+  UserData({required this.name, required this.email, required this.profilePhoto, required this.telephoneNumber, required this.isOnline});
+}
 
-  void setData(Map<String, dynamic>? newData) {
-    _userData = newData;
-    debugPrint(newData.toString());
+class UserDataProvider extends ChangeNotifier {
+  var _userData = UserData(name: '', email: '', profilePhoto: '', telephoneNumber: '', isOnline: false);
+  UserData get userData => _userData;
+
+  void setUserData(Map<String, dynamic> data) {
+    _userData = UserData(
+        name: data['name'] ?? '',
+        email: data['email'] ?? '',
+        profilePhoto: data['profilePhoto'] ?? '',
+        telephoneNumber: data['telephoneNumber'] ?? '',
+        isOnline: true);
     notifyListeners();
   }
 }
