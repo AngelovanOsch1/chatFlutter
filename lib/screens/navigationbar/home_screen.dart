@@ -17,7 +17,7 @@ class _HomeScreen extends State<HomeScreen> {
       body: Center(
         child: TextButton(
           onPressed: () async {
-            await FirebaseFunction.instance.signOut(context);
+            FirebaseFunction.instance.signOut(context);
           },
           child: Text(
             'Logout',
