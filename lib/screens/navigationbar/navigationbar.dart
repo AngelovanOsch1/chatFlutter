@@ -2,6 +2,7 @@ import 'package:chatapp/colors.dart';
 import 'package:chatapp/screens/navigationbar/chat_screen.dart';
 import 'package:chatapp/screens/navigationbar/home_screen.dart';
 import 'package:chatapp/screens/navigationbar/profile_screen.dart';
+import 'package:chatapp/screens/navigationbar/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationBarClass extends StatefulWidget {
@@ -17,6 +18,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
     const HomeScreen(),
     const ChatScreen(),
     ProfileSceen(),
+    const SettingsScreen()
   ];
 
   @override
@@ -77,15 +79,41 @@ class _NavigationBarClass extends State<NavigationBarClass> {
                 ),
               ),
             ),
-            const NavigationDestination(
-              icon: Icon(
-                Icons.person,
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(color: colorScheme.onBackground),
+                  ),
+                ),
+                child: const NavigationDestination(
+                  icon: Icon(Icons.person),
+                  selectedIcon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  label: 'Person',
+                ),
               ),
-              selectedIcon: Icon(
-                Icons.person,
-                color: Colors.white,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(color: colorScheme.onBackground),
+                  ),
+                ),
+                child: const NavigationDestination(
+                  icon: Icon(Icons.settings),
+                  selectedIcon: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
+                  label: 'Settings',
+                ),
               ),
-              label: 'Person',
             ),
           ],
         ),

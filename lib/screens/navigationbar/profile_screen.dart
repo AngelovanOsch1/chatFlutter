@@ -17,9 +17,9 @@ class _ProfileSceenState extends State<ProfileSceen> {
         UserModel userModel = Provider.of<UserModel>(context, listen: false);
         Map<String, dynamic>? userData = userModel.userData;
         if (userData != null) {
-          debugPrint(userModel.userData!.toString());
+          debugPrint(userModel.userData.toString());
         } else {
-          debugPrint(userModel.userData!.toString());
+          debugPrint(userModel.userData.toString());
         }
         return Scaffold(
           body: Center(
