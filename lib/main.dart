@@ -25,8 +25,8 @@ Future<void> main() async {
 runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<UserModel>(
-          create: (context) => UserModel(),
+        ChangeNotifierProvider<UserDataProvider>(
+          create: (context) => UserDataProvider(),
         ),
         ChangeNotifierProvider<Repository>(
           create: (context) => Repository(FirebaseAuth.instance, FirebaseFirestore.instance),
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(  
       theme: themeData,
-      initialRoute: FirebaseAuth.instance.currentUser == null ? 'landingScreen' : '/',
+      initialRoute: FirebaseAuth.instance.currentUser == null ? 'landingScreen' : 'loginLoadingScreen',
       routes: {
         '/': (context) => const NavigationBarClass(),
         'homeScreen': (context) => const HomeScreen(),
@@ -52,8 +52,8 @@ class MyApp extends StatelessWidget {
         'loginScreen': (context) => const LoginScreen(),
         'signupScreen': (context) => const SignupScreen(),
         'chatScreen': (context) => const ChatScreen(),
-        'profileScreen': (context) => ProfileSceen(),
-        'loginLoadingScreen': (context) => LoginLoadingScreen(),
+        'profileScreen': (context) => const ProfileSceen(),
+        'loginLoadingScreen': (context) => const LoginLoadingScreen(),
         'resetPassword': (context) => const ResetPassword(),
       },
     );
