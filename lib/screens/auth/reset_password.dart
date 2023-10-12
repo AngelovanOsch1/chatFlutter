@@ -23,37 +23,73 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Form(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10, right: 30, bottom: 50, left: 30),
+          child: Form(
             key: _formKey,
-            child: TextFormField(
-              controller: _email,
-              cursorColor: colorScheme.onBackground,
-              style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: 'Email address',
-                hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Reset password',
+                  style: textTheme.headlineLarge,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Divider(
+                    color: colorScheme.onBackground,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 60, bottom: 10),
+                  child: Text(
+                    'Email address',
+                    style: textTheme.headlineLarge!.copyWith(fontSize: 16),
+                  ),
+                ),
+                TextFormField(
+                  controller: _email,
+                  cursorColor: colorScheme.onBackground,
+                  style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Email address',
+                    hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: TextButton(
+                    onPressed: () {
+                      _resetPassword(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 15, left: 15),
+                      child: Text(
+                        'Send',
+                        style: textTheme.headlineMedium,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          TextButton(
-            onPressed: () {
-              _resetPassword(context);
-            },
-            child: Text(
-              'Reset password',
-              style: textTheme.headlineMedium,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
