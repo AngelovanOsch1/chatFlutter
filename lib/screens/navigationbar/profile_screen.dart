@@ -11,8 +11,12 @@ class ProfileSceen extends StatefulWidget {
 }
 
 class _ProfileSceenState extends State<ProfileSceen> {
+  final double coverHeight = 150;
+  final double profileHeight = 144;
+
   @override
   Widget build(BuildContext context) {
+    final top = coverHeight - profileHeight / 2;
     final userData = Provider.of<UserDataProvider>(context).userData;
 
     final ModalRoute<Object?>? parentRoute = ModalRoute.of(context);
@@ -20,6 +24,8 @@ class _ProfileSceenState extends State<ProfileSceen> {
 
     return Scaffold(
       appBar: AppBar(
+          centerTitle: true,
+          toolbarHeight: 100,
         leading: hasLeadingIcon
             ? null
             : IconButton(
@@ -27,45 +33,63 @@ class _ProfileSceenState extends State<ProfileSceen> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-              ),
-        toolbarHeight: 100,
-        centerTitle: true,
+                ),
         title: Text(
           'My profile',
           style: textTheme.headlineLarge!.copyWith(fontSize: 25),
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(top: 35, right: 20, bottom: 35, left: 20),
-            child: TextButton(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.resolveWith((states) => const EdgeInsets.only(right: 16, left: 16)),
+              padding: const EdgeInsets.only(right: 20),
+              child: Container(
+                width: 30,
+                decoration: BoxDecoration(
+                  color: colorScheme.primary,
+                  shape: BoxShape.circle,
                 ),
+                child: IconButton(
                 onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Change',
-                      style: textTheme.headlineSmall,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 5),
-                      child: Icon(
-                        Icons.create,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ],
-                )),
-          ),
-        ],
-      ),
-      body: Center(
-        child: Image(image: NetworkImage(userData.profilePhoto), alignment: Alignment.center, fit: BoxFit.cover),
-      ),
+                  icon: const Icon(
+                    Icons.create,
+                    size: 15,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Container(
+              color: Colors.grey,
+              child: Image.network(
+                'https://firebasestorage.googleapis.com/v0/b/chatappforschool.appspot.com/o/anime-art-style-environment-background-image_492154-389.avif?alt=media&token=5490ee16-a28c-47a4-9e1b-32e5bedb13b3',
+                width: double.infinity,
+                height: coverHeight,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              top: top,
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 5.0,
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: profileHeight / 2,
+                  backgroundColor: Colors.grey.shade800,
+                  backgroundImage: NetworkImage(userData.profilePhoto),
+                ),
+              ),
+            )
+          ],
+        )
     );
   }
 }
