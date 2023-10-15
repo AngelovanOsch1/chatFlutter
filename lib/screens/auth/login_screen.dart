@@ -17,7 +17,6 @@ class _LoginScreen extends State<LoginScreen> {
   bool _passwordVisible = true;
 
   final _formKey = GlobalKey<FormState>();
-  bool _isInvalid = false;
 
   @override
   void dispose() {
@@ -107,7 +106,7 @@ class _LoginScreen extends State<LoginScreen> {
                       hintText: 'Password',
                       hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                       suffixIcon: IconButton(
-                        color: _isInvalid ? colorScheme.error : colorScheme.onBackground,
+                      color: colorScheme.onBackground,
                         icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
                         onPressed: () {
                           setState(
@@ -131,7 +130,7 @@ class _LoginScreen extends State<LoginScreen> {
                         backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, 'resetPassword');
+                        Navigator.pushNamed(context, 'resetPasswordScreen');
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -210,9 +209,6 @@ class _LoginScreen extends State<LoginScreen> {
 
   Future<void> _login(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
-      setState(() {
-        _isInvalid = true;
-      });
       return;
     }
 

@@ -1,5 +1,4 @@
 import 'package:chatapp/colors.dart';
-import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,21 +9,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: TextButton(
-          onPressed: () async {
-            FirebaseFunction.instance.signOut(context);
-          },
           child: Text(
-            'Logout',
-            style: textTheme.headlineMedium,
-          ),
-        ),
-      ),
+        'Home',
+        style: textTheme.headlineMedium,
+      )),
     );
   }
 }

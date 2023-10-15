@@ -1,8 +1,8 @@
 import 'package:chatapp/colors.dart';
-import 'package:chatapp/screens/navigationbar/chat_screen.dart';
-import 'package:chatapp/screens/navigationbar/home_screen.dart';
-import 'package:chatapp/screens/navigationbar/profile_screen.dart';
-import 'package:chatapp/screens/navigationbar/settings_screen.dart';
+import 'package:chatapp/screens/navigationbar/chat/chat_screen.dart';
+import 'package:chatapp/screens/navigationbar/home/home_screen.dart';
+import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
+import 'package:chatapp/screens/navigationbar/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationBarClass extends StatefulWidget {

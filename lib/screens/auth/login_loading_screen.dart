@@ -5,8 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-
-// ignore: must_be_immutable
 class LoginLoadingScreen extends StatelessWidget {
   const LoginLoadingScreen({super.key});
 
@@ -33,9 +31,19 @@ class LoginLoadingScreen extends StatelessWidget {
             }
             if (userDocSnapshot.connectionState == ConnectionState.done) {
               if (userDocSnapshot.data?.data() == null) {
-                return const Scaffold(
+                return Scaffold(
                   body: Center(
-                    child: Text('whoops'),
+                    child: Column(
+                      children: [
+                        const Text('whoops'),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'landingScreen');
+                          },
+                          child: const Text('Back to the landing screen'),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }
@@ -43,7 +51,7 @@ class LoginLoadingScreen extends StatelessWidget {
               final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
 
               Future.delayed(Duration.zero, () async {
-                Provider.of<UserDataProvider>(context, listen: false).setUserData(userData);
+                Provider.of<UserModelProvider>(context, listen: false).setUserData(userData);
               });
 
               WidgetsBinding.instance.addPostFrameCallback(

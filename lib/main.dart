@@ -5,10 +5,11 @@ import 'package:chatapp/screens/auth/landing_screen.dart';
 import 'package:chatapp/screens/auth/login_screen.dart';
 import 'package:chatapp/screens/auth/reset_password.dart';
 import 'package:chatapp/screens/auth/signup_screen.dart';
-import 'package:chatapp/screens/navigationbar/chat_screen.dart';
-import 'package:chatapp/screens/navigationbar/home_screen.dart';
+import 'package:chatapp/screens/navigationbar/chat/chat_screen.dart';
+import 'package:chatapp/screens/navigationbar/home/home_screen.dart';
 import 'package:chatapp/screens/navigationbar/navigationbar.dart';
-import 'package:chatapp/screens/navigationbar/profile_screen.dart';
+import 'package:chatapp/screens/navigationbar/profile/edit_profile.screen.dart';
+import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:chatapp/screens/auth/login_loading_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,8 +26,8 @@ Future<void> main() async {
 runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<UserDataProvider>(
-          create: (context) => UserDataProvider(),
+        ChangeNotifierProvider<UserModelProvider>(
+          create: (context) => UserModelProvider(),
         ),
         ChangeNotifierProvider<Repository>(
           create: (context) => Repository(FirebaseAuth.instance, FirebaseFirestore.instance),
@@ -53,8 +54,9 @@ class MyApp extends StatelessWidget {
         'signupScreen': (context) => const SignupScreen(),
         'chatScreen': (context) => const ChatScreen(),
         'profileScreen': (context) => const ProfileSceen(),
+        'editProfileScreen': (context) => const EditProfileScreen(),
         'loginLoadingScreen': (context) => const LoginLoadingScreen(),
-        'resetPassword': (context) => const ResetPassword(),
+        'resetPasswordScreen': (context) => const ResetPasswordScreen(),
       },
     );
   }

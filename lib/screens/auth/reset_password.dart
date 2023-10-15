@@ -2,14 +2,14 @@ import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:flutter/material.dart';
 
-class ResetPassword extends StatefulWidget {
-  const ResetPassword({super.key});
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
 
   @override
-  State<ResetPassword> createState() => _ResetPasswordState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreen();
 }
 
-class _ResetPasswordState extends State<ResetPassword> {
+class _ResetPasswordScreen extends State<ResetPasswordScreen> {
   final _email = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
