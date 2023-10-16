@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/models/user_model.dart';
+import 'package:chatapp/validators.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +18,24 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final double coverHeight = 150;
   final double profileHeight = 144;
+
+  final _firstName = TextEditingController();
+  final _lastName = TextEditingController();
+  final _bio = TextEditingController();
+  final _telephoneNumber = TextEditingController();
+  final _country = TextEditingController();
+
+  @override
+  void dispose() {
+    _firstName.dispose();
+    _lastName.dispose();
+    _bio.dispose();
+    _telephoneNumber.dispose();
+    _country.dispose();
+    super.dispose();
+  }
+
+  final _formKey = GlobalKey<FormState>();
 
   File? _profilePhoto;
   File? _bannerPhoto;
@@ -203,18 +222,155 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget profileInformation(UserModel userModel) {
-    return Column(
-      children: [
-        TextButton(
-          onPressed: () {
-            saveProfile(userModel);
-          },
-          child: Text(
-            'Save',
-            style: textTheme.headlineLarge,
-          ),
+    List<String> name = Validators.instance.splitFirstNameAndLastName(userModel.name);
+    _firstName.text = name[0];
+    _lastName.text = name[1];
+    _bio.text = userModel.bio;
+    _telephoneNumber.text = userModel.telephoneNumber;
+    _country.text = userModel.country;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 50, right: 30, left: 30, bottom: 50),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'First name',
+                        style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: TextFormField(
+                          controller: _firstName,
+                          cursorColor: colorScheme.onBackground,
+                          style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'First name',
+                            hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(right: 40),
+                ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Last name',
+                        style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: TextFormField(
+                          controller: _lastName,
+                          cursorColor: colorScheme.onBackground,
+                          style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Last name',
+                            hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 5),
+              child: Text(
+                'Bio',
+                style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
+              ),
+            ),
+            TextFormField(
+              controller: _bio,
+              maxLines: 5,
+              cursorColor: colorScheme.onBackground,
+              style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+              decoration: InputDecoration(
+                hintText: 'Bio',
+                hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 5),
+              child: Text(
+                'Phone number',
+                style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
+              ),
+            ),
+            TextFormField(
+              controller: _telephoneNumber,
+              cursorColor: colorScheme.onBackground,
+              style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: 'Phone number',
+                hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 5),
+              child: Text(
+                'Country',
+                style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
+              ),
+            ),
+            TextFormField(
+              controller: _country,
+              cursorColor: colorScheme.onBackground,
+              style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+              decoration: InputDecoration(
+                hintText: 'Country',
+                hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: TextButton(
+                onPressed: () {
+                  saveProfile(userModel);
+                },
+                child: Text(
+                  'Save',
+                  style: textTheme.headlineLarge!.copyWith(fontSize: 12),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
