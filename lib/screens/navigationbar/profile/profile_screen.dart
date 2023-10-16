@@ -95,21 +95,47 @@ class _ProfileSceenState extends State<ProfileSceen> {
   Widget banner(UserModel userModel) {
     return Container(
       color: Colors.grey,
-      child: Image.network(
-        'https://firebasestorage.googleapis.com/v0/b/chatappforschool.appspot.com/o/anime-art-style-environment-background-image_492154-389.avif?alt=media&token=5490ee16-a28c-47a4-9e1b-32e5bedb13b3',
-        width: double.infinity,
-        height: coverHeight,
-        fit: BoxFit.cover,
+      child: userModel.banner.isEmpty
+          ? Container(
+              color: Colors.grey,
+              width: double.infinity,
+              height: coverHeight,
+            )
+          : Image.network(
+              userModel.banner,
+              width: double.infinity,
+              height: coverHeight,
+              fit: BoxFit.cover,
       ),
     );
   }
 
   Widget profilePhoto(UserModel userModel) {
-    return CircleAvatar(
-      radius: profileHeight / 2,
-      backgroundColor: Colors.grey.shade800,
-      backgroundImage: const NetworkImage(
-          'https://firebasestorage.googleapis.com/v0/b/chatappforschool.appspot.com/o/unnamed.png?alt=media&token=ce5c1c50-322a-47b9-ad13-a3037de17d53'),
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: colorScheme.background,
+          width: 10,
+        ),
+      ),
+      child: CircleAvatar(
+        radius: profileHeight / 2,
+        backgroundColor: Colors.grey.shade800,
+        child: userModel.profilePhoto.isEmpty
+            ? Text(
+                userModel.name[0],
+                style: textTheme.headlineLarge!.copyWith(fontSize: 100),
+              )
+            : ClipOval(
+                child: Image.network(
+                  userModel.profilePhoto,
+                  width: double.infinity,
+                  height: coverHeight,
+                  fit: BoxFit.cover,
+                ),
+              ),
+      ),
     );
   }
 

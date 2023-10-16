@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/validators.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +27,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _telephoneNumber = TextEditingController();
   final _country = TextEditingController();
 
+  
+
   @override
   void dispose() {
     _firstName.dispose();
@@ -38,7 +42,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
 
   File? _profilePhoto;
-  File? _bannerPhoto;
+  File? _banner;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +66,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         padding: EdgeInsets.zero,
         children: [
           bannerAndProfilePhoto(userModel),
-          profileInformation(userModel),
+          profileInformation(context, userModel),
         ],
       ),
     );
@@ -90,26 +94,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget banner(UserModel userModel) {
     return Stack(
       children: [
-        userModel.banner.isEmpty && _bannerPhoto == null
-            ? Image.network(
-                'https://wildeanalysis.co.uk/wp-content/uploads/2015/09/df-banner-placeholder.png',
+        userModel.banner.isEmpty && _banner == null
+            ? Container(
+                color: Colors.grey,
                 width: double.infinity,
                 height: coverHeight,
-                fit: BoxFit.cover,
               )
-            : userModel.banner.isEmpty && _bannerPhoto != null
-                ? Image.file(
-                    _bannerPhoto!,
+            : Container(
+                child: _banner == null
+                    ? Image.network(
+                        userModel.banner,
                     width: double.infinity,
                     height: coverHeight,
                     fit: BoxFit.cover,
-                  )
-                : Image.network(
-                    userModel.banner,
-                    width: double.infinity,
-                    height: coverHeight,
-                    fit: BoxFit.cover,
-                  ),
+                      )
+                    : Image.file(
+                        _banner!,
+                        width: double.infinity,
+                        height: coverHeight,
+                        fit: BoxFit.cover,
+                      ),
+              ),
         Positioned(
           top: 0,
           right: 20,
@@ -141,14 +146,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(
       () {
         if (pickedFile != null) {
-          _bannerPhoto = File(pickedFile.path);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('This image is not supported'),
-            ),
-          );
-        }
+          _banner = File(pickedFile.path);
+        } 
       },
     );
   }
@@ -156,27 +155,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget profilePhoto(UserModel userModel) {
     return Stack(
       children: [
-        CircleAvatar(
-          radius: profileHeight / 2,
-          backgroundColor: Colors.grey.shade800,
-          backgroundImage: _profilePhoto == null ? NetworkImage(userModel.profilePhoto) : null,
-          child: userModel.profilePhoto.isEmpty && _profilePhoto == null
-              ? Text(
-                  userModel.name[0],
-                  style: textTheme.headlineLarge!.copyWith(fontSize: 100),
-                )
-              : ClipOval(
-                  child: SizedBox(
-                    width: profileHeight,
-                    height: profileHeight,
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: colorScheme.background,
+              width: 10,
+            ),
+          ),
+          child: CircleAvatar(
+            radius: profileHeight / 2,
+            backgroundColor: Colors.grey.shade800,
+            child: userModel.profilePhoto.isEmpty && _profilePhoto == null
+                ? Text(
+                    userModel.name[0],
+                    style: textTheme.headlineLarge!.copyWith(fontSize: 100),
+                  )
+                : ClipOval(
                     child: _profilePhoto == null
-                        ? null
+                        ? Image.network(
+                            userModel.profilePhoto,
+                            fit: BoxFit.cover,
+                            width: profileHeight,
+                            height: profileHeight,
+                          )
                         : Image.file(
                             _profilePhoto!,
                             fit: BoxFit.cover,
+                            width: profileHeight,
+                            height: profileHeight,
                           ),
                   ),
-                ),
+          ),
         ),
         Positioned(
           top: 100,
@@ -210,18 +220,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       () {
         if (pickedFile != null) {
           _profilePhoto = File(pickedFile.path);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('This image is not supported'),
-            ),
-          );
-        }
+        } 
       },
     );
   }
 
-  Widget profileInformation(UserModel userModel) {
+  Widget profileInformation(BuildContext context, UserModel userModel) {
     List<String> name = Validators.instance.splitFirstNameAndLastName(userModel.name);
     _firstName.text = name[0];
     _lastName.text = name[1];
@@ -360,7 +364,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               padding: const EdgeInsets.only(top: 30),
               child: TextButton(
                 onPressed: () {
-                  saveProfile(userModel);
+                  saveProfile(context, userModel);
                 },
                 child: Text(
                   'Save',
@@ -374,16 +378,61 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  saveProfile(UserModel userModel) async {
+  void saveProfile(BuildContext context, UserModel userModel) async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    Validators.instance.isLoading(context);
+
+    String profilePhoto = userModel.profilePhoto;
+    String banner = userModel.banner;
+
+    final String firstName = _firstName.text;
+    final String lastName = _lastName.text;
+    final String bio = _bio.text;
+    final String telephoneNumber = _telephoneNumber.text;
+    final String country = _country.text;
+
     final Reference profilePhotoDirectory = FirebaseStorage.instance.ref().child('user_data/${userModel.uid}/images/profile_photo/profile_photo');
     final Reference bannerDirectory = FirebaseStorage.instance.ref().child('user_data/${userModel.uid}/images/banner_photo/banner_photo');
 
-    await profilePhotoDirectory.putFile(_profilePhoto!);
-    final TaskSnapshot uploadTask = await profilePhotoDirectory.putFile(_profilePhoto!);
-    final String profilePhoto = await uploadTask.ref.getDownloadURL();
+    if (_profilePhoto != null) {
+      await profilePhotoDirectory.putFile(_profilePhoto!);
+      final TaskSnapshot uploadTask = await profilePhotoDirectory.putFile(_profilePhoto!);
+      profilePhoto = await uploadTask.ref.getDownloadURL();
+    }
 
-    await bannerDirectory.putFile(_bannerPhoto!);
-    final TaskSnapshot uploadTask123 = await bannerDirectory.putFile(_bannerPhoto!);
-    final String banner = await uploadTask123.ref.getDownloadURL();
+    if (_banner != null) {
+      await bannerDirectory.putFile(_banner!);
+      final TaskSnapshot uploadTask = await bannerDirectory.putFile(_banner!);
+      banner = await uploadTask.ref.getDownloadURL();
+    }
+
+    try {
+      final CollectionReference users = FirebaseFirestore.instance.collection('users');
+      final User? user = FirebaseAuth.instance.currentUser;
+
+      await users.doc(user?.uid).update({
+        'name': '$firstName $lastName',
+        'bio': bio,
+        'telephoneNumber': telephoneNumber,
+        'country': country,
+        'profilePhoto': profilePhoto,
+        'banner': banner,
+      });
+
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        'loginLoadingScreen',
+        (route) => false,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Oops, something went wrong. Please try again later'),
+        ),
+      );
+    }
   }
 }

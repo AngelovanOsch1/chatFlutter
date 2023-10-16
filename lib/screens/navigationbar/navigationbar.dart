@@ -17,7 +17,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
   final screens = [
     const HomeScreen(),
     const ChatScreen(),
-    ProfileSceen(),
+    const ProfileSceen(),
     const SettingsScreen()
   ];
 
@@ -93,7 +93,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
                     Icons.person,
                     color: Colors.white,
                   ),
-                  label: 'Person',
+                  label: 'My profile',
                 ),
               ),
             ),

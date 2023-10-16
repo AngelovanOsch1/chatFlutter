@@ -337,10 +337,10 @@ class _SignupScreen extends State<SignupScreen> {
       return;
     }
 
-    UserCredential? userCredential = await FirebaseFunction.instance.createUser(context, email, password);
+    final UserCredential? userCredential = await FirebaseFunction.instance.createUser(context, email, password);
 
     if (userCredential != null) {
-      CollectionReference users = FirebaseFirestore.instance.collection('users');
+      final CollectionReference users = FirebaseFirestore.instance.collection('users');
 
       await users.doc(userCredential.user?.uid).set({
         'name': '$firstName $lastName',

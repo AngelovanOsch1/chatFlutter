@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:chatapp/colors.dart';
+import 'package:flutter/material.dart';
+
 class Validators {
   Validators._();
 
@@ -15,4 +20,23 @@ class Validators {
 
     return nameList;
   }
+
+  isLoading(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 60,
+          child: Center(
+            child: CircularProgressIndicator(
+              backgroundColor: colorScheme.onBackground,
+              color: colorScheme.primary,
+              value: 0.5,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
+
