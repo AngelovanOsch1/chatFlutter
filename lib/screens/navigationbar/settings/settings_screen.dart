@@ -1,6 +1,8 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:chatapp/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -12,6 +14,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    UserModel userModel = Provider.of<UserModelProvider>(context).userData;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -61,7 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               subtitle: Text(
-                'Angelo van Osch',
+                userModel.name,
                 style: textTheme.headlineSmall,
               ),
               onTap: () {
@@ -112,9 +116,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 12),
               ),
               subtitle: Text(
-                "Legal notices and terms",
+                'Legal notices and terms',
                 style: textTheme.headlineSmall,
               ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(
+                        'About this App',
+                        style: textTheme.headlineSmall!.copyWith(color: colorScheme.primary),
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Version: 1.0.0',
+                            style: textTheme.headlineSmall!.copyWith(color: colorScheme.primary),
+                          ),
+                        ],
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: textTheme.headlineSmall!.copyWith(color: colorScheme.primary),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
             ListTile(
               minLeadingWidth: 50,
@@ -155,7 +196,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'resetPasswordScreen');
+                    },
                     child: Text(
                       'Forgot password?',
                       style: textTheme.headlineLarge!.copyWith(color: colorScheme.background, fontSize: 12),
@@ -174,7 +217,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'changeEmailScreen');
+                    },
                     child: Text(
                       'Change email',
                       style: textTheme.headlineLarge!.copyWith(color: Colors.white, fontSize: 12),

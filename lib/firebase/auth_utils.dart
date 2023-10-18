@@ -144,4 +144,48 @@ class FirebaseFunction {
       }
     }
   }
+
+  void changeEmailAddress(BuildContext context, String newEmailAddress, String password) async {
+    try {
+      await context.read<Repository>().getAuth.currentUser?.updateEmail(newEmailAddress);
+      await context.read<Repository>().getAuth.signOut();
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        'landingScreen',
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      final String error = e.code;
+      switch (error) {
+        case 'invalid-email':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invalid email address'),
+            ),
+          );
+          break;
+        case 'email-already-in-use':
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('There is already a registered user with this email address'),
+            ),
+          );
+          break;
+        case 'requires-recent-login':
+          AuthCredential credential = EmailAuthProvider.credential(
+            email: context.read<Repository>().getAuth.currentUser!.email!,
+            password: password,
+          );
+          context.read<Repository>().getAuth.currentUser?.reauthenticateWithCredential(credential);
+          break;
+        default:
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Oops, something went wrong. Please try again later'),
+            ),
+          );
+      }
+    }
+  }
 }
+

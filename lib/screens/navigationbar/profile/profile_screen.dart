@@ -63,11 +63,9 @@ class _ProfileSceenState extends State<ProfileSceen> {
         padding: EdgeInsets.zero,
         children: [
           bannerAndProfilePhoto(userModel),
-          profileInformation(),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: profileButtons(),
-          ),
+          nameAndBioInformation(userModel),
+          profileInformation(userModel),
+          profileButtons(),
         ],
       ),
     );
@@ -139,19 +137,115 @@ class _ProfileSceenState extends State<ProfileSceen> {
     );
   }
 
-  Widget profileInformation() {
-    return Container();
+  Widget profileInformation(UserModel userModel) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 30, left: 30, bottom: 50),
+      child: Wrap(
+        runSpacing: 30,
+        crossAxisAlignment: WrapCrossAlignment.start,
+        alignment: WrapAlignment.start,
+        children: [
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 140),
+            child: Wrap(
+              spacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Icon(
+                  Icons.phone,
+                  color: colorScheme.primary,
+                  size: 25,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'phone number',
+                      style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        userModel.telephoneNumber,
+                        style: textTheme.headlineSmall!.copyWith(fontSize: 10),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Wrap(
+            spacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Icon(
+                Icons.email,
+                color: colorScheme.primary,
+                size: 25,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Email address',
+                    style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text(
+                      userModel.email,
+                      style: textTheme.headlineSmall!.copyWith(fontSize: 10),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 140),
+            child: Wrap(
+              spacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Icon(
+                  Icons.language_rounded,
+                  color: colorScheme.primary,
+                  size: 25,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Country',
+                      style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        userModel.country,
+                        style: textTheme.headlineSmall!.copyWith(fontSize: 10),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  Widget buildContent() {
+  Widget nameAndBioInformation(UserModel userModel) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, right: 30, bottom: 50, left: 30),
+      padding: const EdgeInsets.only(top: 20, right: 30, bottom: 30, left: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
             child: Text(
-              'Angelo van Osch',
+              userModel.name,
               style: textTheme.headlineMedium,
             ),
           ),
@@ -159,7 +253,7 @@ class _ProfileSceenState extends State<ProfileSceen> {
             padding: const EdgeInsets.only(top: 15, right: 100, left: 100),
             child: Text(
               textAlign: TextAlign.center,
-              'test test test test test test test test test test test test test test test test test test test test test test test test test',
+              userModel.bio,
               style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
             ),
           ),
@@ -173,186 +267,59 @@ class _ProfileSceenState extends State<ProfileSceen> {
             padding: EdgeInsets.only(top: 30),
             child: null,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 20),
-          //   child: Divider(
-          //     color: colorScheme.onBackground,
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 20),
-          //   child: profileButtons(),
-          // ),
         ],
       ),
     );
   }
 
-  // Widget profileInformation() {
-  //   return Wrap(
-  //     runSpacing: 30,
-  //     crossAxisAlignment: WrapCrossAlignment.start,
-  //     alignment: WrapAlignment.start,
-  //     children: [
-  //       ConstrainedBox(
-  //         constraints: const BoxConstraints(minWidth: 140),
-  //         child: Wrap(
-  //           spacing: 8,
-  //           crossAxisAlignment: WrapCrossAlignment.center,
-  //           children: [
-  //             Icon(
-  //               Icons.phone,
-  //               color: colorScheme.primary,
-  //               size: 25,
-  //             ),
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Text(
-  //                   'phone number',
-  //                   style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(top: 5),
-  //                   child: Text(
-  //                     '0636561082',
-  //                     style: textTheme.headlineSmall!.copyWith(fontSize: 10),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Wrap(
-  //         spacing: 8,
-  //         crossAxisAlignment: WrapCrossAlignment.center,
-  //         children: [
-  //           Icon(
-  //             Icons.email,
-  //             color: colorScheme.primary,
-  //             size: 25,
-  //           ),
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(
-  //                 'Email address',
-  //                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.only(top: 5),
-  //                 child: Text(
-  //                   'Angelo.van.osch@hotmail.com',
-  //                   style: textTheme.headlineSmall!.copyWith(fontSize: 10),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //       ConstrainedBox(
-  //         constraints: const BoxConstraints(minWidth: 140),
-  //         child: Wrap(
-  //           spacing: 8,
-  //           crossAxisAlignment: WrapCrossAlignment.center,
-  //           children: [
-  //             Icon(
-  //               Icons.language_rounded,
-  //               color: colorScheme.primary,
-  //               size: 25,
-  //             ),
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Text(
-  //                   'Country',
-  //                   style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
-  //                 ),
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(top: 5),
-  //                   child: Text(
-  //                     'Netherlands',
-  //                     style: textTheme.headlineSmall!.copyWith(fontSize: 10),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Wrap(
-  //         spacing: 8,
-  //         children: [
-  //           Icon(
-  //             Icons.male,
-  //             color: colorScheme.primary,
-  //             size: 25,
-  //           ),
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(
-  //                 'Gender',
-  //                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.only(top: 5),
-  //                 child: Text(
-  //                   'Male',
-  //                   style: textTheme.headlineSmall!.copyWith(fontSize: 10),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       )
-  //     ],
-  //   );
-  // }
-
   Widget profileButtons() {
-    return Wrap(
-      spacing: 15,
-      children: [
-        TextButton(
-          style: ButtonStyle(
-            padding: MaterialStateProperty.resolveWith(
-              (states) => const EdgeInsets.only(left: 10, right: 10),
-            ),
-            backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+    return Center(
+      child: Wrap(
+        spacing: 15,
+        children: [
+          TextButton(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.resolveWith(
+                (states) => const EdgeInsets.only(left: 10, right: 10),
+              ),
+              backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.white),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
               ),
             ),
-          ),
-          onPressed: () {},
-          child: Text(
-            'Forgot password?',
-            style: textTheme.headlineLarge!.copyWith(color: colorScheme.background, fontSize: 12),
-          ),
-        ),
-        TextButton(
-          style: ButtonStyle(
-            padding: MaterialStateProperty.resolveWith(
-              (states) => const EdgeInsets.only(left: 10, right: 10),
+            onPressed: () {
+              Navigator.pushNamed(context, 'resetPasswordScreen');
+            },
+            child: Text(
+              'Reset password',
+              style: textTheme.headlineLarge!.copyWith(color: colorScheme.background, fontSize: 12),
             ),
-            backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                side: const BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(5),
+          ),
+          TextButton(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.resolveWith(
+                (states) => const EdgeInsets.only(left: 10, right: 10),
+              ),
+              backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.transparent),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  side: const BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(5),
+                ),
               ),
             ),
-          ),
-          onPressed: () {},
-          child: Text(
-            'Change email',
-            style: textTheme.headlineLarge!.copyWith(color: Colors.white, fontSize: 12),
-          ),
-        )
-      ],
+            onPressed: () {
+              Navigator.pushNamed(context, 'changeEmailScreen');
+            },
+            child: Text(
+              'Change email',
+              style: textTheme.headlineLarge!.copyWith(color: Colors.white, fontSize: 12),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

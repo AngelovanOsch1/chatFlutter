@@ -1,4 +1,3 @@
-import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/validators.dart';

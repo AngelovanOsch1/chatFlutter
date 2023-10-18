@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/validators.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,8 +27,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _bio = TextEditingController();
   final _telephoneNumber = TextEditingController();
   final _country = TextEditingController();
-
-  
 
   @override
   void dispose() {
@@ -104,9 +103,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: _banner == null
                     ? Image.network(
                         userModel.banner,
-                    width: double.infinity,
-                    height: coverHeight,
-                    fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: coverHeight,
+                        fit: BoxFit.cover,
                       )
                     : Image.file(
                         _banner!,
@@ -147,7 +146,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       () {
         if (pickedFile != null) {
           _banner = File(pickedFile.path);
-        } 
+        }
       },
     );
   }
@@ -220,7 +219,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       () {
         if (pickedFile != null) {
           _profilePhoto = File(pickedFile.path);
-        } 
+        }
       },
     );
   }
@@ -394,8 +393,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final String telephoneNumber = _telephoneNumber.text;
     final String country = _country.text;
 
-    final Reference profilePhotoDirectory = FirebaseStorage.instance.ref().child('user_data/${userModel.uid}/images/profile_photo/profile_photo');
-    final Reference bannerDirectory = FirebaseStorage.instance.ref().child('user_data/${userModel.uid}/images/banner_photo/banner_photo');
+    final Reference profilePhotoDirectory =
+        FirebaseStorage.instance.ref().child('user_data/${context.read<Repository>().getAuth.currentUser?.uid}/images/profile_photo/profile_photo');
+    final Reference bannerDirectory =
+        FirebaseStorage.instance.ref().child('user_data/${context.read<Repository>().getAuth.currentUser?.uid}/images/banner_photo/banner_photo');
 
     if (_profilePhoto != null) {
       await profilePhotoDirectory.putFile(_profilePhoto!);
@@ -410,10 +411,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
 
     try {
-      final CollectionReference users = FirebaseFirestore.instance.collection('users');
-      final User? user = FirebaseAuth.instance.currentUser;
+      final CollectionReference usersCollection = context.read<Repository>().getCollection;
+      final User? user = context.read<Repository>().getAuth.currentUser;
 
-      await users.doc(user?.uid).update({
+      await usersCollection.doc(user?.uid).update({
         'name': '$firstName $lastName',
         'bio': bio,
         'telephoneNumber': telephoneNumber,

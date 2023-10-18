@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chatapp/colors.dart';
 import 'package:flutter/material.dart';
 

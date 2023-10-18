@@ -17,7 +17,9 @@ class _ChatScreenState extends State<ChatScreen> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (_) => const AddUser(),
+            builder: (BuildContext context) {
+              return const AddUser();
+            },
           );
         },
         backgroundColor: Colors.white,
