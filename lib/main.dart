@@ -10,8 +10,8 @@ import 'package:chatapp/screens/navigationbar/home/home_screen.dart';
 import 'package:chatapp/screens/navigationbar/navigationbar.dart';
 import 'package:chatapp/screens/auth/change_email_screen.dart';
 import 'package:chatapp/screens/navigationbar/profile/edit_profile_screen.dart';
-import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:chatapp/screens/auth/login_loading_screen.dart';
+import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,17 +38,50 @@ runApp(
           ),
         ),
       ],
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      final CollectionReference usersCollection = context.read<Repository>().getCollection;
+
+      await usersCollection.doc(context.read<Repository>().getAuth.currentUser?.uid).update({
+        'isOnline': true,
+      });
+    } else if (state == AppLifecycleState.paused) {
+      final CollectionReference usersCollection = context.read<Repository>().getCollection;
+
+      await usersCollection.doc(context.read<Repository>().getAuth.currentUser?.uid).update({
+        'isOnline': false,
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(  
+    return MaterialApp(
+      // Your app configuration
       theme: themeData,
       initialRoute: context.read<Repository>().getAuth.currentUser == null ? 'landingScreen' : 'loginLoadingScreen',
       routes: {
