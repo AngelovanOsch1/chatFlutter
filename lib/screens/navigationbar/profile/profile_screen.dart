@@ -1,23 +1,26 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
+import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfileSceen extends StatefulWidget {
-  const ProfileSceen({super.key});
+class ProfileSceen extends StatelessWidget {
+  UserModel? selectedUserModel;
 
-  @override
-  State<ProfileSceen> createState() => _ProfileSceenState();
-}
+  // ignore: use_key_in_widget_constructors
+  ProfileSceen({Key? key, this.selectedUserModel});
 
-class _ProfileSceenState extends State<ProfileSceen> {
   final double coverHeight = 150;
   final double profileHeight = 144;
 
   @override
   Widget build(BuildContext context) {
-    UserModel userModel = Provider.of<UserModelProvider>(context).userData;
+    
+    // ignore: prefer_conditional_assignment
+    if (selectedUserModel == null) {
+      selectedUserModel = Provider.of<UserModelProvider>(context).userData;
+    } 
 
     final ModalRoute<Object?>? parentRoute = ModalRoute.of(context);
     final bool hasLeadingIcon = parentRoute?.settings.name != '/profile';
@@ -39,6 +42,8 @@ class _ProfileSceenState extends State<ProfileSceen> {
           style: textTheme.headlineLarge!.copyWith(fontSize: 25),
         ),
         actions: [
+          selectedUserModel?.id == context.read<Repository>().getAuth.currentUser?.uid
+              ? 
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: Container(
@@ -57,22 +62,23 @@ class _ProfileSceenState extends State<ProfileSceen> {
                 ),
               ),
             ),
-          ),
+                )
+              : Container()
         ],
       ),
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-          bannerAndProfilePhoto(userModel),
-          nameAndBioInformation(userModel),
-          profileInformation(userModel),
-          profileButtons(),
+          bannerAndProfilePhoto(selectedUserModel!),
+          nameAndBioInformation(selectedUserModel!),
+          profileInformation(selectedUserModel!),
+          profileButtons(context),
         ],
       ),
     );
   }
 
-  Widget bannerAndProfilePhoto(UserModel userModel) {
+  Widget bannerAndProfilePhoto(UserModel selectedUserModel) {
     final top = coverHeight - profileHeight / 2;
     final bottom = profileHeight / 2;
     return Stack(
@@ -81,27 +87,27 @@ class _ProfileSceenState extends State<ProfileSceen> {
       children: [
         Container(
           margin: EdgeInsets.only(bottom: bottom),
-          child: banner(userModel),
+          child: banner(selectedUserModel),
         ),
         Positioned(
           top: top,
-          child: profilePhoto(userModel),
+          child: profilePhoto(selectedUserModel),
         ),
       ],
     );
   }
 
-  Widget banner(UserModel userModel) {
+  Widget banner(UserModel selectedUserModel) {
     return Container(
       color: Colors.grey,
-      child: userModel.banner.isEmpty
+      child: selectedUserModel.banner.isEmpty
           ? Container(
               color: Colors.grey,
               width: double.infinity,
               height: coverHeight,
             )
           : Image.network(
-              userModel.banner,
+              selectedUserModel.banner,
               width: double.infinity,
               height: coverHeight,
               fit: BoxFit.cover,
@@ -109,11 +115,11 @@ class _ProfileSceenState extends State<ProfileSceen> {
     );
   }
 
-  Widget profilePhoto(UserModel userModel) {
-    return ProfilePhoto(userModel.profilePhoto, userModel.name, 'myProfilePhoto');
+  Widget profilePhoto(UserModel selectedUserModel) {
+    return ProfilePhoto(selectedUserModel.profilePhoto, selectedUserModel.name, selectedUserModel.isOnline, 'myProfilePhoto');
   }
 
-  Widget profileInformation(UserModel userModel) {
+  Widget profileInformation(UserModel selectedUserModel) {
     return Padding(
       padding: const EdgeInsets.only(right: 30, left: 30, bottom: 50),
       child: Wrap(
@@ -142,7 +148,7 @@ class _ProfileSceenState extends State<ProfileSceen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Text(
-                        userModel.telephoneNumber,
+                        selectedUserModel.telephoneNumber,
                         style: textTheme.headlineSmall!.copyWith(fontSize: 10),
                       ),
                     ),
@@ -170,7 +176,7 @@ class _ProfileSceenState extends State<ProfileSceen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: Text(
-                      userModel.email,
+                      selectedUserModel.email,
                       style: textTheme.headlineSmall!.copyWith(fontSize: 10),
                     ),
                   ),
@@ -199,7 +205,7 @@ class _ProfileSceenState extends State<ProfileSceen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Text(
-                        userModel.country,
+                        selectedUserModel.country,
                         style: textTheme.headlineSmall!.copyWith(fontSize: 10),
                       ),
                     ),
@@ -248,8 +254,9 @@ class _ProfileSceenState extends State<ProfileSceen> {
     );
   }
 
-  Widget profileButtons() {
-    return Center(
+  Widget profileButtons(BuildContext context) {
+    return selectedUserModel?.id == context.read<Repository>().getAuth.currentUser?.uid
+        ? Center(
       child: Wrap(
         spacing: 15,
         children: [
@@ -296,6 +303,7 @@ class _ProfileSceenState extends State<ProfileSceen> {
           )
         ],
       ),
-    );
+          )
+        : Container();
   }
 }

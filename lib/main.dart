@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         'loginScreen': (context) => const LoginScreen(),
         'signupScreen': (context) => const SignupScreen(),
         'chatScreen': (context) => const ChatScreen(),
-        'profileScreen': (context) => const ProfileSceen(),
+        'profileScreen': (context) => ProfileSceen(),
         'editProfileScreen': (context) => const EditProfileScreen(),
         'loginLoadingScreen': (context) => const LoginLoadingScreen(),
         'resetPasswordScreen': (context) => const ResetPasswordScreen(),

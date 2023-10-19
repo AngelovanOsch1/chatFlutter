@@ -1,12 +1,13 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/models/user_model.dart';
+import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class ChatContactScreen extends StatefulWidget {
-  final UserModel userModel;
+  final UserModel selectedUserModel;
 
-  const ChatContactScreen({super.key, required this.userModel});
+  const ChatContactScreen({super.key, required this.selectedUserModel});
 
   @override
   State<ChatContactScreen> createState() => _ChatContactScreenState();
@@ -25,34 +26,45 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
             Navigator.of(context).pop();
           },
         ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  widget.userModel.name,
-                  style: textTheme.headlineMedium!.copyWith(fontSize: 15),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Text(
-                    'Last online 1 minute ago',
-                    style: textTheme.headlineSmall!.copyWith(fontSize: 12, color: colorScheme.onBackground),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: SizedBox(
-                width: 60,
-                height: 60,
-                child: ProfilePhoto(widget.userModel.profilePhoto, widget.userModel.name, 'contactProfilePhoto'),
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileSceen(selectedUserModel: widget.selectedUserModel),
               ),
-            ),
-          ],
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    widget.selectedUserModel.name,
+                    style: textTheme.headlineMedium!.copyWith(fontSize: 15),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Text(
+                      'Last online 1 minute ago',
+                      style: textTheme.headlineSmall!.copyWith(fontSize: 12, color: colorScheme.onBackground),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: ProfilePhoto(
+                      widget.selectedUserModel.profilePhoto, widget.selectedUserModel.name, widget.selectedUserModel.isOnline, 'contactProfilePhoto'),
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           Padding(

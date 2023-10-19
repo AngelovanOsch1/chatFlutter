@@ -164,15 +164,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
           child: userModel.profilePhoto.isEmpty && _profilePhoto == null
-              ? ProfilePhoto(userModel.profilePhoto, userModel.name, 'myProfilePhoto')
+              ? ProfilePhoto(userModel.profilePhoto, userModel.name, userModel.isOnline, 'myProfilePhoto')
               : ClipOval(
                   child: _profilePhoto == null
-                      ? ProfilePhoto(userModel.profilePhoto, userModel.name, 'myProfilePhoto')
-                      : Image.file(
-                          _profilePhoto!,
-                          fit: BoxFit.cover,
-                          width: profileHeight,
-                          height: profileHeight,
+                      ? ProfilePhoto(userModel.profilePhoto, userModel.name, userModel.isOnline, 'myProfilePhoto')
+                      : CircleAvatar(
+                          radius: profileHeight / 2,
+                          backgroundColor: Colors.grey.shade800,
+                          child: Image.file(
+                            _profilePhoto!,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: coverHeight,
+                          ),
                         ),
                 ),
         ),
@@ -383,9 +387,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final String country = _country.text;
 
     final Reference profilePhotoDirectory =
-        FirebaseStorage.instance.ref().child('user_data/${context.read<Repository>().getAuth.currentUser?.uid}/images/profile_photo/profile_photo');
+        FirebaseStorage.instance.ref().child('user_data/${userModel.id}/images/profile_photo/profile_photo');
     final Reference bannerDirectory =
-        FirebaseStorage.instance.ref().child('user_data/${context.read<Repository>().getAuth.currentUser?.uid}/images/banner_photo/banner_photo');
+        FirebaseStorage.instance.ref().child('user_data/${userModel.id}/images/banner_photo/banner_photo');
 
     if (_profilePhoto != null) {
       await profilePhotoDirectory.putFile(_profilePhoto!);
@@ -401,9 +405,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     try {
       final CollectionReference usersCollection = context.read<Repository>().getCollection;
-      final User? user = context.read<Repository>().getAuth.currentUser;
 
-      await usersCollection.doc(user?.uid).update({
+      await usersCollection.doc(userModel.id).update({
         'name': '$firstName $lastName',
         'bio': bio,
         'telephoneNumber': telephoneNumber,

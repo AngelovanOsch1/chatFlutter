@@ -25,7 +25,8 @@ class UserModel {
 
 
   static UserModel constructFromSnapshot(DocumentSnapshot snapshot) {
-    Map data = snapshot.data() as Map;
+    final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+    final bool isOnline = data['isOnline'] == true;
 
     return UserModel(
         id: snapshot.id,
@@ -36,7 +37,7 @@ class UserModel {
         telephoneNumber: data['telephoneNumber'] ?? '',
         country: data['country'] ?? '',
         bio: data['bio'] ?? '',
-        isOnline: true);
+        isOnline: isOnline);
   }
 }
 
@@ -45,9 +46,9 @@ class UserModelProvider extends ChangeNotifier {
       UserModel(id: '', name: '', email: '', profilePhoto: '', banner: '', telephoneNumber: '', country: '', bio: '', isOnline: false);
   UserModel get userData => _userData;
 
-  setUserData(Map<String, dynamic> data) {
+  setUserData(Map<String, dynamic> data, String? id) {
     _userData = UserModel(
-        id: data['id'] ?? '',
+        id: id ?? '',
         name: data['name'] ?? '',
         email: data['email'] ?? '',
         profilePhoto: data['profilePhoto'] ?? '',

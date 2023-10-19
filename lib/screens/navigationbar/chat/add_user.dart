@@ -129,13 +129,13 @@ class _AddUserState extends State<AddUser> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ChatContactScreen(userModel: userModel),
+              builder: (context) => ChatContactScreen(selectedUserModel: userModel),
           ),
         );
       },
         leading: SizedBox(
           width: 60,
-          child: ProfilePhoto(userModel.profilePhoto, userModel.name, 'contactProfilePhoto'),
+          child: ProfilePhoto(userModel.profilePhoto, userModel.name, userModel.isOnline, 'contactProfilePhoto'),
         )
     );     
   }

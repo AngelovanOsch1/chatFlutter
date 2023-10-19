@@ -43,11 +43,16 @@ class LoginLoadingScreen extends StatelessWidget {
                 );
               }
               
-              final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
-
               WidgetsBinding.instance.addPostFrameCallback(
-                (_) {
-                  Provider.of<UserModelProvider>(context, listen: false).setUserData(userData);
+                (_) async {
+                  final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
+                  Provider.of<UserModelProvider>(context, listen: false).setUserData(userData, userDocSnapshot.data?.id);
+
+                  final CollectionReference usersCollection = context.read<Repository>().getCollection;
+
+                  await usersCollection.doc(userDocSnapshot.data?.id).update({
+                    'isOnline': true,
+                  });
 
                   Navigator.pushNamedAndRemoveUntil(
                     context,

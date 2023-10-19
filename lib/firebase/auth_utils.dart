@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:chatapp/firebase/repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -102,6 +103,12 @@ class FirebaseFunction {
 
   void signOut(BuildContext context) async {
     try {
+      final CollectionReference usersCollection = context.read<Repository>().getCollection;
+
+      await usersCollection.doc(context.read<Repository>().getAuth.currentUser?.uid).update({
+        'isOnline': false,
+      });
+
       await context.read<Repository>().getAuth.signOut();
       Navigator.pushNamedAndRemoveUntil(
         context,
