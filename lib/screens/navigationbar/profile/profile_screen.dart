@@ -1,4 +1,5 @@
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -109,32 +110,7 @@ class _ProfileSceenState extends State<ProfileSceen> {
   }
 
   Widget profilePhoto(UserModel userModel) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: colorScheme.background,
-          width: 10,
-        ),
-      ),
-      child: CircleAvatar(
-        radius: profileHeight / 2,
-        backgroundColor: Colors.grey.shade800,
-        child: userModel.profilePhoto.isEmpty
-            ? Text(
-                userModel.name[0],
-                style: textTheme.headlineLarge!.copyWith(fontSize: 100),
-              )
-            : ClipOval(
-                child: Image.network(
-                  userModel.profilePhoto,
-                  width: double.infinity,
-                  height: coverHeight,
-                  fit: BoxFit.cover,
-                ),
-              ),
-      ),
-    );
+    return ProfilePhoto(userModel.profilePhoto, userModel.name, 'myProfilePhoto');
   }
 
   Widget profileInformation(UserModel userModel) {
@@ -239,7 +215,7 @@ class _ProfileSceenState extends State<ProfileSceen> {
 
   Widget nameAndBioInformation(UserModel userModel) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, right: 30, bottom: 30, left: 30),
+      padding: const EdgeInsets.only(top: 30, right: 30, left: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -5,7 +5,6 @@ import 'package:chatapp/screens/auth/landing_screen.dart';
 import 'package:chatapp/screens/auth/login_screen.dart';
 import 'package:chatapp/screens/auth/reset_password.dart';
 import 'package:chatapp/screens/auth/signup_screen.dart';
-import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_screen.dart';
 import 'package:chatapp/screens/navigationbar/home/home_screen.dart';
 import 'package:chatapp/screens/navigationbar/navigationbar.dart';

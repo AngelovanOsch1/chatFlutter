@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/validators.dart';
@@ -162,30 +163,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               width: 10,
             ),
           ),
-          child: CircleAvatar(
-            radius: profileHeight / 2,
-            backgroundColor: Colors.grey.shade800,
-            child: userModel.profilePhoto.isEmpty && _profilePhoto == null
-                ? Text(
-                    userModel.name[0],
-                    style: textTheme.headlineLarge!.copyWith(fontSize: 100),
-                  )
-                : ClipOval(
-                    child: _profilePhoto == null
-                        ? Image.network(
-                            userModel.profilePhoto,
-                            fit: BoxFit.cover,
-                            width: profileHeight,
-                            height: profileHeight,
-                          )
-                        : Image.file(
-                            _profilePhoto!,
-                            fit: BoxFit.cover,
-                            width: profileHeight,
-                            height: profileHeight,
-                          ),
-                  ),
-          ),
+          child: userModel.profilePhoto.isEmpty && _profilePhoto == null
+              ? ProfilePhoto(userModel.profilePhoto, userModel.name, 'myProfilePhoto')
+              : ClipOval(
+                  child: _profilePhoto == null
+                      ? ProfilePhoto(userModel.profilePhoto, userModel.name, 'myProfilePhoto')
+                      : Image.file(
+                          _profilePhoto!,
+                          fit: BoxFit.cover,
+                          width: profileHeight,
+                          height: profileHeight,
+                        ),
+                ),
         ),
         Positioned(
           top: 100,

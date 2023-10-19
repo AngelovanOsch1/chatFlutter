@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:chatapp/colors.dart';
-import 'package:chatapp/models/user_Controller.dart';
+import 'package:chatapp/custom_widgets/profile_photo.dart';
+import 'package:chatapp/models/user_controller..dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class _AddUserState extends State<AddUser> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: colorScheme.background,
-      contentPadding: const EdgeInsets.all(0),
+      contentPadding: const EdgeInsets.only(bottom: 50),
       title: Text(
         'Add friends',
         style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary),
@@ -51,7 +51,7 @@ class _AddUserState extends State<AddUser> {
 
   Widget searchBar(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30, right: 20, bottom: 20, left: 20),
+      padding: const EdgeInsets.only(top: 30, right: 20, bottom: 10, left: 20),
       child: TextField(
         controller: searchController,
         textInputAction: TextInputAction.search,
@@ -86,10 +86,7 @@ class _AddUserState extends State<AddUser> {
             itemBuilder: (context, index) {
               final UserModel userModel = snapshot.data![index];
               if (searchController.text.isEmpty || userModel.name.toLowerCase().contains(searchController.text.toLowerCase())) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: userTile(userModel),
-                );
+                return userTile(userModel);
               } else {
                 return const Center(
                   child: Text('test'),
@@ -114,14 +111,17 @@ class _AddUserState extends State<AddUser> {
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: SizedBox(
-        height: 30,
-        width: 40,
-        child: TextButton(
-          onPressed: () {},
-          child: Text(
-            'Add',
-            style: textTheme.headlineMedium!.copyWith(fontSize: 12),
+        trailing: Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: SizedBox(
+            height: 30,
+            width: 40,
+            child: TextButton(
+              onPressed: () {},
+              child: Text(
+                'Add',
+                style: textTheme.headlineMedium!.copyWith(fontSize: 12),
+              ),
           ),
         ),
       ),
@@ -133,21 +133,10 @@ class _AddUserState extends State<AddUser> {
           ),
         );
       },
-      leading: CircleAvatar(
-        backgroundColor: Colors.grey.shade800,
-        child: userModel.profilePhoto.isEmpty
-            ? Text(
-                userModel.name[0],
-                style: textTheme.headlineLarge!.copyWith(fontSize: 25),
-              )
-            : ClipOval(
-                child: Image.network(
-                  userModel.profilePhoto,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-      ),
-    );
+        leading: SizedBox(
+          width: 60,
+          child: ProfilePhoto(userModel.profilePhoto, userModel.name, 'contactProfilePhoto'),
+        )
+    );     
   }
 }
