@@ -1,6 +1,7 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:chatapp/l10n/l10n.dart';
+import 'package:chatapp/validators.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -61,12 +62,7 @@ class _ResetPasswordScreen extends State<ResetPasswordScreen> {
                   controller: _email,
                   cursorColor: colorScheme.onBackground,
                   style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
+                  validator: Validators.instance.emptyOrNullValue('', context),
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).emailAddress,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),

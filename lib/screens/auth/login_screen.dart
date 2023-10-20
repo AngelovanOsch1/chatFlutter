@@ -3,6 +3,8 @@ import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:chatapp/validators.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -74,12 +76,7 @@ class _LoginScreen extends State<LoginScreen> {
                     controller: _email,
                     cursorColor: colorScheme.onBackground,
                     style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
+                  validator: Validators.instance.emptyOrNullValue('', context),
                     decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).emailAddress,
                       hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -97,12 +94,7 @@ class _LoginScreen extends State<LoginScreen> {
                     obscureText: _passwordVisible,
                     cursorColor: colorScheme.onBackground,
                     style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
+                  validator: Validators.instance.emptyOrNullValue('', context),
                     decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).password,
                       hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),

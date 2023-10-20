@@ -1,5 +1,6 @@
 import 'package:chatapp/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:localstorage/localstorage.dart';
 
 class AppLanguageScreen extends StatefulWidget {
@@ -47,12 +48,7 @@ class _AppLanguageScreen extends State<AppLanguageScreen> {
               if (_selectedLanguage.length > 0) {
                 await settings.setItem('appLocale', _selectedLanguage);
               }
-
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                'loginLoadingScreen',
-                (route) => false,
-              );
+              Phoenix.rebirth(context);
             },
           )
         ],

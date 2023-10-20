@@ -3,6 +3,7 @@ import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_model.dart';
+import 'package:chatapp/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,8 @@ class ProfileScreen extends StatelessWidget {
       selectedUserModel = Provider.of<UserModelProvider>(context).userData;
     } 
 
+    List<String> name = Validators.instance.splitFirstNameAndLastName(selectedUserModel!.name);
+
     final ModalRoute<Object?>? parentRoute = ModalRoute.of(context);
     final bool hasLeadingIcon = parentRoute?.settings.name != '/profile';
 
@@ -40,7 +43,9 @@ class ProfileScreen extends StatelessWidget {
                 },
               ),
         title: Text(
-          AppLocalizations.of(context).myProfile,
+          selectedUserModel?.id == context.read<Repository>().getAuth.currentUser?.uid
+              ? AppLocalizations.of(context).myProfile
+              : "${name[0]}'s" + AppLocalizations.of(context).profile,
           style: textTheme.headlineLarge!.copyWith(fontSize: 25),
         ),
         actions: [

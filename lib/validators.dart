@@ -1,10 +1,19 @@
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class Validators {
   Validators._();
 
   static final Validators instance = Validators._();
+
+  String? Function(String?)? emptyOrNullValue(String? value, BuildContext context) {
+    // if (value == null || value.isEmpty) {
+    //   return (String? input) => AppLocalizations.of(context).emptyValueError;
+    // }
+    // return (String? input) => null;
+  }
+
 
   List<String> splitFirstNameAndLastName(String name) {
     List<String> nameList = [];

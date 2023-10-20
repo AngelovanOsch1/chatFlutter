@@ -1,7 +1,9 @@
+import 'package:chatapp/app.dart';
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_model.dart';
+import 'package:chatapp/screens/navigationbar/settings/app_language.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +17,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    String? gottenLocale = settings.getItem('appLocale');
     UserModel userModel = Provider.of<UserModelProvider>(context).userData;
 
     return Scaffold(
@@ -85,13 +88,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 12),
               ),
               subtitle: Text(
-                "English (device's language)",
+                  gottenLocale == 'nl' ? 'Nederlands' : 'English',
                 style: textTheme.headlineSmall,
               ),
               onTap: () {
-                Navigator.pushNamed(context, 'appLanguageScreen');
-              },
-
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const AppLanguageScreen();
+                    },
+                  );
+                }
             ),
             ListTile(
               minLeadingWidth: 50,

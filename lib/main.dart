@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'firebase/firebase_options.dart';
@@ -19,7 +20,8 @@ Future<void> main() async {
   await settings.ready;
 
 runApp(
-    MultiProvider(
+  Phoenix(
+    child: MultiProvider(
       providers: [
         ChangeNotifierProvider<UserModelProvider>(
           create: (context) => UserModelProvider(),
@@ -34,6 +36,8 @@ runApp(
       ],
       child: MyApp(),
     ),
+
+  )
   );
 }
 
