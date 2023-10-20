@@ -1,5 +1,6 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _ResetPasswordScreen extends State<ResetPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Reset password',
+                  AppLocalizations.of(context).resetPasswordAction,
                   style: textTheme.headlineLarge,
                 ),
                 Padding(
@@ -52,7 +53,7 @@ class _ResetPasswordScreen extends State<ResetPasswordScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 60, bottom: 10),
                   child: Text(
-                    'Email address',
+                    AppLocalizations.of(context).emailAddress,
                     style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                   ),
                 ),
@@ -67,7 +68,7 @@ class _ResetPasswordScreen extends State<ResetPasswordScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Email address',
+                    hintText: AppLocalizations.of(context).emailAddress,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                   ),
                 ),
@@ -80,7 +81,7 @@ class _ResetPasswordScreen extends State<ResetPasswordScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15, left: 15),
                       child: Text(
-                        'Send',
+                        AppLocalizations.of(context).sendAction,
                         style: textTheme.headlineMedium,
                       ),
                     ),

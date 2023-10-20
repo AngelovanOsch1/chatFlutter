@@ -1,15 +1,17 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/firebase/repository.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfileSceen extends StatelessWidget {
+// ignore: must_be_immutable
+class ProfileScreen extends StatelessWidget {
   UserModel? selectedUserModel;
 
   // ignore: use_key_in_widget_constructors
-  ProfileSceen({Key? key, this.selectedUserModel});
+  ProfileScreen({Key? key, this.selectedUserModel});
 
   final double coverHeight = 150;
   final double profileHeight = 144;
@@ -38,7 +40,7 @@ class ProfileSceen extends StatelessWidget {
                 },
               ),
         title: Text(
-          'My profile',
+          AppLocalizations.of(context).myProfile,
           style: textTheme.headlineLarge!.copyWith(fontSize: 25),
         ),
         actions: [
@@ -71,7 +73,7 @@ class ProfileSceen extends StatelessWidget {
         children: [
           bannerAndProfilePhoto(selectedUserModel!),
           nameAndBioInformation(selectedUserModel!),
-          profileInformation(selectedUserModel!),
+          profileInformation(selectedUserModel!, context),
           profileButtons(context),
         ],
       ),
@@ -119,7 +121,7 @@ class ProfileSceen extends StatelessWidget {
     return ProfilePhoto(selectedUserModel.profilePhoto, selectedUserModel.name, selectedUserModel.isOnline, 'myProfilePhoto');
   }
 
-  Widget profileInformation(UserModel selectedUserModel) {
+  Widget profileInformation(UserModel selectedUserModel, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 30, left: 30, bottom: 50),
       child: Wrap(
@@ -142,7 +144,7 @@ class ProfileSceen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'phone number',
+                      AppLocalizations.of(context).phoneNumber,
                       style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
                     ),
                     Padding(
@@ -170,7 +172,7 @@ class ProfileSceen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Email address',
+                    AppLocalizations.of(context).emailAddress,
                     style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
                   ),
                   Padding(
@@ -199,7 +201,7 @@ class ProfileSceen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Country',
+                      AppLocalizations.of(context).countrySelection,
                       style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 10),
                     ),
                     Padding(
@@ -276,7 +278,7 @@ class ProfileSceen extends StatelessWidget {
               Navigator.pushNamed(context, 'resetPasswordScreen');
             },
             child: Text(
-              'Reset password',
+                    AppLocalizations.of(context).resetPasswordAction,
               style: textTheme.headlineLarge!.copyWith(color: colorScheme.background, fontSize: 12),
             ),
           ),
@@ -297,7 +299,7 @@ class ProfileSceen extends StatelessWidget {
               Navigator.pushNamed(context, 'changeEmailScreen');
             },
             child: Text(
-              'Change email',
+                    AppLocalizations.of(context).changeEmailAction,
               style: textTheme.headlineLarge!.copyWith(color: Colors.white, fontSize: 12),
             ),
           )

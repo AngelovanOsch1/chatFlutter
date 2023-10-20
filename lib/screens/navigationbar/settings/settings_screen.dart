@@ -1,5 +1,6 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         centerTitle: true,
         toolbarHeight: 100,
         title: Text(
-          'Settings',
+          AppLocalizations.of(context).appSettings,
           style: textTheme.headlineLarge!.copyWith(fontSize: 25),
         ),
         actions: [
@@ -58,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 size: 40,
               ),
               title: Text(
-                'My profile'.toUpperCase(),
+                AppLocalizations.of(context).myProfile.toUpperCase(),
                 style: textTheme.headlineLarge!.copyWith(
                   color: colorScheme.onBackground,
                   fontSize: 12,
@@ -80,13 +81,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 size: 40,
               ),
               title: Text(
-                'App language'.toUpperCase(),
+                AppLocalizations.of(context).applicationLanguage.toUpperCase(),
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 12),
               ),
               subtitle: Text(
                 "English (device's language)",
                 style: textTheme.headlineSmall,
               ),
+              onTap: () {
+                Navigator.pushNamed(context, 'appLanguageScreen');
+              },
+
             ),
             ListTile(
               minLeadingWidth: 50,
@@ -96,11 +101,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 size: 40,
               ),
               title: Text(
-                'Contact us'.toUpperCase(),
+                AppLocalizations.of(context).contactUsAction.toUpperCase(),
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 12),
               ),
               subtitle: Text(
-                "Let's talk and connect",
+                AppLocalizations.of(context).connectAction,
                 style: textTheme.headlineSmall,
               ),
             ),
@@ -112,11 +117,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 size: 40,
               ),
               title: Text(
-                'Disclaimer'.toUpperCase(),
+                AppLocalizations.of(context).legalDisclaimer.toUpperCase(),
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 12),
               ),
               subtitle: Text(
-                'Legal notices and terms',
+                AppLocalizations.of(context).legalNotices,
                 style: textTheme.headlineSmall,
               ),
               onTap: () {
@@ -125,7 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text(
-                        'About this App',
+                        AppLocalizations.of(context).appDescription,
                         style: textTheme.headlineSmall!.copyWith(color: colorScheme.primary),
                       ),
                       content: Column(
@@ -133,7 +138,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Version: 1.0.0',
+                            AppLocalizations.of(context).appVersion,
                             style: textTheme.headlineSmall!.copyWith(color: colorScheme.primary),
                           ),
                         ],
@@ -147,7 +152,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Navigator.of(context).pop();
                           },
                           child: Text(
-                            'Cancel',
+                            AppLocalizations.of(context).cancelAction,
                             style: textTheme.headlineSmall!.copyWith(color: colorScheme.primary),
                           ),
                         ),
@@ -165,11 +170,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 size: 40,
               ),
               title: Text(
-                'App info'.toUpperCase(),
+                AppLocalizations.of(context).appInformation.toUpperCase(),
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 12),
               ),
               subtitle: Text(
-                '1.0.0',
+                AppLocalizations.of(context).appVersion,
                 style: textTheme.headlineSmall,
               ),
             ),
@@ -200,7 +205,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Navigator.pushNamed(context, 'resetPasswordScreen');
                     },
                     child: Text(
-                      'Forgot password?',
+                      AppLocalizations.of(context).forgotPasswordAction,
                       style: textTheme.headlineLarge!.copyWith(color: colorScheme.background, fontSize: 12),
                     ),
                   ),
@@ -221,7 +226,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Navigator.pushNamed(context, 'changeEmailScreen');
                     },
                     child: Text(
-                      'Change email',
+                      AppLocalizations.of(context).changeEmailAction,
                       style: textTheme.headlineLarge!.copyWith(color: Colors.white, fontSize: 12),
                     ),
                   ),
@@ -239,7 +244,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     onPressed: () {},
                     child: Text(
-                      'Delete account',
+                      AppLocalizations.of(context).deleteAccountAction,
                       style: textTheme.headlineLarge!.copyWith(color: Colors.white, fontSize: 12),
                     ),
                   )

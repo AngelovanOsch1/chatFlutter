@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:chatapp/firebase/repository.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,31 +25,33 @@ class FirebaseFunction {
       switch (error) {
         case 'invalid-email':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Invalid email address'),
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context).invalidEmailMessage,
+              ),
             ),
           );
           break;
         case 'user-disabled':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text(
-                  'This account is disabled. Please contact us if you think this was a mistake'),
+                 AppLocalizations.of(context).accountDisabledMessage),
             ),
           );
           break;
         case 'INVALID_LOGIN_CREDENTIALS':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Invalid credentials'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).invalidCredentialsMessage),
             ),
           );
           break;
         default:
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content:
-                  Text('Oops, something went wrong. Please try again later'),
+                  Text(AppLocalizations.of(context).oopsMessage),
             ),
           );
       }
@@ -69,31 +72,31 @@ class FirebaseFunction {
       switch (error) {
         case 'email-already-in-use':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text(
-                  'There is already a registered user with this email address'),
+                  AppLocalizations.of(context).emailExistsMessage),
             ),
           );
           break;
         case 'invalid-email':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Email address is not valid email address'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).invalidEmailMessage),
             ),
           );
           break;
         case 'weak-password':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Password should at least be 6 characters long'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).passwordLengthMessage),
             ),
           );
           break;
         default:
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content:
-                  Text('Oops, something went wrong. Please try again later'),
+                  Text(AppLocalizations.of(context).oopsMessage),
             ),
           );
       }
@@ -117,8 +120,8 @@ class FirebaseFunction {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Oops, something went wrong. Please try again later'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).oopsMessage),
         ),
       );
     }
@@ -129,7 +132,7 @@ class FirebaseFunction {
       await context.read<Repository>().getAuth.sendPasswordResetEmail(email: email);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Reset link sent to $email'),
+          content: Text('${AppLocalizations.of(context).resetLinkSentToAction} $email'),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -137,15 +140,15 @@ class FirebaseFunction {
       switch (error) {
         case 'invalid-email':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Invalid email address'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).invalidEmailMessage),
             ),
           );
           break;
         default:
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Oops, something went wrong. Please try again later'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).oopsMessage),
             ),
           );
       }
@@ -166,15 +169,15 @@ class FirebaseFunction {
       switch (error) {
         case 'invalid-email':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Invalid email address'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).invalidEmailMessage),
             ),
           );
           break;
         case 'email-already-in-use':
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('There is already a registered user with this email address'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).emailExistsMessage),
             ),
           );
           break;
@@ -187,8 +190,8 @@ class FirebaseFunction {
           break;
         default:
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Oops, something went wrong. Please try again later'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).oopsMessage),
             ),
           );
       }

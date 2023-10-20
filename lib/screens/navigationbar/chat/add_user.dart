@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_controller..dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
@@ -31,7 +32,7 @@ class _AddUserState extends State<AddUser> {
       backgroundColor: colorScheme.background,
       contentPadding: const EdgeInsets.only(bottom: 50),
       title: Text(
-        'Add friends',
+        AppLocalizations.of(context).addFriendsAction,
         style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary),
       ),
       content: SizedBox(
@@ -57,7 +58,7 @@ class _AddUserState extends State<AddUser> {
         textInputAction: TextInputAction.search,
         onChanged: (value) {},
         decoration: InputDecoration(
-          hintText: 'Search here',
+          hintText: AppLocalizations.of(context).searchHere,
           hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
           suffixIcon: const Icon(
             Icons.search,
@@ -119,7 +120,7 @@ class _AddUserState extends State<AddUser> {
             child: TextButton(
               onPressed: () {},
               child: Text(
-                'Add',
+                AppLocalizations.of(context).addAction,
                 style: textTheme.headlineMedium!.copyWith(fontSize: 12),
               ),
           ),

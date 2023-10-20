@@ -1,5 +1,6 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProfileSceen(selectedUserModel: widget.selectedUserModel),
+                builder: (context) => ProfileScreen(selectedUserModel: widget.selectedUserModel),
               ),
             );
           },
@@ -116,7 +117,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                 focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
-                hintText: 'Type here...',
+                hintText: AppLocalizations.of(context).typeHere,
                 hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
                 suffixIcon: IconButton(
                   padding: const EdgeInsetsDirectional.only(end: 30),

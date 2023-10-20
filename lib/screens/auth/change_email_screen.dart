@@ -1,5 +1,6 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class ChangeEmailScreen extends StatefulWidget {
@@ -44,7 +45,7 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Change email',
+                  AppLocalizations.of(context).changeEmailAction,
                   style: textTheme.headlineLarge,
                 ),
                 Padding(
@@ -56,7 +57,7 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 60, bottom: 10),
                   child: Text(
-                    ' New email address',
+                    AppLocalizations.of(context).newEmailAddress,
                     style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                   ),
                 ),
@@ -71,7 +72,7 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Email address',
+                    hintText: AppLocalizations.of(context).newEmailAddress,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                   ),
                 ),
@@ -81,7 +82,7 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                     bottom: 15,
                   ),
                   child: Text(
-                    'Password',
+                    AppLocalizations.of(context).password,
                     style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                   ),
                 ),
@@ -97,7 +98,7 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: AppLocalizations.of(context).password,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     suffixIcon: IconButton(
                       color: colorScheme.onBackground,
@@ -121,7 +122,7 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15, left: 15),
                       child: Text(
-                        'Change',
+                        AppLocalizations.of(context).changeAction,
                         style: textTheme.headlineMedium,
                       ),
                     ),

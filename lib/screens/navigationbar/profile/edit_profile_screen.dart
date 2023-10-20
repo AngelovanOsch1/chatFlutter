@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/firebase/repository.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/validators.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,7 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           },
         ),
         title: Text(
-          'Change profile',
+          AppLocalizations.of(context).changeProfile,
           style: textTheme.headlineLarge!.copyWith(fontSize: 25),
         ),
       ),
@@ -239,7 +238,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'First name',
+                        AppLocalizations.of(context).firstName,
                         style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
                       ),
                       Padding(
@@ -255,7 +254,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           decoration: InputDecoration(
-                            hintText: 'First name',
+                            hintText: AppLocalizations.of(context).firstName,
                             hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                           ),
                         ),
@@ -271,7 +270,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Last name',
+                        AppLocalizations.of(context).lastName,
                         style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
                       ),
                       Padding(
@@ -287,7 +286,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           decoration: InputDecoration(
-                            hintText: 'Last name',
+                            hintText: AppLocalizations.of(context).lastName,
                             hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                           ),
                         ),
@@ -300,7 +299,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 5),
               child: Text(
-                'Bio',
+                AppLocalizations.of(context).userBio,
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
               ),
             ),
@@ -310,14 +309,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               cursorColor: colorScheme.onBackground,
               style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
               decoration: InputDecoration(
-                hintText: 'Bio',
+                hintText: AppLocalizations.of(context).userBio,
                 hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 5),
               child: Text(
-                'Phone number',
+                AppLocalizations.of(context).phoneNumber,
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
               ),
             ),
@@ -332,14 +331,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 return null;
               },
               decoration: InputDecoration(
-                hintText: 'Phone number',
+                hintText: AppLocalizations.of(context).phoneNumber,
                 hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 5),
               child: Text(
-                'Country',
+                AppLocalizations.of(context).countrySelection,
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary, fontSize: 16),
               ),
             ),
@@ -348,7 +347,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               cursorColor: colorScheme.onBackground,
               style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
               decoration: InputDecoration(
-                hintText: 'Country',
+                hintText: AppLocalizations.of(context).countrySelection,
                 hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
               ),
             ),
@@ -359,7 +358,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   saveProfile(context, userModel);
                 },
                 child: Text(
-                  'Save',
+                  AppLocalizations.of(context).saveAction,
                   style: textTheme.headlineLarge!.copyWith(fontSize: 12),
                 ),
               ),
@@ -422,8 +421,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Oops, something went wrong. Please try again later'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).oopsMessage),
         ),
       );
     }

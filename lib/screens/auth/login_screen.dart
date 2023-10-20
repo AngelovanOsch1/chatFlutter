@@ -1,5 +1,6 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -49,10 +50,10 @@ class _LoginScreen extends State<LoginScreen> {
                       
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Welcome back ',
+                        text: AppLocalizations.of(context).welcomeBack,
                           style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary),
                         ),
-                        TextSpan(text: '!', style: textTheme.headlineLarge),
+                      TextSpan(text: AppLocalizations.of(context).exclamation, style: textTheme.headlineLarge),
                       ],
                     ),
                   ),
@@ -65,7 +66,7 @@ class _LoginScreen extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 60, bottom: 10),
                     child: Text(
-                      'Email address',
+                    AppLocalizations.of(context).emailAddress,
                       style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                     ),
                   ),
@@ -80,14 +81,14 @@ class _LoginScreen extends State<LoginScreen> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      hintText: 'Email address',
+                    hintText: AppLocalizations.of(context).emailAddress,
                       hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 60, bottom: 10),
                     child: Text(
-                      'Password',
+                    AppLocalizations.of(context).password,
                       style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                     ),
                   ),
@@ -103,7 +104,7 @@ class _LoginScreen extends State<LoginScreen> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      hintText: 'Password',
+                    hintText: AppLocalizations.of(context).password,
                       hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                       suffixIcon: IconButton(
                       color: colorScheme.onBackground,
@@ -139,7 +140,7 @@ class _LoginScreen extends State<LoginScreen> {
                           ),
                         ),
                         child: Text(
-                          'Forgot password?',
+                          AppLocalizations.of(context).forgotPasswordAction,
                           style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
                         ),
                       ),
@@ -159,7 +160,7 @@ class _LoginScreen extends State<LoginScreen> {
                           _login(context);
                         },
                         child: Text(
-                          'Login',
+                        AppLocalizations.of(context).loginAction,
                           style: textTheme.headlineLarge!.copyWith(fontSize: 20),
                         ),
                       ),
@@ -170,7 +171,7 @@ class _LoginScreen extends State<LoginScreen> {
                       TextSpan(
                         children: <InlineSpan>[
                           TextSpan(
-                            text: 'Do you not have an account yet? ',
+                          text: AppLocalizations.of(context).noAccountMessage,
                             style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
                           ),
                           WidgetSpan(
@@ -189,7 +190,7 @@ class _LoginScreen extends State<LoginScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    'Sign up!',
+                                AppLocalizations.of(context).signUpAction,
                                     style: textTheme.headlineMedium!.copyWith(fontSize: 12),
                                   ),
                             ),

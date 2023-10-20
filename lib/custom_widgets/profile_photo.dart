@@ -79,7 +79,7 @@ class ProfilePhoto extends StatelessWidget {
             height: isOnlineHeight,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isOnline ? Colors.green : Colors.red,
+              color: isOnline ? Colors.green : colorScheme.onBackground,
               border: Border.all(
                 color: Colors.white,
                 width: 2.0,

@@ -1,4 +1,5 @@
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -6,6 +7,7 @@ class LandingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -16,9 +18,9 @@ class LandingScreen extends StatelessWidget {
               Text.rich(
                 TextSpan(
                   children: <TextSpan>[
-                    TextSpan(text: 'Welcome to ', style: textTheme.headlineLarge),
+                    TextSpan(text: AppLocalizations.of(context).welcomeMessage, style: textTheme.headlineLarge),
                     TextSpan(
-                      text: 'chat ',
+                      text: AppLocalizations.of(context).chatAction,
                       style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary),
                     ),
                     TextSpan(text: '!', style: textTheme.headlineLarge),
@@ -28,7 +30,7 @@ class LandingScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc consequat consectetur purus, ut aliquam lorem vestibulum ac.',
+                  AppLocalizations.of(context).loremIpsumText,
                   style: textTheme.headlineSmall!.copyWith(fontSize: 16),
                 ),
               ),
@@ -47,7 +49,7 @@ class LandingScreen extends StatelessWidget {
                       Navigator.pushNamed(context, 'loginScreen');
                     },
                     child: Text(
-                      'Login',
+                      AppLocalizations.of(context).loginAction,
                       style: textTheme.headlineLarge!.copyWith(fontSize: 20),
                     ),
                   ),
@@ -71,7 +73,7 @@ class LandingScreen extends StatelessWidget {
                       Navigator.pushNamed(context, 'signupScreen');
                     },
                     child: Text(
-                      'Sign up',
+                      AppLocalizations.of(context).signUpAction,
                       style: textTheme.headlineLarge!.copyWith(fontSize: 20),
                     ),
                   ),

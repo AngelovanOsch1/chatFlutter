@@ -1,4 +1,5 @@
 import 'package:chatapp/firebase/repository.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/validators.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,12 +31,12 @@ class LoginLoadingScreen extends StatelessWidget {
                   body: Center(
                     child: Column(
                       children: [
-                        const Text('whoops'),
+                        Text(AppLocalizations.of(context).whoopsMessage),
                         TextButton(
                           onPressed: () {
                             Navigator.pushNamed(context, 'landingScreen');
                           },
-                          child: const Text('Back to the landing screen'),
+                          child: Text(AppLocalizations.of(context).backToLandingAction),
                         ),
                       ],
                     ),

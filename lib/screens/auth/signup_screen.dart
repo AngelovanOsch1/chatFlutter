@@ -1,5 +1,6 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -58,11 +59,11 @@ class _SignupScreen extends State<SignupScreen> {
                   TextSpan(
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Create an ',
+                        text: AppLocalizations.of(context).createAccountAction,
                         style: textTheme.headlineLarge!.copyWith(color: colorScheme.primary),
                       ),
                       TextSpan(
-                        text: 'account',
+                        text: AppLocalizations.of(context).account,
                         style: textTheme.headlineLarge,
                       ),
                     ],
@@ -83,7 +84,7 @@ class _SignupScreen extends State<SignupScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'First name',
+                              AppLocalizations.of(context).firstName,
                               style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                             ),
                             Padding(
@@ -99,7 +100,7 @@ class _SignupScreen extends State<SignupScreen> {
                                   return null;
                                 },
                                 decoration: InputDecoration(
-                                  hintText: 'First name',
+                                  hintText: AppLocalizations.of(context).firstName,
                                   hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
 
                                 ),
@@ -116,7 +117,7 @@ class _SignupScreen extends State<SignupScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Last name',
+                              AppLocalizations.of(context).lastName,
                               style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                             ),
                             Padding(
@@ -132,7 +133,7 @@ class _SignupScreen extends State<SignupScreen> {
                                   return null;
                                 },
                                 decoration: InputDecoration(
-                                  hintText: 'Last name',
+                                  hintText: AppLocalizations.of(context).lastName,
                                   hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                                 ),
                               ),
@@ -146,7 +147,7 @@ class _SignupScreen extends State<SignupScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 40, bottom: 10),
                   child: Text(
-                    'Email address',
+                    AppLocalizations.of(context).emailAddress,
                     style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                   ),
                 ),
@@ -161,14 +162,14 @@ class _SignupScreen extends State<SignupScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Email address',
+                    hintText: AppLocalizations.of(context).emailAddress,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 30, bottom: 10),
                   child: Text(
-                    'Telephone number',
+                    AppLocalizations.of(context).phoneNumber,
                     style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                   ),
                 ),
@@ -183,14 +184,14 @@ class _SignupScreen extends State<SignupScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Telephone number',
+                    hintText: AppLocalizations.of(context).phoneNumber,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 70, bottom: 10),
                   child: Text(
-                    'Password',
+                    AppLocalizations.of(context).password,
                     style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                   ),
                 ),
@@ -206,7 +207,7 @@ class _SignupScreen extends State<SignupScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: AppLocalizations.of(context).password,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     suffixIcon: IconButton(
                       color: colorScheme.onBackground,
@@ -224,7 +225,7 @@ class _SignupScreen extends State<SignupScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 30, bottom: 10),
                   child: Text(
-                    'Repeat password',
+                    AppLocalizations.of(context).resetPasswordAction,
                     style: textTheme.headlineLarge!.copyWith(fontSize: 16),
                   ),
                 ),
@@ -240,7 +241,7 @@ class _SignupScreen extends State<SignupScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hintText: 'Repeat password',
+                    hintText: AppLocalizations.of(context).resetPasswordAction,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     suffixIcon: IconButton(
                       color: colorScheme.onBackground,
@@ -268,7 +269,7 @@ class _SignupScreen extends State<SignupScreen> {
                         _register(context);
                       },
                       child: Text(
-                        'Sign up',
+                        AppLocalizations.of(context).signUpAction,
                         style: textTheme.headlineLarge!.copyWith(fontSize: 20),
                       ),
                     ),
@@ -279,7 +280,7 @@ class _SignupScreen extends State<SignupScreen> {
                     TextSpan(
                       children: <InlineSpan>[
                         TextSpan(
-                          text: 'Already have an account? ',
+                          text: AppLocalizations.of(context).alreadyHaveAnAccount,
                           style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
                         ),
                         WidgetSpan(
@@ -298,7 +299,7 @@ class _SignupScreen extends State<SignupScreen> {
                                 ),
                               ),
                               child: Text(
-                                'Sign in!',
+                                AppLocalizations.of(context).signInAction,
                                 style: textTheme.headlineMedium!.copyWith(fontSize: 12),
                               ),
                             ),
@@ -330,8 +331,8 @@ class _SignupScreen extends State<SignupScreen> {
 
     if (password != repeatPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Passwords do not match!'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).passwordMismatchMessage),
         ),
       );
       return;

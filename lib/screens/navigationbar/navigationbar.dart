@@ -1,4 +1,5 @@
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_screen.dart';
 import 'package:chatapp/screens/navigationbar/home/home_screen.dart';
 import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
@@ -17,7 +18,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
   final screens = [
     const HomeScreen(),
     const ChatScreen(),
-     ProfileSceen(),
+     ProfileScreen(),
     const SettingsScreen()
   ];
 
@@ -51,13 +52,13 @@ class _NavigationBarClass extends State<NavigationBarClass> {
                     right: BorderSide(color: colorScheme.onBackground),
                   ),
                 ),
-                child: const NavigationDestination(
-                  icon: Icon(Icons.home),
-                  selectedIcon: Icon(
+                child: NavigationDestination(
+                  icon: const Icon(Icons.home),
+                  selectedIcon: const Icon(
                     Icons.home,
                     color: Colors.white,
                   ),
-                  label: 'Home',
+                  label: AppLocalizations.of(context).homeAction,
                 ),
               ),
             ),
@@ -69,13 +70,13 @@ class _NavigationBarClass extends State<NavigationBarClass> {
                     right: BorderSide(color: colorScheme.onBackground),
                   ),
                 ),
-                child: const NavigationDestination(
-                  icon: Icon(Icons.chat),
-                  selectedIcon: Icon(
+                child: NavigationDestination(
+                  icon: const Icon(Icons.chat),
+                  selectedIcon: const Icon(
                     Icons.chat,
                     color: Colors.white,
                   ),
-                  label: 'Chat',
+                  label: AppLocalizations.of(context).chatAction,
                 ),
               ),
             ),
@@ -87,13 +88,14 @@ class _NavigationBarClass extends State<NavigationBarClass> {
                     right: BorderSide(color: colorScheme.onBackground),
                   ),
                 ),
-                child: const NavigationDestination(
-                  icon: Icon(Icons.person),
-                  selectedIcon: Icon(
+                child: NavigationDestination(
+                  icon: const Icon(Icons.person),
+                  selectedIcon: const Icon(
                     Icons.person,
                     color: Colors.white,
                   ),
-                  label: 'My profile',
+                  label: AppLocalizations.of(context).myProfile,
+                    
                 ),
               ),
             ),
@@ -105,13 +107,13 @@ class _NavigationBarClass extends State<NavigationBarClass> {
                     right: BorderSide(color: colorScheme.onBackground),
                   ),
                 ),
-                child: const NavigationDestination(
-                  icon: Icon(Icons.settings),
-                  selectedIcon: Icon(
+                child: NavigationDestination(
+                  icon: const Icon(Icons.settings),
+                  selectedIcon: const Icon(
                     Icons.settings,
                     color: Colors.white,
                   ),
-                  label: 'Settings',
+                  label: AppLocalizations.of(context).appSettings,
                 ),
               ),
             ),
