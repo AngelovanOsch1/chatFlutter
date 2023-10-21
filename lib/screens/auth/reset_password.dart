@@ -62,7 +62,12 @@ class _ResetPasswordScreen extends State<ResetPasswordScreen> {
                   controller: _email,
                   cursorColor: colorScheme.onBackground,
                   style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                  validator: Validators.instance.emptyOrNullValue('', context),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).emailAddress,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),

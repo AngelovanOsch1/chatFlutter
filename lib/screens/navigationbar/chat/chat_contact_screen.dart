@@ -126,7 +126,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                     Icons.mic,
                     color: colorScheme.primary,
                   ),
-                  onPressed: () => null,
+                  onPressed: () {},
                 ),
               ),
             ),

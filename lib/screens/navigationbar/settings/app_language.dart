@@ -45,7 +45,7 @@ class _AppLanguageScreen extends State<AppLanguageScreen> {
               style: textTheme.headlineMedium,
             ),
             onPressed: () async {
-              if (_selectedLanguage.length > 0) {
+              if (_selectedLanguage.isNotEmpty) {
                 await settings.setItem('appLocale', _selectedLanguage);
               }
               Phoenix.rebirth(context);

@@ -23,6 +23,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 final LocalStorage settings = LocalStorage('settings.json');
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }

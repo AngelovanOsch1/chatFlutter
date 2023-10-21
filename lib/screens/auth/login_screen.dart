@@ -48,8 +48,7 @@ class _LoginScreen extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text.rich(
-                    TextSpan(
-                      
+                  TextSpan( 
                       children: <TextSpan>[
                         TextSpan(
                         text: AppLocalizations.of(context).welcomeBack,
@@ -76,8 +75,13 @@ class _LoginScreen extends State<LoginScreen> {
                     controller: _email,
                     cursorColor: colorScheme.onBackground,
                     style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                  validator: Validators.instance.emptyOrNullValue('', context),
-                    decoration: InputDecoration(
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).emailAddress,
                       hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                     ),
@@ -94,8 +98,13 @@ class _LoginScreen extends State<LoginScreen> {
                     obscureText: _passwordVisible,
                     cursorColor: colorScheme.onBackground,
                     style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                  validator: Validators.instance.emptyOrNullValue('', context),
-                    decoration: InputDecoration(
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).password,
                       hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
                       suffixIcon: IconButton(

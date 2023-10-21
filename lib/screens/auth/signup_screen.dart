@@ -94,7 +94,12 @@ class _SignupScreen extends State<SignupScreen> {
                                 controller: _firstName,
                                 cursorColor: colorScheme.onBackground,
                                 style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-                                validator: Validators.instance.emptyOrNullValue('', context),
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return AppLocalizations.of(context).emptyValueError;
+                                  }
+                                  return null;
+                                },
                                 decoration: InputDecoration(
                                   hintText: AppLocalizations.of(context).firstName,
                                   hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -122,7 +127,12 @@ class _SignupScreen extends State<SignupScreen> {
                                 controller: _lastName,
                                 cursorColor: colorScheme.onBackground,
                                 style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-                                validator: Validators.instance.emptyOrNullValue('', context),
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return AppLocalizations.of(context).emptyValueError;
+                                  }
+                                  return null;
+                                },
                                 decoration: InputDecoration(
                                   hintText: AppLocalizations.of(context).lastName,
                                   hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -146,7 +156,12 @@ class _SignupScreen extends State<SignupScreen> {
                   controller: _email,
                   cursorColor: colorScheme.onBackground,
                   style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-                  validator: Validators.instance.emptyOrNullValue('', context),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).emailAddress,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -163,7 +178,12 @@ class _SignupScreen extends State<SignupScreen> {
                   controller: _telephoneNumber,
                   cursorColor: colorScheme.onBackground,
                   style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-                  validator: Validators.instance.emptyOrNullValue('', context),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).phoneNumber,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -181,7 +201,12 @@ class _SignupScreen extends State<SignupScreen> {
                   obscureText: _passwordVisible,
                   cursorColor: colorScheme.onBackground,
                   style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-                  validator: Validators.instance.emptyOrNullValue('', context),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).password,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -210,7 +235,12 @@ class _SignupScreen extends State<SignupScreen> {
                   obscureText: _repeatPasswordVisible,
                   cursorColor: colorScheme.onBackground,
                   style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-                  validator: Validators.instance.emptyOrNullValue('', context),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).resetPasswordAction,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),

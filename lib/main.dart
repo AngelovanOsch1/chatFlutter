@@ -34,7 +34,7 @@ runApp(
           ),
         ),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
 
   )

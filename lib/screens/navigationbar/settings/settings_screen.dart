@@ -1,4 +1,3 @@
-import 'package:chatapp/app.dart';
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:chatapp/l10n/l10n.dart';
@@ -17,7 +16,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    String? gottenLocale = settings.getItem('appLocale');
     UserModel userModel = Provider.of<UserModelProvider>(context).userData;
 
     return Scaffold(
@@ -88,7 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: textTheme.headlineLarge!.copyWith(color: colorScheme.onBackground, fontSize: 12),
               ),
               subtitle: Text(
-                  gottenLocale == 'nl' ? 'Nederlands' : 'English',
+                  AppLocalizations.of(context).appLanguage,
                 style: textTheme.headlineSmall,
               ),
               onTap: () {

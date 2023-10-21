@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/l10n/l10n.dart';
-import 'package:chatapp/models/user_controller..dart';
+import 'package:chatapp/models/user_controller.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
 import 'package:flutter/material.dart';
@@ -114,18 +114,23 @@ class _AddUserState extends State<AddUser> {
       ),
         trailing: Padding(
           padding: const EdgeInsets.only(right: 5),
-          child: SizedBox(
-            height: 30,
-            width: 40,
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                AppLocalizations.of(context).addAction,
-                style: textTheme.headlineMedium!.copyWith(fontSize: 12),
+          child: Container(
+            width: 35,
+            height: 25,
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: const Icon(
+                Icons.add,
+                color: Colors.white,
               ),
+              onPressed: () {},
+            ),
           ),
         ),
-      ),
       onTap: () {
         Navigator.push(
           context,

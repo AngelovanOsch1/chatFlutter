@@ -247,7 +247,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           controller: _firstName,
                           cursorColor: colorScheme.onBackground,
                           style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-                          validator: Validators.instance.emptyOrNullValue('', context),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return AppLocalizations.of(context).emptyValueError;
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             hintText: AppLocalizations.of(context).firstName,
                             hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -274,7 +279,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           controller: _lastName,
                           cursorColor: colorScheme.onBackground,
                           style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-                          validator: Validators.instance.emptyOrNullValue('', context),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return AppLocalizations.of(context).emptyValueError;
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             hintText: AppLocalizations.of(context).lastName,
                             hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -314,7 +324,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               controller: _telephoneNumber,
               cursorColor: colorScheme.onBackground,
               style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-              validator: Validators.instance.emptyOrNullValue('', context),
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return AppLocalizations.of(context).emptyValueError;
+                }
+                return null;
+              },
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).phoneNumber,
                 hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),

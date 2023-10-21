@@ -66,7 +66,12 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                   controller: _newEmailAddress,
                   cursorColor: colorScheme.onBackground,
                   style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                  validator: Validators.instance.emptyOrNullValue('', context),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).newEmailAddress,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
@@ -87,7 +92,12 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                   obscureText: _passwordVisible,
                   cursorColor: colorScheme.onBackground,
                   style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
-                  validator: Validators.instance.emptyOrNullValue('', context),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalizations.of(context).emptyValueError;
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).password,
                     hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 14),
