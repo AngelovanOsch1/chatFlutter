@@ -106,7 +106,7 @@ class FirebaseFunction {
 
   void signOut(BuildContext context) async {
     try {
-      final CollectionReference usersCollection = context.read<Repository>().getCollection;
+      final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
 
       await usersCollection.doc(context.read<Repository>().getAuth.currentUser?.uid).update({
         'isOnline': false,

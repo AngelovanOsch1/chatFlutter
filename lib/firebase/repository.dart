@@ -8,6 +8,7 @@ class Repository extends ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference chats = FirebaseFirestore.instance.collection('chats');
 
   FirebaseAuth get getAuth {
     return auth;
@@ -17,8 +18,12 @@ class Repository extends ChangeNotifier {
     return firestore;
   }
 
-  CollectionReference get getCollection {
+  CollectionReference get getUserCollection {
     return users;
+  }
+
+  CollectionReference get getChatsCollection {
+    return chats;
   }
 
 }

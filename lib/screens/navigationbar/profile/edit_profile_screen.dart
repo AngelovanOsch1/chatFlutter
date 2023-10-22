@@ -403,7 +403,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
 
     try {
-      final CollectionReference usersCollection = context.read<Repository>().getCollection;
+      final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
 
       await usersCollection.doc(userModel.id).update({
         'name': '$firstName $lastName',

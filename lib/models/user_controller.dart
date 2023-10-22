@@ -9,7 +9,7 @@ class UserModelController {
   UserModelController(this.context);
 
   Stream<List<UserModel>> getUsersStream() {
-    return context.read<Repository>().getCollection.snapshots().map((snapshot) {
+    return context.read<Repository>().getUserCollection.snapshots().map((snapshot) {
       return snapshot.docs.where((doc) => doc.id != context.read<Repository>().getAuth.currentUser?.uid).map((doc) {
         return UserModel.constructFromSnapshot(doc);
       }).toList();

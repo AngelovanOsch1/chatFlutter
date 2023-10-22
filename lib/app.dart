@@ -46,14 +46,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       if (context.read<Repository>().getAuth.currentUser != null) {
-        final CollectionReference usersCollection = context.read<Repository>().getCollection;
+        final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
         await usersCollection.doc(context.read<Repository>().getAuth.currentUser?.uid).update({
           'isOnline': true,
         });
       }
     } else if (state == AppLifecycleState.paused) {
       if (context.read<Repository>().getAuth.currentUser != null) {
-        final CollectionReference usersCollection = context.read<Repository>().getCollection;
+        final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
         await usersCollection.doc(context.read<Repository>().getAuth.currentUser?.uid).update({
           'isOnline': false,
         });
@@ -64,7 +64,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // Your app configuration
       theme: themeData,
       initialRoute: context.read<Repository>().getAuth.currentUser == null ? 'landingScreen' : 'loginLoadingScreen',
       routes: {

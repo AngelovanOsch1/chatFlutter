@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
+import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_controller.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
@@ -85,9 +88,9 @@ class _AddUserState extends State<AddUser> {
             itemCount: snapshot.data!.length,
             itemExtent: 65,
             itemBuilder: (context, index) {
-              final UserModel userModel = snapshot.data![index];
-              if (searchController.text.isEmpty || userModel.name.toLowerCase().contains(searchController.text.toLowerCase())) {
-                return userTile(userModel);
+              final UserModel selectedUserModel = snapshot.data![index];
+              if (searchController.text.isEmpty || selectedUserModel.name.toLowerCase().contains(searchController.text.toLowerCase())) {
+                return userTile(selectedUserModel);
               } else {
                 return const Center(
                   child: Text('test'),
@@ -100,14 +103,14 @@ class _AddUserState extends State<AddUser> {
     );
   }
 
-  Widget userTile(UserModel userModel) {
+  Widget userTile(UserModel selectedUserModel) {
     return ListTile(
       title: Text(
-        userModel.name,
+          selectedUserModel.name,
         style: textTheme.headlineMedium!.copyWith(fontSize: 12),
       ),
       subtitle: Text(
-        userModel.bio,
+          selectedUserModel.bio,
         style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
@@ -132,17 +135,68 @@ class _AddUserState extends State<AddUser> {
           ),
         ),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ChatContactScreen(selectedUserModel: userModel),
-          ),
-        );
-      },
+          createChat(selectedUserModel);
+        },
         leading: SizedBox(
           width: 60,
-          child: ProfilePhoto(userModel.profilePhoto, userModel.name, userModel.isOnline, 'contactProfilePhoto'),
-        )
-    );     
+          child: ProfilePhoto(selectedUserModel.profilePhoto, selectedUserModel.name, selectedUserModel.isOnline, 'contactProfilePhoto'),
+        ));
+  }
+
+  void createChat(UserModel selectedUserModel) async {
+    final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
+    UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
+
+    await chatsCollection.add({
+      'date': DateTime.now().toString(),
+      'userIds': [
+        {'userId': userModel.id, 'name': userModel.name, 'profilePhoto': userModel.profilePhoto},
+        {'userId': selectedUserModel.id, 'name': selectedUserModel.name, 'profilePhoto': selectedUserModel.profilePhoto},
+      ]
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatContactScreen(selectedUserModel: selectedUserModel),
+      ),
+    );
   }
 }
+
+  // void createChat(UserModel selectedUserModel) async {
+  //   final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
+  //   UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
+
+  //   QuerySnapshot querySnapshot =
+  //       await chatsCollection.where('userIds.${userModel.id}', isEqualTo: true).where('userIds.${selectedUserModel.id}', isEqualTo: true).get();
+
+  //   if (querySnapshot.docs.isEmpty) {
+  //     await chatsCollection.add({
+  //       'date': DateTime.now().toString(),
+  //       'userIds': {
+  //         userModel.id: true,
+  //         selectedUserModel.id: true,
+  //       },
+  //       'messages': [
+  //         {
+  //           'userId': userModel.id,
+  //           'message': '',
+  //         }
+  //       ]
+  //     });
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => ChatContactScreen(selectedUserModel: selectedUserModel),
+  //       ),
+  //     );
+  //   } else {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => ChatContactScreen(selectedUserModel: selectedUserModel),
+  //       ),
+  //     );
+  //   }
+  // }
+

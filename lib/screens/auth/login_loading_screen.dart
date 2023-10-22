@@ -49,7 +49,7 @@ class LoginLoadingScreen extends StatelessWidget {
                   final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
                   Provider.of<UserModelProvider>(context, listen: false).setUserData(userData, userDocSnapshot.data?.id);
 
-                  final CollectionReference usersCollection = context.read<Repository>().getCollection;
+                  final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
 
                   await usersCollection.doc(userDocSnapshot.data?.id).update({
                     'isOnline': true,

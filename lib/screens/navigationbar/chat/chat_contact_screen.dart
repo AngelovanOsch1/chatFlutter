@@ -24,7 +24,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pushNamed(context, 'chatScreen');
           },
         ),
         title: GestureDetector(
