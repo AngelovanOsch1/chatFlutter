@@ -17,8 +17,8 @@ class ProfilePhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double coverHeight = 150;
-    const double profileHeight = 144;
+    late final double coverHeight;
+    late final double profileHeight;
     late final double fontSize;
     late final double isOnlineWidth;
     late final double isOnlineHeight;
@@ -29,6 +29,8 @@ class ProfilePhoto extends StatelessWidget {
 
     switch (profilePhotoType) {
       case 'contactProfilePhoto':
+        coverHeight = 50;
+        profileHeight = 48;
         fontSize = 20;
         isOnlineWidth = 10;
         isOnlineHeight = 10;
@@ -36,6 +38,8 @@ class ProfilePhoto extends StatelessWidget {
         isOnliney = 0.7;
         break;
       case 'myProfilePhoto':
+        coverHeight = 150;
+        profileHeight = 144;
         fontSize = 100;
         isOnlineWidth = 20;
         isOnlineHeight = 20;

@@ -157,13 +157,24 @@ class FirebaseFunction {
 
   void changeEmailAddress(BuildContext context, String newEmailAddress, String password) async {
     try {
-      await context.read<Repository>().getAuth.currentUser?.updateEmail(newEmailAddress);
+      if (context.read<Repository>().getAuth.currentUser!.emailVerified) {
+        final credentials = EmailAuthProvider.credential(email: context.read<Repository>().getAuth.currentUser!.email!, password: password);
+        await context.read<Repository>().getAuth.currentUser?.reauthenticateWithCredential(credentials);
+        await context.read<Repository>().getAuth.currentUser?.updateEmail(newEmailAddress);
       await context.read<Repository>().getAuth.signOut();
       Navigator.pushNamedAndRemoveUntil(
         context,
         'landingScreen',
         (route) => false,
-      );
+        );
+      } else {
+        await context.read<Repository>().getAuth.currentUser!.sendEmailVerification();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Email verify needed'),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       final String error = e.code;
       switch (error) {

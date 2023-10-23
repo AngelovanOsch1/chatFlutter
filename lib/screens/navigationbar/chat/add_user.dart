@@ -144,59 +144,29 @@ class _AddUserState extends State<AddUser> {
   }
 
   void createChat(UserModel selectedUserModel) async {
-    final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
     UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
+    final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
 
-    await chatsCollection.add({
-      'date': DateTime.now().toString(),
-      'userIds': [
-        {'userId': userModel.id, 'name': userModel.name, 'profilePhoto': userModel.profilePhoto},
-        {'userId': selectedUserModel.id, 'name': selectedUserModel.name, 'profilePhoto': selectedUserModel.profilePhoto},
-      ]
-    });
-    Navigator.push(
+    final querySnapshot = await chatsCollection
+        .where('participants.${userModel.id}', isEqualTo: true)
+        .where('participants.${selectedUserModel.id}', isEqualTo: true)
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      await chatsCollection.doc().set({
+        'date': DateTime.now().toString(),
+        'participants': {
+          userModel.id: true,
+          selectedUserModel.id: true,
+        },
+      });
+    } else {
+      Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ChatContactScreen(selectedUserModel: selectedUserModel),
       ),
-    );
+      );
+    }
   }
 }
-
-  // void createChat(UserModel selectedUserModel) async {
-  //   final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
-  //   UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
-
-  //   QuerySnapshot querySnapshot =
-  //       await chatsCollection.where('userIds.${userModel.id}', isEqualTo: true).where('userIds.${selectedUserModel.id}', isEqualTo: true).get();
-
-  //   if (querySnapshot.docs.isEmpty) {
-  //     await chatsCollection.add({
-  //       'date': DateTime.now().toString(),
-  //       'userIds': {
-  //         userModel.id: true,
-  //         selectedUserModel.id: true,
-  //       },
-  //       'messages': [
-  //         {
-  //           'userId': userModel.id,
-  //           'message': '',
-  //         }
-  //       ]
-  //     });
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => ChatContactScreen(selectedUserModel: selectedUserModel),
-  //       ),
-  //     );
-  //   } else {
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => ChatContactScreen(selectedUserModel: selectedUserModel),
-  //       ),
-  //     );
-  //   }
-  // }
-
