@@ -61,17 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
             itemExtent: 65,
             itemBuilder: (context, index) {
               ChatModel chatData = snapshot.data![index];
-              List<UserModel> users = chatData.userModelList;
-
-              // Access and display user data, for example, the name and email of the first user
-              UserModel user1 = users[0];
-              UserModel user2 = users[1];
-
-              return ListTile(
-                title: Text("User 1: ${user1.name}, ${user1.email}"),
-                subtitle: Text("User 2: ${user2.name}, ${user2.email}"),
-                // You can display other user data as needed
-              );
+              debugPrint(chatData.currentUser.name);
 
             },
           );
