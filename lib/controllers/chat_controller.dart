@@ -19,15 +19,13 @@ class ChatModelController {
       var participants = doc['participants'] as Map<String, dynamic>;
       List<String> participantIds = participants.keys.toList();
 
-      // Fetch user data for participants
       var userDocs = await _getUserDocs(participantIds);
 
-      // Construct ChatModel based on the fetched user data
       var chatModel = ChatModel.constructFromSnapshots(userDocs);
       chatModels.add(chatModel);
     }
 
-    yield chatModels; // Yield the list of chat models
+    yield chatModels;
   }
 
   Future<List<DocumentSnapshot>> _getUserDocs(List<String> userIDs) async {

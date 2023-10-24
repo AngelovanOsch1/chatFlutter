@@ -1,11 +1,9 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/controllers/chat_controller.dart';
-import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/add_user.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -63,67 +61,22 @@ class _ChatScreenState extends State<ChatScreen> {
             itemExtent: 65,
             itemBuilder: (context, index) {
               ChatModel chatData = snapshot.data![index];
-              debugPrint(chatData.names.toString());
-              // var participants = chatData['participants'] as Map<String, dynamic>;
+              List<UserModel> users = chatData.userModelList;
 
-              // List<String> participantIds = participants.keys.toList();
-              // return FutureBuilder(
-              //   future: _getUserNamesAndProfilePhotos(participantIds), // Fetch participant data
-              //   builder: (context, userSnapshot) {
-              //     if (userSnapshot.connectionState == ConnectionState.waiting) {
-              //       return CircularProgressIndicator(); // Loading indicator
-              //     }
+              // Access and display user data, for example, the name and email of the first user
+              UserModel user1 = users[0];
+              UserModel user2 = users[1];
 
-              //     if (userSnapshot.hasError) {
-              //       return Text('Error: ${userSnapshot.error}');
-              //     }
+              return ListTile(
+                title: Text("User 1: ${user1.name}, ${user1.email}"),
+                subtitle: Text("User 2: ${user2.name}, ${user2.email}"),
+                // You can display other user data as needed
+              );
 
-              //     List<String> participantNames = userSnapshot.data!['names'];
-              //     List<String> participantProfilePhotos = userSnapshot.data!['profilePhotos'];
-              //     List<bool> participantIsOnline = userSnapshot.data!['isOnline'];
-
-              //     return ListTile(
-              //       title: Text(
-              //         participantNames.join(', '),
-              //       ),
-              //       subtitle: Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           for (int i = 0; i < participantNames.length; i++)
-              //             ProfilePhoto(participantProfilePhotos[i], participantNames[i], participantIsOnline[i], 'contactProfilePhoto'),
-              //         ],
-              //       ),
-              //       onTap: () {},
-              //     );
-              //   },
-              // );
             },
           );
         },
       ),
     );
-  }
-
-  Future<Map<String, dynamic>> _getUserNamesAndProfilePhotos(List<String> userIDs) async {
-    List<String> names = [];
-    List<String> profilePhotos = [];
-    List<bool> isOnline = [];
-
-    for (String userID in userIDs) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userID).get();
-      if (userDoc.exists) {
-        Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-        debugPrint(userData.toString());
-        names.add(userData['name'] ?? '');
-        profilePhotos.add(userData['profilePhoto'] ?? '');
-        isOnline.add(userData['isOnline'] ?? false);
-      }
-    }
-
-    return {
-      'names': names,
-      'profilePhotos': profilePhotos,
-      'isOnline': isOnline,
-    };
   }
 }
