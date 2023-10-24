@@ -3,7 +3,7 @@ import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
-import 'package:chatapp/models/user_controller.dart';
+import 'package:chatapp/controllers/user_controller.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
