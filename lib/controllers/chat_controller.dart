@@ -12,28 +12,20 @@ class ChatModelController {
     return FirebaseFirestore.instance.collection('chats').where('participants.${userModel.id}', isEqualTo: true).snapshots();
   }
 
-  Future<Map<String, dynamic>> getUserProfileFromStream(dynamic chatDocs) async {
-    DocumentSnapshot? snapshot;
+  Future<ChatModel> getUserProfileFromStream(List<String> participantIds) async {
+    List<DocumentSnapshot>? snapshots = [];
     ChatModel? chatModel;
 
-    for (var chatDoc in chatDocs) {
-      var chatData = chatDoc.data();
-      var participants = chatData['participants'] as Map<String, dynamic>;
-
-      List<String> participantIds = participants.keys.toList();
-      for (String participantId in participantIds) {
-        snapshot = await FirebaseFirestore.instance.collection('users').doc(participantId).get();
-      }
-      chatModel = ChatModel.constructFromSnapshots(snapshot!);
-
+    for (String participantId in participantIds) {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(participantId).get();
+      snapshots.add(snapshot);
     }
 
-    Map<String, dynamic> userData = {
-      'currentUser': chatModel!.currentUser,
-      'selectedUser': chatModel.selectedUser,
-    };
+    chatModel = ChatModel.constructFromSnapshots(snapshots);
 
-    return userData;
+    return chatModel;
   }
+
 }
+
 

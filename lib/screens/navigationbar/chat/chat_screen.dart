@@ -1,6 +1,7 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/controllers/chat_controller.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
+import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/add_user.dart';
 import 'package:flutter/material.dart';
@@ -50,45 +51,32 @@ class _ChatScreenState extends State<ChatScreen> {
           return ListView.builder(
             itemCount: chatDocs.length,
             itemBuilder: (context, index) {
-              // var chatData = chatDocs[index].data();
-              // var participants = chatData['participants'] as Map<String, dynamic>;
+              var chatData = chatDocs[index].data();
+              var participants = chatData['participants'] as Map<String, dynamic>;
 
-              // List<String> participantIds = participants.keys.toList();
+              List<String> participantIds = participants.keys.toList();
               return FutureBuilder(
-                future: ChatModelController(context).getUserProfileFromStream(chatDocs), // Fetch participant data
+                future: ChatModelController(context).getUserProfileFromStream(participantIds),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator(); // Loading indicator
+                    return const CircularProgressIndicator();
                   }
 
                   if (userSnapshot.hasError) {
                     return Text('Error: ${userSnapshot.error}');
                   }
 
-                  List<String> participantNames = userSnapshot.data!['names'];
-                  List<String> participantProfilePhotos = userSnapshot.data!['profilePhotos'];
-                  List<bool> participantIsOnline = userSnapshot.data!['isOnline'];
-
-                  return ListTile(
-                    title: Text(
-                      participantNames.join(', '),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (int i = 0; i < participantNames.length; i++)
-                          ProfilePhoto(participantProfilePhotos[i], participantNames[i], participantIsOnline[i], 'contactProfilePhoto'),
-                      ],
-                    ),
-                    onTap: () {},
-                  );
+                  ChatModel? chatModel = userSnapshot.data;
+                  return test(chatModel!);
                 },
-              );
+);
             },
           );
         },
       ),
     );
   }
-
+  Widget test(ChatModel chatModel) {
+    return Text(chatModel.selectedUser!.name);
+  }
 }

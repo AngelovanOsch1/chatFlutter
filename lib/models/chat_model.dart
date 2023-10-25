@@ -8,15 +8,16 @@ class ChatModel {
 
   ChatModel({required this.currentUser, required this.selectedUser});
 
-  static ChatModel constructFromSnapshots(DocumentSnapshot snapshot) {
+  static ChatModel constructFromSnapshots(List<DocumentSnapshot> snapshots) {
     late UserModel currentUser;
     late UserModel selectedUser;
-
-    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-    if (FirebaseAuth.instance.currentUser?.uid == snapshot.id) {
-      final bool isOnline = data['isOnline'] == true;
+    
+    for (DocumentSnapshot snapshot in snapshots) {
+      final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      if (FirebaseAuth.instance.currentUser?.uid == snapshot.id) {
+        final bool isOnline = data['isOnline'] == true;
         currentUser = UserModel(
-        id: snapshot.id,
+          id: snapshot.id,
           email: data['email'] ?? '',
           name: data['name'] ?? '',
           profilePhoto: data['profilePhoto'] ?? '',
@@ -27,9 +28,9 @@ class ChatModel {
           isOnline: isOnline,
         );
       } else {
-      final bool isOnline = data['isOnline'] == true;
+        final bool isOnline = data['isOnline'] == true;
         selectedUser = UserModel(
-        id: snapshot.id,
+          id: snapshot.id,
           email: data['email'] ?? '',
           name: data['name'] ?? '',
           profilePhoto: data['profilePhoto'] ?? '',
@@ -38,9 +39,9 @@ class ChatModel {
           country: data['country'] ?? '',
           bio: data['bio'] ?? '',
           isOnline: isOnline,
-      );
+        );
+      }
     }
-
     return ChatModel(currentUser: currentUser, selectedUser: selectedUser);
   }
 }
