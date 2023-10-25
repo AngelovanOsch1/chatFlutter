@@ -1,6 +1,7 @@
 import 'package:chatapp/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class ChatModel {
   late final UserModel currentUser;
@@ -17,6 +18,7 @@ class ChatModel {
       final bool isOnline = data['isOnline'] == true;
 
       if (FirebaseAuth.instance.currentUser?.uid == userDoc.id) {
+        debugPrint('test');
         currentUser = UserModel(
           id: userDoc.id,
           email: data['email'] ?? '',

@@ -38,7 +38,6 @@ class ChatModelController {
         userDocs.add(userDoc);
       }
     }
-
     return userDocs;
   }
 }
