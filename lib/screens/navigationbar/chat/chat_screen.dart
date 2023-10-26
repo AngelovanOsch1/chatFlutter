@@ -1,8 +1,10 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/controllers/chat_controller.dart';
+import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/add_user.dart';
+import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -76,6 +78,18 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
   Widget test(ChatModel chatModel) {
-    return Text(chatModel.selectedUser!.name);
+    return ListTile(
+      leading:
+          ProfilePhoto(chatModel.selectedUser!.profilePhoto, chatModel.selectedUser!.name, chatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
+      title: Text(chatModel.selectedUser!.name),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatContactScreen(selectedChatModel: chatModel),
+          ),
+        );
+      },
+    );
   }
 }

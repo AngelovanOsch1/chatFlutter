@@ -110,7 +110,6 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
               textInputAction: TextInputAction.send,
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              autofocus: true,
               decoration: InputDecoration(
                 enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide.none,

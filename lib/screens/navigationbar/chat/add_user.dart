@@ -166,13 +166,13 @@ class _AddUserState extends State<AddUser> {
       });
       DocumentSnapshot chatDocument = await chatsCollection.doc(chatDocumentRef.id).get();
       final Map<String, dynamic> data = chatDocument.data() as Map<String, dynamic>;
-      var participants = data['participants'] as Map<String, dynamic>;
+      Map<String, dynamic> participants = data['participants'];
       List<String> participantIds = participants.keys.toList();
       chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
     } else {
       for (var snapshot in querySnapshot.docs) {
         final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        var participants = data['participants'] as Map<String, dynamic>;
+        Map<String, dynamic> participants = data['participants'];
         List<String> participantIds = participants.keys.toList();
         chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
       }
@@ -182,7 +182,6 @@ class _AddUserState extends State<AddUser> {
       MaterialPageRoute(
         builder: (context) => ChatContactScreen(selectedChatModel: chatModel),
       ),
-      );
-
+    );
   }
 }
