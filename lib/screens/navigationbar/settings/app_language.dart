@@ -18,7 +18,7 @@ class _AppLanguageScreen extends State<AppLanguageScreen> {
   void initState() {
     super.initState();
     String? gottenLocale = settings.getItem('appLocale');
-    _selectedLanguage = gottenLocale != null ? gottenLocale : '';
+    _selectedLanguage = gottenLocale ?? '';
   }
 
   List languages = [

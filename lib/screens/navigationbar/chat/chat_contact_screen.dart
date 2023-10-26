@@ -2,6 +2,7 @@ import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/chat_model.dart';
+import 'package:chatapp/screens/navigationbar/navigationbar.dart';
 import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,15 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushNamed(context, 'chatScreen');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NavigationBarClass(
+                  index: 1,
+                ),
+              ),
+            );
+
           },
         ),
         title: GestureDetector(

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
+  // ignore: use_key_in_widget_constructors
   const ChatScreen({Key? key});
 
   @override
@@ -81,7 +82,10 @@ class _ChatScreenState extends State<ChatScreen> {
     return ListTile(
       leading:
           ProfilePhoto(chatModel.selectedUser!.profilePhoto, chatModel.selectedUser!.name, chatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
-      title: Text(chatModel.selectedUser!.name),
+      title: Text(
+        chatModel.selectedUser!.name,
+        style: textTheme.headlineSmall,
+      ),
       onTap: () {
         Navigator.push(
           context,

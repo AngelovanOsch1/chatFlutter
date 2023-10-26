@@ -3,7 +3,6 @@ import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:chatapp/validators.dart';
 
 
 class LoginScreen extends StatefulWidget {

@@ -170,7 +170,7 @@ class _AddUserState extends State<AddUser> {
       List<String> participantIds = participants.keys.toList();
       chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
     } else {
-      for (var snapshot in querySnapshot.docs) {
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
         final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
         Map<String, dynamic> participants = data['participants'];
         List<String> participantIds = participants.keys.toList();

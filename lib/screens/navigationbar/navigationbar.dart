@@ -6,15 +6,25 @@ import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:chatapp/screens/navigationbar/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class NavigationBarClass extends StatefulWidget {
-  const NavigationBarClass({super.key});
+  int? index;
+
+  NavigationBarClass({super.key, this.index});
 
   @override
   State<NavigationBarClass> createState() => _NavigationBarClass();
 }
 
 class _NavigationBarClass extends State<NavigationBarClass> {
-  int index = 0;
+
+  int? index;
+  @override
+  void initState() {
+    index = widget.index ?? 0;
+    super.initState();
+  }
+
   final screens = [
     const HomeScreen(),
     const ChatScreen(),
@@ -24,8 +34,10 @@ class _NavigationBarClass extends State<NavigationBarClass> {
 
   @override
   Widget build(BuildContext context) {
+    if (index == null) {} 
+
     return Scaffold(
-      body: screens[index],
+      body: screens[index!],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           backgroundColor: colorScheme.background,
@@ -35,7 +47,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
           ),
         ),
         child: NavigationBar(
-          selectedIndex: index,
+          selectedIndex: index!,
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           animationDuration: const Duration(seconds: 1),
           onDestinationSelected: (index) {
