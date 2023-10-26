@@ -8,23 +8,15 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class NavigationBarClass extends StatefulWidget {
-  int? index;
 
-  NavigationBarClass({super.key, this.index});
+  const NavigationBarClass({super.key});
 
   @override
   State<NavigationBarClass> createState() => _NavigationBarClass();
 }
 
 class _NavigationBarClass extends State<NavigationBarClass> {
-  late int? index;
-  
-  @override
-  void initState() {
-    index = widget.index ?? 0;
-    super.initState();
-  }
-
+  int index = 0;
   final screens = [
     const HomeScreen(),
     const ChatScreen(),
@@ -35,7 +27,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[index!],
+      body: screens[index],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           backgroundColor: colorScheme.background,
@@ -45,7 +37,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
           ),
         ),
         child: NavigationBar(
-          selectedIndex: index!,
+          selectedIndex: index,
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           animationDuration: const Duration(seconds: 1),
           onDestinationSelected: (index) {

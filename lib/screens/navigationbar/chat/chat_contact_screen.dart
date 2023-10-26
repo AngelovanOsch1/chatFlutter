@@ -3,7 +3,6 @@ import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/chat_model.dart';
-import 'package:chatapp/screens/navigationbar/navigationbar.dart';
 import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -30,14 +29,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NavigationBarClass(
-                  index: 1,
-                ),
-              ),
-            );
+            Navigator.of(context).pop();
 
           },
         ),
