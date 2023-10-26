@@ -1,6 +1,5 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/controllers/chat_controller.dart';
-import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/add_user.dart';
@@ -57,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
               List<String> participantIds = participants.keys.toList();
               return FutureBuilder(
                 future: ChatModelController(context).getUserProfileFromStream(participantIds),
-                builder: (context, userSnapshot) {
+                builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   }
@@ -69,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ChatModel? chatModel = userSnapshot.data;
                   return test(chatModel!);
                 },
-);
+              );
             },
           );
         },

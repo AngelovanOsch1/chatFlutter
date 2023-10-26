@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/controllers/chat_controller.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/controllers/user_controller.dart';
+import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -146,6 +148,8 @@ class _AddUserState extends State<AddUser> {
   void createChat(UserModel selectedUserModel) async {
     UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
     final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
+    DocumentReference chatDocumentRef = chatsCollection.doc();
+    late final ChatModel chatModel;
 
     final querySnapshot = await chatsCollection
         .where('participants.${userModel.id}', isEqualTo: true)
@@ -153,20 +157,32 @@ class _AddUserState extends State<AddUser> {
         .get();
 
     if (querySnapshot.docs.isEmpty) {
-      await chatsCollection.doc().set({
+      await chatDocumentRef.set({
         'date': DateTime.now().toString(),
         'participants': {
           userModel.id: true,
           selectedUserModel.id: true,
         },
       });
+      DocumentSnapshot chatDocument = await chatsCollection.doc(chatDocumentRef.id).get();
+      final Map<String, dynamic> data = chatDocument.data() as Map<String, dynamic>;
+      var participants = data['participants'] as Map<String, dynamic>;
+      List<String> participantIds = participants.keys.toList();
+      chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
     } else {
+      for (var snapshot in querySnapshot.docs) {
+        final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        var participants = data['participants'] as Map<String, dynamic>;
+        List<String> participantIds = participants.keys.toList();
+        chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
+      }
+    }
       Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ChatContactScreen(selectedUserModel: selectedUserModel),
+        builder: (context) => ChatContactScreen(selectedChatModel: chatModel),
       ),
       );
-    }
+
   }
 }

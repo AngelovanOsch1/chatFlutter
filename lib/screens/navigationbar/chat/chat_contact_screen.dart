@@ -1,14 +1,14 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/l10n/l10n.dart';
-import 'package:chatapp/models/user_model.dart';
+import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class ChatContactScreen extends StatefulWidget {
-  final UserModel selectedUserModel;
+  final ChatModel selectedChatModel;
 
-  const ChatContactScreen({super.key, required this.selectedUserModel});
+  const ChatContactScreen({super.key, required this.selectedChatModel});
 
   @override
   State<ChatContactScreen> createState() => _ChatContactScreenState();
@@ -32,7 +32,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProfileScreen(selectedUserModel: widget.selectedUserModel),
+                builder: (context) => ProfileScreen(selectedUserModel: widget.selectedChatModel.selectedUser),
               ),
             );
           },
@@ -43,7 +43,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    widget.selectedUserModel.name,
+                    widget.selectedChatModel.selectedUser!.name,
                     style: textTheme.headlineMedium!.copyWith(fontSize: 15),
                   ),
                   Padding(
@@ -61,7 +61,8 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                   width: 60,
                   height: 60,
                   child: ProfilePhoto(
-                      widget.selectedUserModel.profilePhoto, widget.selectedUserModel.name, widget.selectedUserModel.isOnline, 'contactProfilePhoto'),
+                      widget.selectedChatModel.selectedUser!.profilePhoto, widget.selectedChatModel.selectedUser!.name,
+                      widget.selectedChatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
                 ),
               ),
             ],
