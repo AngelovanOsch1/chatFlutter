@@ -5,6 +5,7 @@ import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/add_user.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
-    UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
+    final UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -43,18 +44,19 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: StreamBuilder(
         stream: ChatModelController(context).getChatsStream(userModel),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (!snapshot.hasData) {
             return const CircularProgressIndicator();
           }
 
-          var chatDocs = snapshot.data!.docs;
+          final List<QueryDocumentSnapshot<Map<String, dynamic>>> chatDocs = snapshot.data!.docs;
 
           return ListView.builder(
             itemCount: chatDocs.length,
             itemBuilder: (context, index) {
-              var chatData = chatDocs[index].data();
-              var participants = chatData['participants'] as Map<String, dynamic>;
+              String documentId = chatDocs[index].id;
+              Map<String, dynamic> chatData = chatDocs[index].data();
+              Map<String, dynamic> participants = chatData['participants'] as Map<String, dynamic>;
 
               List<String> participantIds = participants.keys.toList();
               return FutureBuilder(
@@ -68,8 +70,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     return Text('Error: ${userSnapshot.error}');
                   }
 
-                  ChatModel? chatModel = userSnapshot.data;
-                  return test(chatModel!);
+                  final ChatModel chatModel = userSnapshot.data!;
+                  return test(chatModel, documentId);
                 },
               );
             },
@@ -78,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-  Widget test(ChatModel chatModel) {
+  Widget test(ChatModel chatModel, String documentId) {
     return ListTile(
       leading:
           ProfilePhoto(chatModel.selectedUser!.profilePhoto, chatModel.selectedUser!.name, chatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
@@ -90,7 +92,10 @@ class _ChatScreenState extends State<ChatScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ChatContactScreen(selectedChatModel: chatModel),
+            builder: (context) => ChatContactScreen(
+              selectedChatModel: chatModel,
+              documentId: documentId,
+            ),
           ),
         );
       },

@@ -26,7 +26,6 @@ class UserModel {
 
   static UserModel constructFromSnapshot(DocumentSnapshot snapshot) {
     final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-    final bool isOnline = data['isOnline'] == true;
 
     return UserModel(
         id: snapshot.id,
@@ -37,7 +36,7 @@ class UserModel {
         telephoneNumber: data['telephoneNumber'] ?? '',
         country: data['country'] ?? '',
         bio: data['bio'] ?? '',
-        isOnline: isOnline);
+        isOnline: data['isOnline'] ?? false);
   }
 }
 

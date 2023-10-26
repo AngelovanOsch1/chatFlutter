@@ -1,10 +1,9 @@
-import 'dart:async';
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/controllers/chat_controller.dart';
+import 'package:chatapp/controllers/user_controller.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
-import 'package:chatapp/controllers/user_controller.dart';
 import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/chat_contact_screen.dart';
@@ -20,16 +19,7 @@ class AddUser extends StatefulWidget {
 }
 
 class _AddUserState extends State<AddUser> {
-  Timer? _searchDebounce;
   final TextEditingController searchController = TextEditingController();
-  late Stream<List<UserModel>> _userCollection;
-
-  @override
-  void initState() {
-    _searchDebounce?.cancel();
-    _userCollection = UserModelController(context).getUsersStream();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +67,7 @@ class _AddUserState extends State<AddUser> {
   Widget usersList(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<List<UserModel>>(
-        stream: _userCollection,
+        stream: UserModelController(context).getUsersStream(),
         builder: (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
           if (snapshot.hasError) {
             debugPrint('snapshot.error: ${snapshot.error.toString()}');
@@ -139,16 +129,13 @@ class _AddUserState extends State<AddUser> {
       onTap: () {
           createChat(selectedUserModel);
         },
-        leading: SizedBox(
-          width: 60,
-          child: ProfilePhoto(selectedUserModel.profilePhoto, selectedUserModel.name, selectedUserModel.isOnline, 'contactProfilePhoto'),
-        ));
+        leading: ProfilePhoto(selectedUserModel.profilePhoto, selectedUserModel.name, selectedUserModel.isOnline, 'contactProfilePhoto'));
   }
 
   void createChat(UserModel selectedUserModel) async {
-    UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
+    final UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
     final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
-    DocumentReference chatDocumentRef = chatsCollection.doc();
+    final DocumentReference chatDocumentRef = chatsCollection.doc();
     late final ChatModel chatModel;
 
     final querySnapshot = await chatsCollection
@@ -164,23 +151,26 @@ class _AddUserState extends State<AddUser> {
           selectedUserModel.id: true,
         },
       });
-      DocumentSnapshot chatDocument = await chatsCollection.doc(chatDocumentRef.id).get();
+      final DocumentSnapshot chatDocument = await chatsCollection.doc(chatDocumentRef.id).get();
       final Map<String, dynamic> data = chatDocument.data() as Map<String, dynamic>;
-      Map<String, dynamic> participants = data['participants'];
-      List<String> participantIds = participants.keys.toList();
+      final Map<String, dynamic> participants = data['participants'];
+      final List<String> participantIds = participants.keys.toList();
       chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
     } else {
       for (DocumentSnapshot snapshot in querySnapshot.docs) {
         final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        Map<String, dynamic> participants = data['participants'];
-        List<String> participantIds = participants.keys.toList();
+        final Map<String, dynamic> participants = data['participants'];
+        final List<String> participantIds = participants.keys.toList();
         chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
       }
     }
       Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ChatContactScreen(selectedChatModel: chatModel),
+        builder: (context) => ChatContactScreen(
+          selectedChatModel: chatModel,
+          documentId: chatDocumentRef.id,
+        ),
       ),
     );
   }

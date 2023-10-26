@@ -41,7 +41,7 @@ const TextTheme textTheme = TextTheme(
   headlineSmall: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400), //regular
 );
 
-ColorScheme colorScheme = const ColorScheme(
+const ColorScheme colorScheme = ColorScheme(
   brightness: Brightness.light,
   primary: Color(0XFF85CB33),
   onPrimary: Color(0XFFFFFFFF),
@@ -55,6 +55,6 @@ ColorScheme colorScheme = const ColorScheme(
   onSurface: Color(0XFF5C5875),
 );
 
-Color myMessage = const Color(0XFF716E87);
-Color friendsMessage = const Color(0XFFDCFFB2);
-Color bottomNavigationBar = const Color(0XFF5C5875);
+const Color myMessage = Color(0XFF716E87);
+const Color friendsMessage = Color(0XFFDCFFB2);
+const Color bottomNavigationBar = Color(0XFF5C5875);

@@ -13,17 +13,17 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreen extends State<SignupScreen> {
-  final _firstName = TextEditingController();
-  final _lastName = TextEditingController();
-  final _email = TextEditingController();
-  final _telephoneNumber = TextEditingController();
-  final _password = TextEditingController();
-  final _repeatPassword = TextEditingController();
+  final TextEditingController _firstName = TextEditingController();
+  final TextEditingController _lastName = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _telephoneNumber = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _repeatPassword = TextEditingController();
 
   bool _passwordVisible = true;
   bool _repeatPasswordVisible = true;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -341,9 +341,9 @@ class _SignupScreen extends State<SignupScreen> {
     final UserCredential? userCredential = await FirebaseFunction.instance.createUser(context, email, password);
 
     if (userCredential != null) {
-      final CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-      await users.doc(userCredential.user?.uid).set({
+      await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set(
+        {
         'name': '$firstName $lastName',
         'email': email,
         'telephoneNumber': telephoneNumber,

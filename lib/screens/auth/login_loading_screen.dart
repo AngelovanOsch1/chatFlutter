@@ -16,8 +16,8 @@ class LoginLoadingScreen extends StatelessWidget {
       builder: (context, snapshot) {
           final User? user = snapshot.data;
           return FutureBuilder<DocumentSnapshot>(
-          future: context.read<Repository>().getFirestore.collection('users').doc(user?.uid).get(),
-            builder: (context, userDocSnapshot) {
+          future: FirebaseFirestore.instance.collection('users').doc(user?.uid).get(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Object?>> userDocSnapshot) {
               if (userDocSnapshot.connectionState == ConnectionState.waiting) {
               WidgetsBinding.instance.addPostFrameCallback(
                 (_) {
@@ -46,14 +46,14 @@ class LoginLoadingScreen extends StatelessWidget {
               
               WidgetsBinding.instance.addPostFrameCallback(
                 (_) async {
-                  final userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
+                  final Map<String, dynamic> userData = userDocSnapshot.data?.data() as Map<String, dynamic>;
                   Provider.of<UserModelProvider>(context, listen: false).setUserData(userData, userDocSnapshot.data?.id);
 
-                  final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
-
-                  await usersCollection.doc(userDocSnapshot.data?.id).update({
+                  await context.read<Repository>().getUserCollection.doc(userDocSnapshot.data?.id).update(
+                    {
                     'isOnline': true,
-                  });
+                    },
+                  );
 
                   Navigator.pushNamedAndRemoveUntil(
                     context,

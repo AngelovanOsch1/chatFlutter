@@ -44,16 +44,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
     if (state == AppLifecycleState.resumed) {
       if (context.read<Repository>().getAuth.currentUser != null) {
-        final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
         await usersCollection.doc(context.read<Repository>().getAuth.currentUser?.uid).update({
           'isOnline': true,
         });
       }
     } else if (state == AppLifecycleState.paused) {
       if (context.read<Repository>().getAuth.currentUser != null) {
-        final CollectionReference usersCollection = context.read<Repository>().getUserCollection;
         await usersCollection.doc(context.read<Repository>().getAuth.currentUser?.uid).update({
           'isOnline': false,
         });

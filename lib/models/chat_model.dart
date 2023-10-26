@@ -15,7 +15,6 @@ class ChatModel {
     for (DocumentSnapshot snapshot in snapshots) {
       final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
       if (FirebaseAuth.instance.currentUser?.uid == snapshot.id) {
-        final bool isOnline = data['isOnline'] == true;
         currentUser = UserModel(
           id: snapshot.id,
           email: data['email'] ?? '',
@@ -25,10 +24,9 @@ class ChatModel {
           telephoneNumber: data['telephoneNumber'] ?? '',
           country: data['country'] ?? '',
           bio: data['bio'] ?? '',
-          isOnline: isOnline,
+          isOnline: data['isOnline'] ?? false,
         );
       } else {
-        final bool isOnline = data['isOnline'] == true;
         selectedUser = UserModel(
           id: snapshot.id,
           email: data['email'] ?? '',
@@ -38,7 +36,7 @@ class ChatModel {
           telephoneNumber: data['telephoneNumber'] ?? '',
           country: data['country'] ?? '',
           bio: data['bio'] ?? '',
-          isOnline: isOnline,
+          isOnline: data['isOnline'] ?? false,
         );
       }
     }

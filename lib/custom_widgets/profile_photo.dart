@@ -25,12 +25,10 @@ class ProfilePhoto extends StatelessWidget {
     late final double isOnlinex;
     late final double isOnliney;
 
-
-
     switch (profilePhotoType) {
       case 'contactProfilePhoto':
         coverHeight = 50;
-        profileHeight = 48;
+        profileHeight = 38;
         fontSize = 20;
         isOnlineWidth = 10;
         isOnlineHeight = 10;
@@ -47,51 +45,55 @@ class ProfilePhoto extends StatelessWidget {
         isOnliney = 0.8;
         break;
     }
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment(isOnlinex, isOnliney),
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: colorScheme.background,
-              width: 10,
-            ),
-          ),
-          child: CircleAvatar(
-            radius: profileHeight / 2,
-            backgroundColor: Colors.grey.shade800,
-            child: profilePhoto.isEmpty
-                ? Text(
-                    name[0],
-                    style: textTheme.headlineLarge!.copyWith(fontSize: fontSize),
-                  )
-                : ClipOval(
-                    child: Image.network(
-                      profilePhoto,
-                      width: double.infinity,
-                      height: coverHeight,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-          ),
-        ),
-        Positioned(
-          child: Container(
-            width: isOnlineWidth,
-            height: isOnlineHeight,
+    return SizedBox(
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment(isOnlinex, isOnliney),
+        children: [
+          Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isOnline ? Colors.green : colorScheme.onBackground,
               border: Border.all(
-                color: Colors.white,
-                width: 2.0,
+                color: colorScheme.background,
+                width: 10,
+              ),
+            ),
+            child: SizedBox(
+              child: CircleAvatar(
+                radius: profileHeight / 2,
+                backgroundColor: Colors.grey.shade800,
+                child: profilePhoto.isEmpty
+                    ? Text(
+                        name[0],
+                        style: textTheme.headlineLarge!.copyWith(fontSize: fontSize),
+                      )
+                    : ClipOval(
+                        child: Image.network(
+                          profilePhoto,
+                          width: double.infinity,
+                          height: coverHeight,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
               ),
             ),
           ),
-        )
-      ],
+          Positioned(
+            child: Container(
+              width: isOnlineWidth,
+              height: isOnlineHeight,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isOnline ? Colors.green : colorScheme.onBackground,
+                border: Border.all(
+                  color: Colors.white,
+                  width: 2,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

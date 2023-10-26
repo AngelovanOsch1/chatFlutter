@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserModelController {
-  final BuildContext context;
+  late final BuildContext context;
 
   UserModelController(this.context);
 

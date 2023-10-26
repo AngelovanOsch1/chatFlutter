@@ -29,7 +29,6 @@ runApp(
         ChangeNotifierProvider<Repository>(
           create: (context) => Repository(
             FirebaseAuth.instance,
-            FirebaseFirestore.instance,
             FirebaseFirestore.instance.collection('users'),
           ),
         ),

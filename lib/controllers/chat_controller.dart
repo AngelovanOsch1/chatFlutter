@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatModelController {
-  final BuildContext context;
+  late final BuildContext context;
 
   ChatModelController(this.context);
 
@@ -13,8 +13,8 @@ class ChatModelController {
   }
 
   Future<ChatModel> getUserProfileFromStream(List<String> participantIds) async {
-    List<DocumentSnapshot>? snapshots = [];
-    ChatModel? chatModel;
+    late List<DocumentSnapshot>? snapshots = [];
+    late final ChatModel? chatModel;
 
     for (String participantId in participantIds) {
       DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(participantId).get();

@@ -7,11 +7,11 @@ class Validators {
   static final Validators instance = Validators._();
 
   List<String> splitFirstNameAndLastName(String name) {
-    List<String> nameList = [];
-    List<String> parts = name.split(' ');
+    final List<String> nameList = [];
+    final List<String> parts = name.split(' ');
 
-    String firstName = parts[0];
-    String lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+    final String firstName = parts[0];
+    final String lastName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
 
     nameList.add(firstName);
     nameList.add(lastName);

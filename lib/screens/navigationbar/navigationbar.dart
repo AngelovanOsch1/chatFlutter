@@ -17,8 +17,8 @@ class NavigationBarClass extends StatefulWidget {
 }
 
 class _NavigationBarClass extends State<NavigationBarClass> {
-
-  int? index;
+  late int? index;
+  
   @override
   void initState() {
     index = widget.index ?? 0;
@@ -28,14 +28,12 @@ class _NavigationBarClass extends State<NavigationBarClass> {
   final screens = [
     const HomeScreen(),
     const ChatScreen(),
-     ProfileScreen(),
+    ProfileScreen(),
     const SettingsScreen()
   ];
 
   @override
   Widget build(BuildContext context) {
-    if (index == null) {} 
-
     return Scaffold(
       body: screens[index!],
       bottomNavigationBar: NavigationBarTheme(
@@ -106,8 +104,7 @@ class _NavigationBarClass extends State<NavigationBarClass> {
                     Icons.person,
                     color: Colors.white,
                   ),
-                  label: AppLocalizations.of(context).myProfile,
-                    
+                  label: AppLocalizations.of(context).myProfile,              
                 ),
               ),
             ),
