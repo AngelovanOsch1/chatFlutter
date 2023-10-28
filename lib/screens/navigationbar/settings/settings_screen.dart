@@ -113,6 +113,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 AppLocalizations.of(context).connectAction,
                 style: textTheme.headlineSmall,
               ),
+              onTap: () {
+                Navigator.pushNamed(context, 'contactUsScreen');
+              },
             ),
             ListTile(
               minLeadingWidth: 50,

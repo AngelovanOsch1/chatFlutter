@@ -23,6 +23,28 @@ class _ChatScreenState extends State<ChatScreen> {
     final UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
 
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        leadingWidth: 120,
+        toolbarHeight: 150,
+        leading: Padding(
+          padding: const EdgeInsets.only(top: 40, left: 40),
+          child: ProfilePhoto(userModel.profilePhoto, userModel.name, userModel.isOnline, 'chatScreen'),
+        ),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 60),
+          child: Text(userModel.name, style: textTheme.headlineMedium),
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 50, left: 50),
+            child: Divider(
+              color: colorScheme.onBackground,
+            ),
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -42,63 +64,116 @@ class _ChatScreenState extends State<ChatScreen> {
           size: 40,
         ),
       ),
-      body: StreamBuilder(
-        stream: ChatModelController(context).getChatsStream(userModel),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          if (!snapshot.hasData) {
-            return const CircularProgressIndicator();
-          }
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30, left: 50, bottom: 5),
+            child: Text(
+              'Recent chats',
+              style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
+            ),
+          ),
+          Expanded(
+            child: StreamBuilder(
+              stream: ChatModelController(context).getChatsStream(userModel),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if (!snapshot.hasData) {
+                  return Container();
+                }
 
-          final List<QueryDocumentSnapshot<Map<String, dynamic>>> chatDocs = snapshot.data!.docs;
+                final List<QueryDocumentSnapshot<Map<String, dynamic>>> chatDocs = snapshot.data!.docs;
 
-          return ListView.builder(
-            itemCount: chatDocs.length,
-            itemBuilder: (context, index) {
-              String documentId = chatDocs[index].id;
-              Map<String, dynamic> chatData = chatDocs[index].data();
-              Map<String, dynamic> participants = chatData['participants'] as Map<String, dynamic>;
+                return ListView.builder(
+                  itemCount: chatDocs.length,
+                  itemBuilder: (context, index) {
+                    String documentId = chatDocs[index].id;
+                    Map<String, dynamic> chatData = chatDocs[index].data();
+                    Map<String, dynamic> participants = chatData['participants'] as Map<String, dynamic>;
 
-              List<String> participantIds = participants.keys.toList();
-              return FutureBuilder(
-                future: ChatModelController(context).getUserProfileFromStream(participantIds),
-                builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
-                  if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
+                    List<String> participantIds = participants.keys.toList();
+                    return FutureBuilder(
+                      future: ChatModelController(context).getUserProfileFromStream(participantIds),
+                      builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
+                        if (userSnapshot.connectionState == ConnectionState.waiting) {
+                          return Container();
+                        }
 
-                  if (userSnapshot.hasError) {
-                    return Text('Error: ${userSnapshot.error}');
-                  }
+                        if (userSnapshot.hasError) {
+                          return Text('Error: ${userSnapshot.error}');
+                        }
 
-                  final ChatModel chatModel = userSnapshot.data!;
-                  return test(chatModel, documentId);
-                },
-              );
-            },
-          );
-        },
+                        final ChatModel chatModel = userSnapshot.data!;
+                        return test(chatModel, documentId);
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, right: 50),
+                child: Text(
+                  'Load more chats',
+                  style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
   Widget test(ChatModel chatModel, String documentId) {
-    return ListTile(
-      leading:
-          ProfilePhoto(chatModel.selectedUser!.profilePhoto, chatModel.selectedUser!.name, chatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
-      title: Text(
-        chatModel.selectedUser!.name,
-        style: textTheme.headlineSmall,
-      ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatContactScreen(
-              selectedChatModel: chatModel,
-              documentId: documentId,
+    return Column(
+      children: [
+        ListTile(
+          contentPadding: const EdgeInsets.only(left: 35, right: 50),
+          leading: ProfilePhoto(
+              chatModel.selectedUser!.profilePhoto, chatModel.selectedUser!.name, chatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
+          title: Text(
+            chatModel.selectedUser!.name,
+            style: textTheme.headlineMedium!.copyWith(fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            'recent message',
+            style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: Padding(
+            padding: const EdgeInsets.only(bottom: 15),
+            child: Text(
+              '1 min ago',
+              style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 10),
             ),
           ),
-        );
-      },
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatContactScreen(
+                  selectedChatModel: chatModel,
+                  documentId: documentId,
+                ),
+              ),
+            );
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 50,
+            left: 50,
+          ),
+          child: Divider(
+            color: colorScheme.onBackground,
+          ),
+        ),
+      ],
     );
   }
 }

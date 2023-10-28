@@ -13,6 +13,7 @@ import 'package:chatapp/screens/navigationbar/navigationbar.dart';
 import 'package:chatapp/screens/navigationbar/profile/edit_profile_screen.dart';
 import 'package:chatapp/screens/navigationbar/profile/profile_screen.dart';
 import 'package:chatapp/screens/navigationbar/settings/app_language.dart';
+import 'package:chatapp/screens/navigationbar/settings/contact_us.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -78,6 +79,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         'resetPasswordScreen': (context) => const ResetPasswordScreen(),
         'changeEmailScreen': (context) => const ChangeEmailScreen(),
         'appLanguageScreen': (context) => const AppLanguageScreen(),
+        'contactUsScreen': (context) => const ContactUsScreen(),
       },
       localizationsDelegates: const [
         AppLocalizations.delegate,

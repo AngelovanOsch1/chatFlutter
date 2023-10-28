@@ -44,6 +44,15 @@ class ProfilePhoto extends StatelessWidget {
         isOnlinex = 0.6;
         isOnliney = 0.8;
         break;
+      case 'chatScreen':
+        coverHeight = 100;
+        profileHeight = 54;
+        fontSize = 100;
+        isOnlineWidth = 15;
+        isOnlineHeight = 15;
+        isOnlinex = 0.5;
+        isOnliney = 0.7;
+        break;
     }
     return SizedBox(
       child: Stack(
