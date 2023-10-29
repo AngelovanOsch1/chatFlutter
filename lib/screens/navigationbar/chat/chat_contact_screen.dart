@@ -19,6 +19,7 @@ class ChatContactScreen extends StatefulWidget {
 }
 
 class _ChatContactScreenState extends State<ChatContactScreen> {
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -98,23 +99,35 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: context.read<Repository>().getChatsCollection.doc(widget.documentId).collection('messages').snapshots(),
+              stream: context
+                  .read<Repository>()
+                  .getChatsCollection
+                  .doc(widget.documentId)
+                  .collection('messages')
+                  .orderBy('date', descending: true)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
                 final messages = snapshot.data!.docs;
-                List<Widget> messageWidgets = [];
-                for (var message in messages) {
-                  final String messageText = message['text'];
-                  final ListTile messageWidget = ListTile(
-                    title: Text(messageText),
-                  );
-                  messageWidgets.add(messageWidget);
-                }
-                return ListView(
-                  children: messageWidgets,
+                
+                return ListView.builder(
+                  itemCount: messages.length,
+                  controller: _scrollController,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  reverse: true,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final String messageText = messages[index]['textMessage'];
+                    return ListTile(
+                      title: Text(
+                        messageText,
+                        style: textTheme.headlineSmall,
+                      ),
+                    );
+                  },
                 );
               },
             ),
@@ -140,6 +153,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                     sendMessage(message);
                   }
                 },
+                style: textTheme.headlineSmall,
                 decoration: InputDecoration(
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -157,8 +171,6 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                       color: colorScheme.primary,
                     ),
                     onPressed: () {
-                      debugPrint(_messageController.text);
-
                       final String message = _messageController.text;
                       if (message.isNotEmpty) {
                         sendMessage(message);
@@ -168,29 +180,32 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                   ),
                 ),
               )
-
           ),
         ],
       ),
     );
   }
-  Future<void> sendMessage(String messageText) async {
+  void sendMessage(String messageText) async {
     final CollectionReference<Map<String, dynamic>> messagesCollection =
         context.read<Repository>().getChatsCollection.doc(widget.documentId).collection('messages');
 
     await messagesCollection
         .add({
-          'text': messageText,
-          'timestamp': DateTime.now(),
-        })
-        .then((value) {})
-        .catchError((error) {});
+          'textMessage': messageText, 'date': DateTime.now(), 'sentBy': widget.selectedChatModel.currentUser.id},
+    );
 
+    _scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+    
     final CollectionReference chatCollection = context.read<Repository>().getChatsCollection;
 
     await chatCollection.doc(widget.documentId).update({
       'lastMessage': messageText,
       'date': DateTime.now(),
-    });
+      },
+    );
   }
 }

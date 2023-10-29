@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: themeData,
       initialRoute: context.read<Repository>().getAuth.currentUser == null ? 'landingScreen' : 'loginLoadingScreen',
       routes: {
-        '/': (context) => NavigationBarClass(),
+        '/': (context) => const NavigationBarClass(),
         'homeScreen': (context) => const HomeScreen(),
         'landingScreen': (context) => const LandingScreen(),
         'loginScreen': (context) => const LoginScreen(),

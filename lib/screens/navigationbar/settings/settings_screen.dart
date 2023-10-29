@@ -213,7 +213,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Navigator.pushNamed(context, 'resetPasswordScreen');
                     },
                     child: Text(
-                      AppLocalizations.of(context).forgotPasswordAction,
+                      AppLocalizations.of(context).resetPasswordAction,
                       style: textTheme.headlineLarge!.copyWith(color: colorScheme.background, fontSize: 12),
                     ),
                   ),
