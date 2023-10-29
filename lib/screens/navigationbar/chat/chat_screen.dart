@@ -65,13 +65,18 @@ class _ChatScreenState extends State<ChatScreen> {
           size: 40,
         ),
       ),
-body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ... Other widgets or text above the chat list
-
-            Expanded(
-              child: StreamBuilder(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30, left: 50, bottom: 5),
+            child: Text(
+              'Recent chats',
+              style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
+            ),
+          ),
+          Expanded(
+            child: StreamBuilder(
                 stream: ChatModelController(context).getChatsStream(userModel),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                   if (!snapshot.hasData) {
@@ -81,48 +86,34 @@ body: Column(
 
                   return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: chatDocs.length + 1, // Add 1 for the "Load more chats" text
+                    itemCount: chatDocs.length,
                     itemBuilder: (context, index) {
-                      if (index < chatDocs.length) {
-                        QueryDocumentSnapshot<Map<String, dynamic>> chatData = chatDocs[index];
-                        final ChatDocumentModel chatDocumentModel = ChatModelController(context).getChatDocumentFromStream(chatData);
-                        Map<String, dynamic> participants = chatDocumentModel.participantIds;
+                      QueryDocumentSnapshot<Map<String, dynamic>> chatData = chatDocs[index];
+                      final ChatDocumentModel chatDocumentModel = ChatModelController(context).getChatDocumentFromStream(chatData);
+                      Map<String, dynamic> participants = chatDocumentModel.participantIds;
 
-                        List<String> participantIds = participants.keys.toList();
-                        return FutureBuilder(
-                          future: ChatModelController(context).getUserProfileFromStream(
-                            participantIds,
-                          ),
-                          builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
-                            if (!userSnapshot.hasData) {
-                              return Container();
-                            }
-
-                            final ChatModel chatModel = userSnapshot.data!;
-                            return friendList(chatModel, chatDocumentModel);
-                          },
-                        );
-                      } else if (index == chatDocs.length) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 10, right: 50),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              'Load more chats',
-                              style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return Container(); // Return an empty container for other indices
-                      }
+                      List<String> participantIds = participants.keys.toList();
+                      return FutureBuilder(
+                        future: ChatModelController(context).getUserProfileFromStream(
+                          participantIds,
+                        ),
+                        builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
+                          if (!userSnapshot.hasData) {
+                            return Container();
+                          }
+                          
+            
+                          final ChatModel chatModel = userSnapshot.data!;
+                          return friendList(chatModel, chatDocumentModel);
+                        },
+                      );
                     },
                   );
-                },
-              ),
+                }
             ),
-          ],
-        )
+          ),
+        ],
+      ),
     );
   }
   Widget friendList(ChatModel chatModel, ChatDocumentModel chatDocumentModel) {

@@ -14,7 +14,6 @@ class ChatModelController {
         .collection('chats')
         .where('participants.${userModel.id}', isEqualTo: true)
         .orderBy('date', descending: true)
-        .limit(5)
         .snapshots();
   }
   
