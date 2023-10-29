@@ -174,16 +174,23 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
       ),
     );
   }
-  void sendMessage(String messageText) {
+  Future<void> sendMessage(String messageText) async {
     final CollectionReference<Map<String, dynamic>> messagesCollection =
         context.read<Repository>().getChatsCollection.doc(widget.documentId).collection('messages');
 
-    messagesCollection
+    await messagesCollection
         .add({
           'text': messageText,
-          'timestamp': FieldValue.serverTimestamp(),
+          'timestamp': DateTime.now(),
         })
         .then((value) {})
         .catchError((error) {});
+
+    final CollectionReference chatCollection = context.read<Repository>().getChatsCollection;
+
+    await chatCollection.doc(widget.documentId).update({
+      'lastMessage': messageText,
+      'date': DateTime.now(),
+    });
   }
 }

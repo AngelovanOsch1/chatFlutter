@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatDocumentModel {
   late final String id;
-  late final String date;
+  late final DateTime date;
   late final String? lastMessage;
   late final Map<String, dynamic> participantIds;
 
@@ -13,7 +13,7 @@ class ChatDocumentModel {
 
     return ChatDocumentModel(
       id: chatData.id,
-      date: data['date'] ?? '',
+      date: data['date']?.toDate(),
       lastMessage: data['lastMessage'] ?? '',
       participantIds: data['participants'] ?? '',
     );

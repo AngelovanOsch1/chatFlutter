@@ -10,7 +10,12 @@ class ChatModelController {
   ChatModelController(this.context);
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatsStream(UserModel userModel) {
-    return FirebaseFirestore.instance.collection('chats').where('participants.${userModel.id}', isEqualTo: true).snapshots();
+    return FirebaseFirestore.instance
+        .collection('chats')
+        .where('participants.${userModel.id}', isEqualTo: true)
+        .orderBy('date', descending: true)
+        .limit(5)
+        .snapshots();
   }
   
   ChatDocumentModel getChatDocumentFromStream(QueryDocumentSnapshot<Map<String, dynamic>> chatData) {

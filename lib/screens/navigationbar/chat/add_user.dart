@@ -145,7 +145,7 @@ class _AddUserState extends State<AddUser> {
 
     if (querySnapshot.docs.isEmpty) {
       await chatDocumentRef.set({
-        'date': DateTime.now().toString(),
+        'date': DateTime.now(),
         'participants': {
           userModel.id: true,
           selectedUserModel.id: true,
