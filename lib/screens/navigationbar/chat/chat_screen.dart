@@ -1,6 +1,7 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/controllers/chat_controller.dart';
 import 'package:chatapp/custom_widgets/profile_photo.dart';
+import 'package:chatapp/models/chat_document_model.dart';
 import 'package:chatapp/models/chat_model.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/chat/add_user.dart';
@@ -80,37 +81,35 @@ class _ChatScreenState extends State<ChatScreen> {
               if (!snapshot.hasData) {
                 return Container();
               }
+              if (snapshot.hasData) {
+                final List<QueryDocumentSnapshot<Map<String, dynamic>>> chatDocs = snapshot.data!.docs;
 
-              final List<QueryDocumentSnapshot<Map<String, dynamic>>> chatDocs = snapshot.data!.docs;
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: chatDocs.length,
+                  itemBuilder: (context, index) {
+                    QueryDocumentSnapshot<Map<String, dynamic>> chatData = chatDocs[index];
+                    final ChatDocumentModel chatDocumentModel = ChatModelController(context).getChatDocumentFromStream(chatData);
+                    Map<String, dynamic> participants = chatDocumentModel.participantIds;
 
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: chatDocs.length,
-                itemBuilder: (context, index) {
-                  String documentId = chatDocs[index].id;
-                  Map<String, dynamic> chatData = chatDocs[index].data();
-                  Map<String, dynamic> participants = chatData['participants'] as Map<String, dynamic>;
+                    List<String> participantIds = participants.keys.toList();
+                    return FutureBuilder(
+                      future: ChatModelController(context).getUserProfileFromStream(
+                        participantIds,
+                      ),
+                      builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
+                        if (!userSnapshot.hasData) {
+                          return Container();
+                        }
 
-                  List<String> participantIds = participants.keys.toList();
-                  return FutureBuilder(
-                    future: ChatModelController(context).getUserProfileFromStream(
-                      participantIds,
-                    ),
-                    builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
-                      if (userSnapshot.connectionState == ConnectionState.waiting) {
-                        return Container();
-                      }
-
-                      if (userSnapshot.hasError) {
-                        return Text('Error: ${userSnapshot.error}');
-                      }
-
-                      final ChatModel chatModel = userSnapshot.data!;
-                      return test(chatModel, documentId);
-                    },
-                  );
-                },
-              );
+                        final ChatModel chatModel = userSnapshot.data!;
+                        return test(chatModel, chatDocumentModel);
+                      },
+                    );
+                  },
+                );
+              }
+              return Container();
             },
           ),
           Padding(
@@ -127,7 +126,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-  Widget test(ChatModel chatModel, String documentId) {
+  Widget test(ChatModel chatModel, ChatDocumentModel chatDocumentModel) {
     return Column(
       children: [
         ListTile(
@@ -140,14 +139,14 @@ class _ChatScreenState extends State<ChatScreen> {
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
-            'recent message',
+            chatDocumentModel.lastMessage!,
             style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
             overflow: TextOverflow.ellipsis,
           ),
           trailing: Padding(
             padding: const EdgeInsets.only(bottom: 15),
             child: Text(
-              '1 min ago',
+              chatDocumentModel.date,
               style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 10),
             ),
           ),
@@ -157,7 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
               MaterialPageRoute(
                 builder: (context) => ChatContactScreen(
                   selectedChatModel: chatModel,
-                  documentId: documentId,
+                  documentId: chatDocumentModel.id,
                 ),
               ),
             );

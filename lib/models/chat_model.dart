@@ -3,14 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatModel {
-  late final String date;
-  late final String? lastMessage;
   late final UserModel currentUser;
   late final UserModel selectedUser;
 
   ChatModel({
-    // required this.date,
-    this.lastMessage,
     required this.currentUser,
     required this.selectedUser,
   });
@@ -18,7 +14,6 @@ class ChatModel {
   static ChatModel constructFromSnapshots(List<DocumentSnapshot> snapshots) {
     late final UserModel currentUser;
     late final UserModel selectedUser;
-    late String date;
 
     for (DocumentSnapshot snapshot in snapshots) {
       final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
