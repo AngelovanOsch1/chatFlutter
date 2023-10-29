@@ -49,7 +49,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    widget.selectedChatModel.selectedUser!.name,
+                    widget.selectedChatModel.selectedUser.name,
                     style: textTheme.headlineMedium!.copyWith(fontSize: 15),
                   ),
                   Padding(
@@ -67,8 +67,8 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                   width: 60,
                   height: 60,
                   child: ProfilePhoto(
-                      widget.selectedChatModel.selectedUser!.profilePhoto, widget.selectedChatModel.selectedUser!.name,
-                      widget.selectedChatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
+                      widget.selectedChatModel.selectedUser.profilePhoto, widget.selectedChatModel.selectedUser.name,
+                      widget.selectedChatModel.selectedUser.isOnline, 'contactProfilePhoto'),
                 ),
               ),
             ],

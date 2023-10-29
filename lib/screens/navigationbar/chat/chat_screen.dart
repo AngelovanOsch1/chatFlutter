@@ -74,53 +74,52 @@ class _ChatScreenState extends State<ChatScreen> {
               style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
             ),
           ),
-          Expanded(
-            child: StreamBuilder(
-              stream: ChatModelController(context).getChatsStream(userModel),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                if (!snapshot.hasData) {
-                  return Container();
-                }
+          StreamBuilder(
+            stream: ChatModelController(context).getChatsStream(userModel),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              if (!snapshot.hasData) {
+                return Container();
+              }
 
-                final List<QueryDocumentSnapshot<Map<String, dynamic>>> chatDocs = snapshot.data!.docs;
+              final List<QueryDocumentSnapshot<Map<String, dynamic>>> chatDocs = snapshot.data!.docs;
 
-                return ListView.builder(
-                  itemCount: chatDocs.length,
-                  itemBuilder: (context, index) {
-                    String documentId = chatDocs[index].id;
-                    Map<String, dynamic> chatData = chatDocs[index].data();
-                    Map<String, dynamic> participants = chatData['participants'] as Map<String, dynamic>;
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: chatDocs.length,
+                itemBuilder: (context, index) {
+                  String documentId = chatDocs[index].id;
+                  Map<String, dynamic> chatData = chatDocs[index].data();
+                  Map<String, dynamic> participants = chatData['participants'] as Map<String, dynamic>;
 
-                    List<String> participantIds = participants.keys.toList();
-                    return FutureBuilder(
-                      future: ChatModelController(context).getUserProfileFromStream(participantIds),
-                      builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
-                        if (userSnapshot.connectionState == ConnectionState.waiting) {
-                          return Container();
-                        }
+                  List<String> participantIds = participants.keys.toList();
+                  return FutureBuilder(
+                    future: ChatModelController(context).getUserProfileFromStream(
+                      participantIds,
+                    ),
+                    builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
+                      if (userSnapshot.connectionState == ConnectionState.waiting) {
+                        return Container();
+                      }
 
-                        if (userSnapshot.hasError) {
-                          return Text('Error: ${userSnapshot.error}');
-                        }
+                      if (userSnapshot.hasError) {
+                        return Text('Error: ${userSnapshot.error}');
+                      }
 
-                        final ChatModel chatModel = userSnapshot.data!;
-                        return test(chatModel, documentId);
-                      },
-                    );
-                  },
-                );
-              },
-            ),
+                      final ChatModel chatModel = userSnapshot.data!;
+                      return test(chatModel, documentId);
+                    },
+                  );
+                },
+              );
+            },
           ),
-          Expanded(
+          Padding(
+            padding: const EdgeInsets.only(top: 10, right: 50),
             child: Align(
               alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, right: 50),
-                child: Text(
-                  'Load more chats',
-                  style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
-                ),
+              child: Text(
+                'Load more chats',
+                style: textTheme.headlineMedium!.copyWith(color: colorScheme.primary, fontSize: 12),
               ),
             ),
           )
@@ -134,9 +133,9 @@ class _ChatScreenState extends State<ChatScreen> {
         ListTile(
           contentPadding: const EdgeInsets.only(left: 35, right: 50),
           leading: ProfilePhoto(
-              chatModel.selectedUser!.profilePhoto, chatModel.selectedUser!.name, chatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
+              chatModel.selectedUser.profilePhoto, chatModel.selectedUser.name, chatModel.selectedUser.isOnline, 'contactProfilePhoto'),
           title: Text(
-            chatModel.selectedUser!.name,
+            chatModel.selectedUser.name,
             style: textTheme.headlineMedium!.copyWith(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           ),
