@@ -4,7 +4,7 @@ class ChatDocumentModel {
   late final String id;
   late final DateTime date;
   late final String? lastMessage;
-  late final Map<String, dynamic> participantIds;
+  late final List<dynamic> participantIds;
 
   ChatDocumentModel({required this.id, required this.date, this.lastMessage, required this.participantIds});
 

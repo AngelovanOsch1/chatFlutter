@@ -131,38 +131,35 @@ class _AddUserState extends State<AddUser> {
         },
         leading: ProfilePhoto(selectedUserModel.profilePhoto, selectedUserModel.name, selectedUserModel.isOnline, 'contactProfilePhoto'));
   }
-
+  
   void createChat(UserModel selectedUserModel) async {
     final UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
     final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
-    final DocumentReference chatDocumentRef = chatsCollection.doc();
-    late final ChatModel chatModel;
+    late final DocumentReference chatDocumentRef;
 
-    final querySnapshot = await chatsCollection
-        .where('participants.${userModel.id}', isEqualTo: true)
-        .where('participants.${selectedUserModel.id}', isEqualTo: true)
-        .get();
+    final QuerySnapshot firstQuerySnapshot = await chatsCollection.where('participants', arrayContains: userModel.id).get();
+    final QuerySnapshot secondQuerySnapshot = await chatsCollection.where('participants', arrayContains: selectedUserModel.id).get();
 
-    if (querySnapshot.docs.isEmpty) {
-      await chatDocumentRef.set({
+    final List<QueryDocumentSnapshot> commonDocuments =
+        firstQuerySnapshot.docs.where((doc) => secondQuerySnapshot.docs.any((otherDoc) => doc.id == otherDoc.id)).toList();
+
+    if (commonDocuments.isEmpty) {
+      final newChatParticipants = [userModel.id, selectedUserModel.id];
+      final chatDocumentSnapshot = await chatsCollection.add({
         'date': DateTime.now(),
-        'participants': [userModel.id, selectedUserModel.id],
+        'participants': newChatParticipants,
       });
-
-      final DocumentSnapshot chatDocument = await chatsCollection.doc(chatDocumentRef.id).get();
-      final Map<String, dynamic> data = chatDocument.data() as Map<String, dynamic>;
-      // final Map<String, dynamic> participants = data['participants'];
-      // final List<String> participantIds = participants.keys.toList();
-      chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
+      chatDocumentRef = chatDocumentSnapshot;
     } else {
-      for (DocumentSnapshot snapshot in querySnapshot.docs) {
-        final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        final Map<String, dynamic> participants = data['participants'];
-        final List<String> participantIds = participants.keys.toList();
-        chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
-      }
+      chatDocumentRef = chatsCollection.doc(commonDocuments[0].id);
     }
-      Navigator.push(
+
+    final DocumentSnapshot chatDocument = await chatDocumentRef.get();
+    final Map<String, dynamic> data = chatDocument.data() as Map<String, dynamic>;
+    final participants = data['participants'];
+    final ChatModel chatModel = await ChatModelController(context).getUserProfileFromStream(participants);
+
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ChatContactScreen(

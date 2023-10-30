@@ -23,9 +23,13 @@ class ChatModelController {
     return chatDocumentModel;
   }
 
-  Future<ChatModel> getUserProfileFromStream(List<String> participantIds) async {
+  Future<ChatModel> getUserProfileFromStream(List<dynamic> participantIds) async {
     late List<DocumentSnapshot> snapshots = [];
     late final ChatModel chatModel;
+
+    debugPrint(
+      participantIds.toString(),
+    );
 
     for (String participantId in participantIds) {
       DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(participantId).get();

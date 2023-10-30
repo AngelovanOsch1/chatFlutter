@@ -90,12 +90,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemBuilder: (context, index) {
                       QueryDocumentSnapshot<Map<String, dynamic>> chatData = chatDocs[index];
                       final ChatDocumentModel chatDocumentModel = ChatModelController(context).getChatDocumentFromStream(chatData);
-                      Map<String, dynamic> participants = chatDocumentModel.participantIds;
+                      List<dynamic> participants = chatDocumentModel.participantIds;
 
-                      List<String> participantIds = participants.keys.toList();
                       return FutureBuilder(
                         future: ChatModelController(context).getUserProfileFromStream(
-                          participantIds,
+                          participants,
                         ),
                         builder: (BuildContext context, AsyncSnapshot<ChatModel> userSnapshot) {
                           if (!userSnapshot.hasData) {
