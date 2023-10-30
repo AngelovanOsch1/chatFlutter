@@ -12,8 +12,8 @@ class ChatModelController {
   Stream<QuerySnapshot<Map<String, dynamic>>> getChatsStream(UserModel userModel) {
     return FirebaseFirestore.instance
         .collection('chats')
-        .where('participants.${userModel.id}', isEqualTo: true)
         .orderBy('date', descending: true)
+        .where('participants', arrayContains: userModel.id)
         .snapshots();
   }
   

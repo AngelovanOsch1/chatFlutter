@@ -146,15 +146,13 @@ class _AddUserState extends State<AddUser> {
     if (querySnapshot.docs.isEmpty) {
       await chatDocumentRef.set({
         'date': DateTime.now(),
-        'participants': {
-          userModel.id: true,
-          selectedUserModel.id: true,
-        },
+        'participants': [userModel.id, selectedUserModel.id],
       });
+
       final DocumentSnapshot chatDocument = await chatsCollection.doc(chatDocumentRef.id).get();
       final Map<String, dynamic> data = chatDocument.data() as Map<String, dynamic>;
-      final Map<String, dynamic> participants = data['participants'];
-      final List<String> participantIds = participants.keys.toList();
+      // final Map<String, dynamic> participants = data['participants'];
+      // final List<String> participantIds = participants.keys.toList();
       chatModel = await ChatModelController(context).getUserProfileFromStream(participantIds);
     } else {
       for (DocumentSnapshot snapshot in querySnapshot.docs) {

@@ -64,13 +64,8 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 5),
-                child: SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: ProfilePhoto(
-                      widget.selectedChatModel.selectedUser.profilePhoto, widget.selectedChatModel.selectedUser.name,
-                      widget.selectedChatModel.selectedUser.isOnline, 'contactProfilePhoto'),
-                ),
+                child: ProfilePhoto(widget.selectedChatModel.selectedUser.profilePhoto, widget.selectedChatModel.selectedUser.name,
+                    widget.selectedChatModel.selectedUser.isOnline, 'contactProfilePhoto'),
               ),
             ],
           ),
@@ -87,10 +82,13 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
             ),
           ),
         ],
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(width: 1, color: Colors.white),
+        flexibleSpace: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 1, color: Colors.white),
+              ),
             ),
           ),
         ),
@@ -121,12 +119,8 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     final String messageText = messages[index]['textMessage'];
-                    return ListTile(
-                      title: Text(
-                        messageText,
-                        style: textTheme.headlineSmall,
-                      ),
-                    );
+                    final String sentBy = messages[index]['sentBy'];
+                    return text(messageText, sentBy);
                   },
                 );
               },
@@ -185,6 +179,50 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
       ),
     );
   }
+  Widget text(String message, String sentBy) {
+    return sentBy == context.read<Repository>().getAuth.currentUser?.uid
+        ? Padding(
+            padding: const EdgeInsets.only(right: 25, bottom: 20),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: myMessage,
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    message,
+                    style: textTheme.headlineSmall!.copyWith(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          )
+        : Padding(
+            padding: const EdgeInsets.only(left: 25, bottom: 20),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: friendsMessage,
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    message,
+                    style: textTheme.headlineSmall!.copyWith(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+
   void sendMessage(String messageText) async {
     final CollectionReference<Map<String, dynamic>> messagesCollection =
         context.read<Repository>().getChatsCollection.doc(widget.documentId).collection('messages');

@@ -47,7 +47,7 @@ class ProfilePhoto extends StatelessWidget {
       case 'chatScreen':
         coverHeight = 100;
         profileHeight = 54;
-        fontSize = 100;
+        fontSize = 30;
         isOnlineWidth = 15;
         isOnlineHeight = 15;
         isOnlinex = 0.5;
