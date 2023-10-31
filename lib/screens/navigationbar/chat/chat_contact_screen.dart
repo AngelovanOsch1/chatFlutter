@@ -11,8 +11,9 @@ import 'package:provider/provider.dart';
 class ChatContactScreen extends StatefulWidget {
   final ChatModel selectedChatModel;
   final String documentId;
+  final Map<String, dynamic>? unreadMessageCounterForUser;
 
-  const ChatContactScreen({super.key, required this.selectedChatModel, required this.documentId});
+  const ChatContactScreen({super.key, required this.selectedChatModel, required this.documentId, this.unreadMessageCounterForUser});
 
   @override
   State<ChatContactScreen> createState() => _ChatContactScreenState();
@@ -21,6 +22,14 @@ class ChatContactScreen extends StatefulWidget {
 class _ChatContactScreenState extends State<ChatContactScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    setUnreadMessageCountToZero();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +40,6 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
-
           },
         ),
         title: GestureDetector(
@@ -110,7 +118,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                 }
 
                 final messages = snapshot.data!.docs;
-                
+
                 return ListView.builder(
                   itemCount: messages.length,
                   controller: _scrollController,
@@ -127,17 +135,17 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
             ),
           ),
           Container(
-            decoration: BoxDecoration(
-              color: colorScheme.background,
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black,
-                  offset: Offset(0, -2),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: TextField(
+              decoration: BoxDecoration(
+                color: colorScheme.background,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black,
+                    offset: Offset(0, -2),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+              child: TextField(
                 controller: _messageController,
                 textInputAction: TextInputAction.send,
                 keyboardType: TextInputType.multiline,
@@ -173,12 +181,12 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                     },
                   ),
                 ),
-              )
-          ),
+              )),
         ],
       ),
     );
   }
+
   Widget text(String message, String sentBy) {
     return sentBy == context.read<Repository>().getAuth.currentUser?.uid
         ? Padding(
@@ -227,9 +235,8 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
     final CollectionReference<Map<String, dynamic>> messagesCollection =
         context.read<Repository>().getChatsCollection.doc(widget.documentId).collection('messages');
 
-    await messagesCollection
-        .add({
-          'textMessage': messageText, 'date': DateTime.now(), 'sentBy': widget.selectedChatModel.currentUser.id},
+    await messagesCollection.add(
+      {'textMessage': messageText, 'date': DateTime.now(), 'sentBy': widget.selectedChatModel.currentUser.id},
     );
 
     _scrollController.animateTo(
@@ -237,13 +244,33 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
-    
+
     final CollectionReference chatCollection = context.read<Repository>().getChatsCollection;
 
-    await chatCollection.doc(widget.documentId).update({
-      'lastMessage': messageText,
-      'date': DateTime.now(),
+    int number = widget.unreadMessageCounterForUser != null
+        ? (widget.unreadMessageCounterForUser?[widget.selectedChatModel.selectedUser.id] != null
+            ? widget.unreadMessageCounterForUser![widget.selectedChatModel.selectedUser.id]['unreadMessageCounter'] ?? 0
+            : 0)
+        : 0;
+    debugPrint(number.toString());
+    int numberTwo = number + 1;
+
+    await chatCollection.doc(widget.documentId).update(
+      {
+        'lastMessage': messageText,
+        'date': DateTime.now(),
+        'unreadMessageCounterForUser': {
+          widget.selectedChatModel.selectedUser.id: {'unreadMessageCounter': numberTwo}
+        }
       },
     );
+  }
+
+  void setUnreadMessageCountToZero() async {
+    final chatCollection = context.read<Repository>().getChatsCollection;
+
+    await chatCollection.doc(widget.documentId).update({
+      'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.unreadMessageCounter': FieldValue.delete(),
+    });
   }
 }

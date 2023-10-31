@@ -97,16 +97,16 @@ class _AddUserState extends State<AddUser> {
 
   Widget userTile(UserModel selectedUserModel) {
     return ListTile(
-      title: Text(
+        title: Text(
           selectedUserModel.name,
-        style: textTheme.headlineMedium!.copyWith(fontSize: 12),
-      ),
-      subtitle: Text(
+          style: textTheme.headlineMedium!.copyWith(fontSize: 12),
+        ),
+        subtitle: Text(
           selectedUserModel.bio,
-        style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
+          style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
         trailing: Padding(
           padding: const EdgeInsets.only(right: 5),
           child: Container(
@@ -126,12 +126,12 @@ class _AddUserState extends State<AddUser> {
             ),
           ),
         ),
-      onTap: () {
+        onTap: () {
           createChat(selectedUserModel);
         },
         leading: ProfilePhoto(selectedUserModel.profilePhoto, selectedUserModel.name, selectedUserModel.isOnline, 'contactProfilePhoto'));
   }
-  
+
   void createChat(UserModel selectedUserModel) async {
     final UserModel userModel = Provider.of<UserModelProvider>(context, listen: false).userData;
     final CollectionReference chatsCollection = context.read<Repository>().getChatsCollection;
@@ -157,6 +157,7 @@ class _AddUserState extends State<AddUser> {
     final DocumentSnapshot chatDocument = await chatDocumentRef.get();
     final Map<String, dynamic> data = chatDocument.data() as Map<String, dynamic>;
     final participants = data['participants'];
+    final unreadMessageCounterForUser = data['unreadMessageCounterForUser'];
     final ChatModel chatModel = await ChatModelController(context).getUserProfileFromStream(participants);
 
     Navigator.push(
@@ -165,6 +166,7 @@ class _AddUserState extends State<AddUser> {
         builder: (context) => ChatContactScreen(
           selectedChatModel: chatModel,
           documentId: chatDocumentRef.id,
+          unreadMessageCounterForUser: unreadMessageCounterForUser,
         ),
       ),
     );
