@@ -120,29 +120,28 @@ class _ChatScreenState extends State<ChatScreen> {
           contentPadding: const EdgeInsets.only(left: 35, right: 50),
           leading:
               ProfilePhoto(chatModel.selectedUser.profilePhoto, chatModel.selectedUser.name, chatModel.selectedUser.isOnline, 'contactProfilePhoto'),
-          title: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  chatModel.currentUser.name,
-                  style: textTheme.headlineMedium!.copyWith(fontSize: 12),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              unreadMessageCounter(chatModel, chatDocumentModel),
-            ],
+          title: Text(
+            chatModel.currentUser.name,
+            style: textTheme.headlineMedium!.copyWith(fontSize: 12),
+            overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
             chatDocumentModel.lastMessage!,
             style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
             overflow: TextOverflow.ellipsis,
           ),
-          trailing: Padding(
-            padding: const EdgeInsets.only(bottom: 15),
-            child: Text(
-              'date',
-              style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 10),
-            ),
+          trailing: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 12),
+                child: Text(
+                  'date',
+                  style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 10),
+                ),
+              ),
+              unreadMessageCounter(chatModel, chatDocumentModel),
+            ],
           ),
           onTap: () {
             Navigator.push(
@@ -182,7 +181,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return unreadMessageCounter != null
         ? Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            margin: const EdgeInsets.only(left: 8),
             decoration: BoxDecoration(
               color: colorScheme.primary,
               borderRadius: BorderRadius.circular(10),
@@ -192,6 +190,6 @@ class _ChatScreenState extends State<ChatScreen> {
               style: textTheme.headlineMedium!.copyWith(fontSize: 12),
             ),
           )
-        : Container();
+        : const SizedBox();
   }
 }

@@ -22,6 +22,8 @@ class ChatContactScreen extends StatefulWidget {
 class _ChatContactScreenState extends State<ChatContactScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
+  int numberThree = 0;
+
 
   @override
   void initState() {
@@ -190,7 +192,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
   Widget text(String message, String sentBy) {
     return sentBy == context.read<Repository>().getAuth.currentUser?.uid
         ? Padding(
-            padding: const EdgeInsets.only(right: 25, bottom: 20),
+            padding: const EdgeInsets.only(right: 25, bottom: 15),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -210,7 +212,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
             ),
           )
         : Padding(
-            padding: const EdgeInsets.only(left: 25, bottom: 20),
+            padding: const EdgeInsets.only(left: 25, bottom: 15),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -246,14 +248,13 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
     );
 
     final CollectionReference chatCollection = context.read<Repository>().getChatsCollection;
-
     int number = widget.unreadMessageCounterForUser != null
         ? (widget.unreadMessageCounterForUser?[widget.selectedChatModel.selectedUser.id] != null
             ? widget.unreadMessageCounterForUser![widget.selectedChatModel.selectedUser.id]['unreadMessageCounter'] ?? 0
             : 0)
         : 0;
     debugPrint(number.toString());
-    int numberTwo = number + 1;
+    int numberTwo = number + 1 + numberThree;
 
     await chatCollection.doc(widget.documentId).update(
       {
@@ -264,6 +265,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
         }
       },
     );
+    numberThree++;
   }
 
   void setUnreadMessageCountToZero() async {
