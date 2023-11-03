@@ -55,6 +55,6 @@ const ColorScheme colorScheme = ColorScheme(
   onSurface: Color(0XFF5C5875),
 );
 
-const Color myMessage = Color(0XFF716E87);
-const Color friendsMessage = Color(0XFFDCFFB2);
+const Color friendsMessage = Color(0XFF716E87);
+const Color myMessage = Color(0XFFDCFFB2);
 const Color bottomNavigationBar = Color(0XFF5C5875);
