@@ -100,28 +100,26 @@ class _ChatScreenState extends State<ChatScreen> {
                           if (!userSnapshot.hasData) {
                             return Container();
                           }
-                          
-            
                           final ChatModel chatModel = userSnapshot.data!;
                           return friendList(chatModel, chatDocumentModel);
                         },
                       );
                     },
                   );
-                }
-            ),
+                }),
           ),
         ],
       ),
     );
   }
+
   Widget friendList(ChatModel chatModel, ChatDocumentModel chatDocumentModel) {
     return Column(
       children: [
         ListTile(
           contentPadding: const EdgeInsets.only(left: 35, right: 50),
-          leading: ProfilePhoto(
-              chatModel.selectedUser.profilePhoto, chatModel.selectedUser.name, chatModel.selectedUser.isOnline, 'contactProfilePhoto'),
+          leading:
+              ProfilePhoto(chatModel.selectedUser.profilePhoto, chatModel.selectedUser.name, chatModel.selectedUser.isOnline, 'contactProfilePhoto'),
           title: Text(
             chatModel.selectedUser.name,
             style: textTheme.headlineMedium!.copyWith(fontSize: 12),
@@ -132,12 +130,18 @@ class _ChatScreenState extends State<ChatScreen> {
             style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
             overflow: TextOverflow.ellipsis,
           ),
-          trailing: Padding(
-            padding: const EdgeInsets.only(bottom: 15),
-            child: Text(
-              chatDocumentModel.date.toString(),
-              style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 10),
-            ),
+          trailing: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 12),
+                child: Text(
+                  'date',
+                  style: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground, fontSize: 10),
+                ),
+              ),
+              unreadMessageCounter(chatModel, chatDocumentModel),
+            ],
           ),
           onTap: () {
             Navigator.push(
@@ -162,5 +166,29 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ],
     );
+  }
+
+  unreadMessageCounter(ChatModel chatModel, ChatDocumentModel chatDocumentModel) {
+    int? unreadMessageCounter;
+    if (chatDocumentModel.unreadMessageCounterForUser != null) {
+      final userUnreadMessageCounter = chatDocumentModel.unreadMessageCounterForUser![chatModel.currentUser.id];
+      if (userUnreadMessageCounter != null) {
+        unreadMessageCounter = userUnreadMessageCounter['unreadMessageCounter'];
+      }
+    }
+
+    return unreadMessageCounter != null
+        ? Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              unreadMessageCounter.toString(),
+              style: textTheme.headlineMedium!.copyWith(fontSize: 12),
+            ),
+          )
+        : const SizedBox();
   }
 }
