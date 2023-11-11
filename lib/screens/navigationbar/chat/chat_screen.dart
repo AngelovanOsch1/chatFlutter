@@ -121,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
           leading:
               ProfilePhoto(chatModel.selectedUser.profilePhoto, chatModel.selectedUser.name, chatModel.selectedUser.isOnline, 'contactProfilePhoto'),
           title: Text(
-            chatModel.currentUser.name,
+            chatModel.selectedUser.name,
             style: textTheme.headlineMedium!.copyWith(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           ),
@@ -150,7 +150,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 builder: (context) => ChatContactScreen(
                   selectedChatModel: chatModel,
                   documentId: chatDocumentModel.id,
-                  unreadMessageCounterForUser: chatDocumentModel.unreadMessageCounterForUser,
                 ),
               ),
             );

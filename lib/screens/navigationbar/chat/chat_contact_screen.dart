@@ -11,9 +11,8 @@ import 'package:provider/provider.dart';
 class ChatContactScreen extends StatefulWidget {
   final ChatModel selectedChatModel;
   final String documentId;
-  final Map<String, dynamic>? unreadMessageCounterForUser;
 
-  const ChatContactScreen({super.key, required this.selectedChatModel, required this.documentId, this.unreadMessageCounterForUser});
+  const ChatContactScreen({super.key, required this.selectedChatModel, required this.documentId});
 
   @override
   State<ChatContactScreen> createState() => _ChatContactScreenState();
@@ -22,8 +21,6 @@ class ChatContactScreen extends StatefulWidget {
 class _ChatContactScreenState extends State<ChatContactScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
-  int numberThree = 0;
-
 
   @override
   void initState() {
@@ -247,31 +244,15 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
       curve: Curves.easeOut,
     );
 
-    final CollectionReference chatCollection = context.read<Repository>().getChatsCollection;
-    int number = widget.unreadMessageCounterForUser != null
-        ? (widget.unreadMessageCounterForUser?[widget.selectedChatModel.selectedUser.id] != null
-            ? widget.unreadMessageCounterForUser![widget.selectedChatModel.selectedUser.id]['unreadMessageCounter'] ?? 0
-            : 0)
-        : 0;
-    debugPrint(number.toString());
-    int numberTwo = number + 1 + numberThree;
-
-    await chatCollection.doc(widget.documentId).update(
-      {
+    await context.read<Repository>().getChatsCollection.doc(widget.documentId).update({
         'lastMessage': messageText,
         'date': DateTime.now(),
-        'unreadMessageCounterForUser': {
-          widget.selectedChatModel.selectedUser.id: {'unreadMessageCounter': numberTwo}
-        }
-      },
-    );
-    numberThree++;
+      'unreadMessageCounterForUser.${widget.selectedChatModel.selectedUser.id}.unreadMessageCounter': FieldValue.increment(1),
+    });
   }
 
   void setUnreadMessageCountToZero() async {
-    final chatCollection = context.read<Repository>().getChatsCollection;
-
-    await chatCollection.doc(widget.documentId).update({
+    await context.read<Repository>().getChatsCollection.doc(widget.documentId).update({
       'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.unreadMessageCounter': FieldValue.delete(),
     });
   }

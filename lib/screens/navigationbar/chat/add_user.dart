@@ -157,7 +157,6 @@ class _AddUserState extends State<AddUser> {
     final DocumentSnapshot chatDocument = await chatDocumentRef.get();
     final Map<String, dynamic> data = chatDocument.data() as Map<String, dynamic>;
     final participants = data['participants'];
-    final unreadMessageCounterForUser = data['unreadMessageCounterForUser'];
     final ChatModel chatModel = await ChatModelController(context).getUserProfileFromStream(participants);
 
     Navigator.push(
@@ -166,7 +165,6 @@ class _AddUserState extends State<AddUser> {
         builder: (context) => ChatContactScreen(
           selectedChatModel: chatModel,
           documentId: chatDocumentRef.id,
-          unreadMessageCounterForUser: unreadMessageCounterForUser,
         ),
       ),
     );
