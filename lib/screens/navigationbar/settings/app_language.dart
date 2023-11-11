@@ -36,21 +36,41 @@ class _AppLanguageScreen extends State<AppLanguageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('', style: Theme.of(context).textTheme.titleMedium),
         centerTitle: true,
+        toolbarHeight: 100,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text(
+          'App language',
+          style: textTheme.headlineLarge!.copyWith(fontSize: 25),
+        ),
         actions: [
-          TextButton(
-            child: Text(
-              'Save',
-              style: textTheme.headlineMedium,
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Container(
+              width: 30,
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                onPressed: () async {
+                  if (_selectedLanguage.isNotEmpty) {
+                    await settings.setItem('appLocale', _selectedLanguage);
+                  }
+                  Phoenix.rebirth(context);
+                },
+                icon: const Icon(
+                  Icons.save_outlined,
+                  size: 15,
+                ),
+              ),
             ),
-            onPressed: () async {
-              if (_selectedLanguage.isNotEmpty) {
-                await settings.setItem('appLocale', _selectedLanguage);
-              }
-              Phoenix.rebirth(context);
-            },
-          )
+          ),
         ],
       ),
       body: ListView.builder(
@@ -58,7 +78,11 @@ class _AppLanguageScreen extends State<AppLanguageScreen> {
           itemBuilder: (context, i) {
             var language = languages[i];
             return RadioListTile(
-              title: Text(language['name']),
+              fillColor: MaterialStateProperty.resolveWith((states) => colorScheme.onBackground),
+              title: Text(
+                language['name'],
+                style: textTheme.headlineMedium,
+              ),
               value: language['value'],
               groupValue: _selectedLanguage,
               onChanged: (value) {
