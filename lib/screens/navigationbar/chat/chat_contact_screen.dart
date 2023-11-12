@@ -22,11 +22,20 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
+  Repository? _repository;
 
-    setUnreadMessageCountToZero();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _repository = context.read<Repository>();
+  }
+
+  @override
+  void dispose() {
+    _repository?.getChatsCollection.doc(widget.documentId).update({
+      'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.unreadMessageCounter': FieldValue.delete(),
+    });
+    super.dispose();
   }
 
   @override
@@ -248,12 +257,6 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
         'lastMessage': messageText,
         'date': DateTime.now(),
       'unreadMessageCounterForUser.${widget.selectedChatModel.selectedUser.id}.unreadMessageCounter': FieldValue.increment(1),
-    });
-  }
-
-  void setUnreadMessageCountToZero() async {
-    await context.read<Repository>().getChatsCollection.doc(widget.documentId).update({
-      'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.unreadMessageCounter': FieldValue.delete(),
     });
   }
 }
