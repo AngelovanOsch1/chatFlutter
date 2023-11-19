@@ -119,17 +119,18 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: TextButton(
-                    onPressed: () async {
-                      try {
-                        HttpsCallable callable = context.read<Repository>().getCloudFunction.httpsCallable('updateEmail');
-                        await callable('test321');
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(AppLocalizations.of(context).oopsMessage),
-                          ),
-                        );
-                      }
+                    onPressed: () {
+                      _changeEmail(context);
+                      // try {
+                      //   HttpsCallable callable = context.read<Repository>().getCloudFunction.httpsCallable('updateEmail');
+                      //   await callable('test321');
+                      // } catch (e) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     SnackBar(
+                      //       content: Text(AppLocalizations.of(context).oopsMessage),
+                      //     ),
+                      //   );
+                      // }
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15, left: 15),
