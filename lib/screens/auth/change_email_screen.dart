@@ -1,10 +1,7 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/auth_utils.dart';
-import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ChangeEmailScreen extends StatefulWidget {
   const ChangeEmailScreen({super.key});
@@ -121,16 +118,6 @@ class _ChangeEmailScreen extends State<ChangeEmailScreen> {
                   child: TextButton(
                     onPressed: () {
                       _changeEmail(context);
-                      // try {
-                      //   HttpsCallable callable = context.read<Repository>().getCloudFunction.httpsCallable('updateEmail');
-                      //   await callable('test321');
-                      // } catch (e) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     SnackBar(
-                      //       content: Text(AppLocalizations.of(context).oopsMessage),
-                      //     ),
-                      //   );
-                      // }
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15, left: 15),

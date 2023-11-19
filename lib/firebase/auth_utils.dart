@@ -175,6 +175,13 @@ class FirebaseFunction {
     } on FirebaseAuthException catch (e) {
       final String error = e.code;
       switch (error) {
+        case 'wrong-password':
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context).invalidCredentialsMessage),
+            ),
+          );
+          break;
         case 'invalid-email':
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -188,13 +195,6 @@ class FirebaseFunction {
               content: Text(AppLocalizations.of(context).emailExistsMessage),
             ),
           );
-          break;
-        case 'requires-recent-login':
-          AuthCredential credential = EmailAuthProvider.credential(
-            email: context.read<Repository>().getAuth.currentUser!.email!,
-            password: password,
-          );
-          context.read<Repository>().getAuth.currentUser?.reauthenticateWithCredential(credential);
           break;
         default:
           ScaffoldMessenger.of(context).showSnackBar(
