@@ -7,7 +7,6 @@ dotenv.config();
 export const contactUsSendEmail = functions
   .region('europe-west1')
   .https.onCall(async (data: contactUsSendEmail) => {
-    functions.logger.log(process.env.HOTMAIL_USER);
     const transporter = nodemailer.createTransport({
       service: 'hotmail',
       auth: {
