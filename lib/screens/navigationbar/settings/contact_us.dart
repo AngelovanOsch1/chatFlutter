@@ -1,6 +1,9 @@
 import 'package:chatapp/colors.dart';
+import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ContactUsScreen extends StatefulWidget {
   const ContactUsScreen({super.key});
@@ -139,7 +142,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         style: textTheme.headlineSmall,
                       ),
                       onPressed: () {
-                        sendMessage();
+                        sendMessage(context);
                       },
                     ),
                   ),
@@ -238,9 +241,20 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     );
   }
 
-  sendMessage() {
+  sendMessage(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+
+    String email = _email.text.trim();
+    String message = _message.text;
+
+    Map<String, dynamic> body = {
+      'email': email,
+      'message': message,
+    };
+
+    HttpsCallable callable = context.read<Repository>().cloudFunction.httpsCallable('contactUsSendEmail');
+    await callable.call(body);
   }
 }
