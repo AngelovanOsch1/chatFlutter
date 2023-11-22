@@ -21,7 +21,7 @@ class LoginLoadingScreen extends StatelessWidget {
               if (userDocSnapshot.connectionState == ConnectionState.waiting) {
               WidgetsBinding.instance.addPostFrameCallback(
                 (_) {
-                  Validators.instance.isLoading(context);
+                  Validators.instance.isLoading(context, true);
                 },
               );
             }

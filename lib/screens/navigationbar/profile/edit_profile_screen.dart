@@ -354,8 +354,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 30),
               child: TextButton(
-                onPressed: () {
-                  saveProfile(context, userModel);
+                onPressed: () async {
+                  Validators.instance.isLoading(context, true);
+                  await saveProfile(context, userModel);
+                  Validators.instance.isLoading(context, false);
                 },
                 child: Text(
                   AppLocalizations.of(context).saveAction,
@@ -369,12 +371,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  void saveProfile(BuildContext context, UserModel userModel) async {
+  saveProfile(BuildContext context, UserModel userModel) async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-
-    Validators.instance.isLoading(context);
 
     String profilePhoto = userModel.profilePhoto;
     String banner = userModel.banner;

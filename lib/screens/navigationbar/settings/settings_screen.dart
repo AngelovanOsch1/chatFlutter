@@ -3,6 +3,7 @@ import 'package:chatapp/firebase/auth_utils.dart';
 import 'package:chatapp/l10n/l10n.dart';
 import 'package:chatapp/models/user_model.dart';
 import 'package:chatapp/screens/navigationbar/settings/app_language.dart';
+import 'package:chatapp/screens/navigationbar/settings/delete_account.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -250,7 +251,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const DeleteAccount();
+                        },
+                      );
+                    },
                     child: Text(
                       AppLocalizations.of(context).deleteAccountAction,
                       style: textTheme.headlineLarge!.copyWith(color: Colors.white, fontSize: 12),

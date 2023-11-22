@@ -166,12 +166,7 @@ class FirebaseFunction {
       await usersCollection.doc(user.uid).update(
         {'email': newEmailAddress},
       );
-      await context.read<Repository>().getAuth.signOut();
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        'landingScreen',
-        (route) => false,
-      );
+      signOut(context);
     } on FirebaseAuthException catch (e) {
       final String error = e.code;
       switch (error) {

@@ -1,6 +1,7 @@
 import 'package:chatapp/colors.dart';
 import 'package:chatapp/firebase/repository.dart';
 import 'package:chatapp/l10n/l10n.dart';
+import 'package:chatapp/validators.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   color: colorScheme.onBackground,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 25),
+                  padding: const EdgeInsets.only(top: 25, bottom: 5),
                   child: Text(
                     'Email',
                     style: textTheme.headlineMedium!.copyWith(
@@ -141,8 +142,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         'Send',
                         style: textTheme.headlineSmall,
                       ),
-                      onPressed: () {
-                        sendMessage(context);
+                      onPressed: () async {
+                        Validators.instance.isLoading(context, true);
+                        await sendMessage(context);
+                        Validators.instance.isLoading(context, false);
                       },
                     ),
                   ),
@@ -255,6 +258,30 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     };
 
     HttpsCallable callable = context.read<Repository>().cloudFunction.httpsCallable('contactUsSendEmail');
-    await callable.call(body);
+
+    try {
+      HttpsCallableResult<dynamic> response = await callable.call(body);
+      if (response.data['success']) {
+        _message.clear();
+        _email.clear();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Your email has been sent'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context).oopsMessage),
+          ),
+        );
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context).oopsMessage),
+        ),
+      );
+    }
   }
 }

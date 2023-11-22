@@ -35,6 +35,8 @@ dev_dependencies:
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - lib\images\red_warning_icon.png
   fonts:
     - family: interFontFamily
       fonts:

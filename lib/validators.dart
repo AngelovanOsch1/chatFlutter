@@ -19,22 +19,26 @@ class Validators {
     return nameList;
   }
 
-  isLoading(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 60,
-          child: Center(
-            child: CircularProgressIndicator(
-              backgroundColor: colorScheme.onBackground,
-              color: colorScheme.primary,
-              value: 0.5,
+void isLoading(BuildContext context, bool enable) {
+    if (enable) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SizedBox(
+            height: 60,
+            child: Center(
+              child: CircularProgressIndicator(
+                backgroundColor: colorScheme.onBackground,
+                color: colorScheme.primary,
+                value: 0.5,
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    } else {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 }
 
