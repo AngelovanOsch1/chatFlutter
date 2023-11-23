@@ -77,11 +77,14 @@ class DeleteAccount extends StatelessWidget {
   }
 
   deleteAccount(BuildContext context, UserModel userModel) async {
-    final String userModelId = userModel.id;
-    HttpsCallable callable = context.read<Repository>().cloudFunction.httpsCallable('deleteAccount');
+    Map<String, dynamic> body = {
+      'userModelId': userModel.id,
+    };
 
+    HttpsCallable callable = context.read<Repository>().cloudFunction.httpsCallable('deleteAccount');
+    
     try {
-      HttpsCallableResult<dynamic> response = await callable.call(userModelId);
+      HttpsCallableResult<dynamic> response = await callable.call(body);
       if (response.data['success']) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
