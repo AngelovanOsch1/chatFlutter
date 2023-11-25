@@ -65,7 +65,7 @@ class DeleteAccount extends StatelessWidget {
           onPressed: () async {
             Validators.instance.isLoading(context, true);
             await deleteAccount(context, userModel);
-            Validators.instance.isLoading(context, false);
+Validators.instance.isLoading(context, false);
           },
           child: Text(
             'Yes',
@@ -86,14 +86,6 @@ class DeleteAccount extends StatelessWidget {
     try {
       HttpsCallableResult<dynamic> response = await callable.call(body);
       if (response.data['success']) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Thank you for using my app!'),
-          ),
-        );
-        Future.delayed(
-          const Duration(seconds: 4),
-        );
         await context.read<Repository>().getAuth.signOut();
         Phoenix.rebirth(context);
       } else {

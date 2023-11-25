@@ -357,7 +357,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onPressed: () async {
                   Validators.instance.isLoading(context, true);
                   await saveProfile(context, userModel);
-                  Validators.instance.isLoading(context, false);
                 },
                 child: Text(
                   AppLocalizations.of(context).saveAction,
@@ -420,6 +419,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         (route) => false,
       );
     } catch (e) {
+      Validators.instance.isLoading(context, false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context).oopsMessage),
