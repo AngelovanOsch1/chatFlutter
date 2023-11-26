@@ -119,9 +119,10 @@ class _ChatScreenState extends State<ChatScreen> {
         ListTile(
           contentPadding: const EdgeInsets.only(left: 35, right: 50),
           leading:
-              ProfilePhoto(chatModel.selectedUser.profilePhoto, chatModel.selectedUser.name, chatModel.selectedUser.isOnline, 'contactProfilePhoto'),
+              ProfilePhoto(
+              chatModel.selectedUser!.profilePhoto, chatModel.selectedUser!.name, chatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
           title: Text(
-            chatModel.selectedUser.name,
+            chatModel.selectedUser!.name,
             style: textTheme.headlineMedium!.copyWith(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           ),

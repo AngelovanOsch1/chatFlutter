@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatModel {
   late final UserModel currentUser;
-  late final UserModel selectedUser;
+  UserModel? selectedUser;
 
   ChatModel({
     required this.currentUser,
@@ -13,7 +13,7 @@ class ChatModel {
 
   static ChatModel constructFromSnapshots(List<DocumentSnapshot> snapshots) {
     late final UserModel currentUser;
-    late final UserModel selectedUser;
+    UserModel? selectedUser;
 
     for (DocumentSnapshot snapshot in snapshots) {
       final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
@@ -40,6 +40,22 @@ class ChatModel {
           country: data['country'] ?? '',
           bio: data['bio'] ?? '',
           isOnline: data['isOnline'] ?? false,
+        );
+      }
+
+      // ignore: prefer_conditional_assignment
+      if (selectedUser == null) {
+        selectedUser = UserModel(
+          id: '',
+          email: '',
+          name: 'Deleted User',
+          profilePhoto:
+              'https://firebasestorage.googleapis.com/v0/b/chatappforschool.appspot.com/o/project_images%2Fdeleted_user.png?alt=media&token=07d1903e-f338-472b-a253-e40fd128b87a',
+          banner: '',
+          telephoneNumber: '',
+          country: '',
+          bio: '',
+          isOnline: false,
         );
       }
     }

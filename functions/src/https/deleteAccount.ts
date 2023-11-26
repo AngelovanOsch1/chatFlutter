@@ -51,7 +51,7 @@ export const deleteAccount = functions
 
       return { success: true, message: 'Account deleted successfully' };
     } catch (error) {
-      console.error('Error deleting directory:', error);
+      console.error('Error deleting account:', error);
       return { success: false, message: 'Failed to delete account' };
     }
   });

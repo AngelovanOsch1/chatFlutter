@@ -19,6 +19,8 @@ class ChatContactScreen extends StatefulWidget {
 }
 
 class _ChatContactScreenState extends State<ChatContactScreen> {
+  bool textFieldEnabled = true;
+  Color iconColor = Colors.grey;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
 
@@ -31,15 +33,29 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
   }
 
   @override
+  void initState() {
+    if (widget.selectedChatModel.selectedUser!.id.isEmpty) {
+      textFieldEnabled = false;
+    }
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _repository?.getChatsCollection.doc(widget.documentId).update({
       'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.unreadMessageCounter': FieldValue.delete(),
     });
     super.dispose();
   }
+  
 
   @override
   Widget build(BuildContext context) {
+    _messageController.addListener(() {
+      setState(() {
+        iconColor = _messageController.text.isEmpty ? Colors.grey : Theme.of(context).colorScheme.primary;
+      });
+    });
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -66,7 +82,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    widget.selectedChatModel.selectedUser.name,
+                    widget.selectedChatModel.selectedUser!.name,
                     style: textTheme.headlineMedium!.copyWith(fontSize: 15),
                   ),
                   Padding(
@@ -80,8 +96,8 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 5),
-                child: ProfilePhoto(widget.selectedChatModel.selectedUser.profilePhoto, widget.selectedChatModel.selectedUser.name,
-                    widget.selectedChatModel.selectedUser.isOnline, 'contactProfilePhoto'),
+                child: ProfilePhoto(widget.selectedChatModel.selectedUser!.profilePhoto, widget.selectedChatModel.selectedUser!.name,
+                    widget.selectedChatModel.selectedUser!.isOnline, 'contactProfilePhoto'),
               ),
             ],
           ),
@@ -144,7 +160,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
           ),
           Container(
               decoration: BoxDecoration(
-                color: colorScheme.background,
+              color: textFieldEnabled ? colorScheme.background : const Color(0xFF1D1E1D),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black,
@@ -155,6 +171,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
               ),
               child: TextField(
                 controller: _messageController,
+              enabled: textFieldEnabled,
                 textInputAction: TextInputAction.send,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
@@ -171,15 +188,17 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                   focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
-                  hintText: AppLocalizations.of(context).typeHere,
-                  hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
+                hintText: textFieldEnabled ? AppLocalizations.of(context).typeHere : 'This conversation has ended.',
+                hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
                   suffixIcon: IconButton(
                     padding: const EdgeInsetsDirectional.only(end: 30),
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    icon: Icon(
-                      Icons.send,
-                      color: colorScheme.primary,
-                    ),
+                  icon: !textFieldEnabled
+                      ? Container()
+                      : Icon(
+                          Icons.send,
+                          color: iconColor,
+                        ),
                     onPressed: () {
                       final String message = _messageController.text;
                       if (message.isNotEmpty) {
@@ -189,7 +208,8 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                     },
                   ),
                 ),
-              )),
+            ),
+          ),
         ],
       ),
     );
@@ -256,7 +276,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
     await context.read<Repository>().getChatsCollection.doc(widget.documentId).update({
         'lastMessage': messageText,
         'date': DateTime.now(),
-      'unreadMessageCounterForUser.${widget.selectedChatModel.selectedUser.id}.unreadMessageCounter': FieldValue.increment(1),
+      'unreadMessageCounterForUser.${widget.selectedChatModel.selectedUser?.id}.unreadMessageCounter': FieldValue.increment(1),
     });
   }
 }
