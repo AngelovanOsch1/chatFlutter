@@ -170,13 +170,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   unreadMessageCounter(ChatModel chatModel, ChatDocumentModel chatDocumentModel) {
-    int? unreadMessageCounter;
-    if (chatDocumentModel.unreadMessageCounterForUser != null) {
-      final userUnreadMessageCounter = chatDocumentModel.unreadMessageCounterForUser![chatModel.currentUser.id];
-      if (userUnreadMessageCounter != null) {
-        unreadMessageCounter = userUnreadMessageCounter['unreadMessageCounter'];
-      }
-    }
+    int? unreadMessageCounter = chatDocumentModel.unreadMessageCounterForUser![chatModel.currentUser.id]['unreadMessageCounter'];
 
     return unreadMessageCounter != null
         ? Container(

@@ -18,13 +18,30 @@ class ChatContactScreen extends StatefulWidget {
   State<ChatContactScreen> createState() => _ChatContactScreenState();
 }
 
-class _ChatContactScreenState extends State<ChatContactScreen> {
-  bool textFieldEnabled = true;
-  Color iconColor = Colors.grey;
+class _ChatContactScreenState extends State<ChatContactScreen> with WidgetsBindingObserver {
+  Color? iconColor;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _messageController = TextEditingController();
 
   Repository? _repository;
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      context.read<Repository>().getChatsCollection.doc(widget.documentId).update(
+        {
+          'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.hasChatOpen': true,
+          'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.unreadMessageCounter': FieldValue.delete(),
+        },
+      );
+    } else if (state == AppLifecycleState.paused) {
+      context.read<Repository>().getChatsCollection.doc(widget.documentId).update(
+        {
+          'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.hasChatOpen': false,
+        },
+      );
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -34,20 +51,23 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
 
   @override
   void initState() {
-    if (widget.selectedChatModel.selectedUser!.id.isEmpty) {
-      textFieldEnabled = false;
-    }
+    WidgetsBinding.instance.addObserver(this);
+    context.read<Repository>().getChatsCollection.doc(widget.documentId).update({
+      'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.hasChatOpen': true,
+      'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.unreadMessageCounter': FieldValue.delete(),
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
     _repository?.getChatsCollection.doc(widget.documentId).update({
-      'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.unreadMessageCounter': FieldValue.delete(),
+      'unreadMessageCounterForUser.${widget.selectedChatModel.currentUser.id}.hasChatOpen': false,
     });
     super.dispose();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +180,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
           ),
           Container(
               decoration: BoxDecoration(
-              color: textFieldEnabled ? colorScheme.background : const Color(0xFF1D1E1D),
+              color: widget.selectedChatModel.selectedUser!.id.isEmpty ? const Color(0xFF1D1E1D) : colorScheme.background,
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black,
@@ -171,7 +191,7 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
               ),
               child: TextField(
                 controller: _messageController,
-              enabled: textFieldEnabled,
+              enabled: widget.selectedChatModel.selectedUser!.id.isNotEmpty,
                 textInputAction: TextInputAction.send,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
@@ -188,12 +208,12 @@ class _ChatContactScreenState extends State<ChatContactScreen> {
                   focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
-                hintText: textFieldEnabled ? AppLocalizations.of(context).typeHere : 'This conversation has ended.',
+                hintText: widget.selectedChatModel.selectedUser!.id.isEmpty ? 'This conversation has ended.' : AppLocalizations.of(context).typeHere,
                 hintStyle: textTheme.headlineSmall!.copyWith(color: colorScheme.onBackground),
                   suffixIcon: IconButton(
                     padding: const EdgeInsetsDirectional.only(end: 30),
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  icon: !textFieldEnabled
+                  icon: widget.selectedChatModel.selectedUser!.id.isEmpty
                       ? Container()
                       : Icon(
                           Icons.send,

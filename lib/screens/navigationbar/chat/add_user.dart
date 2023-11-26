@@ -144,10 +144,13 @@ class _AddUserState extends State<AddUser> {
         firstQuerySnapshot.docs.where((doc) => secondQuerySnapshot.docs.any((otherDoc) => doc.id == otherDoc.id)).toList();
 
     if (commonDocuments.isEmpty) {
-      final newChatParticipants = [userModel.id, selectedUserModel.id];
       final chatDocumentSnapshot = await chatsCollection.add({
         'date': DateTime.now(),
-        'participants': newChatParticipants,
+        'participants': [userModel.id, selectedUserModel.id],
+        'unreadMessageCounterForUser': {
+          userModel.id: {'unreadMessageCounter': null, 'hasChatOpen': false},
+          selectedUserModel.id: {'unreadMessageCounter': null, 'hasChatOpen': false}
+        }
       });
       chatDocumentRef = chatDocumentSnapshot;
     } else {
