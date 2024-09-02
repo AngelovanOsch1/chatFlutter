@@ -9,7 +9,9 @@ export const contactUsSendEmail = functions
   .region(`europe-west1`)
   .https.onCall(async (data: ContactUsSendEmail) => {
     const transporter = nodemailer.createTransport({
-      service: `hotmail`,
+      host: `smtp.gmail.com`,
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.HOTMAIL_USER,
         pass: process.env.HOTMAIL_PASS,
@@ -18,7 +20,7 @@ export const contactUsSendEmail = functions
 
     const mailData = {
       from: process.env.HOTMAIL_USER,
-      to: process.env.HOTMAIL_PASS,
+      to: process.env.HOTMAIL_USER,
       subject: `Message from ${data.email}`,
       text: `From: ${data.email}\n\nMessage: ${data.message}`,
     };
