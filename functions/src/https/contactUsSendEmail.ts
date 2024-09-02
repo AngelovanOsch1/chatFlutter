@@ -1,12 +1,13 @@
 import * as functions from 'firebase-functions';
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
+import { ContactUsSendEmail } from '../interfaces';
 
 dotenv.config();
 
 export const contactUsSendEmail = functions
   .region(`europe-west1`)
-  .https.onCall(async (data: contactUsSendEmail) => {
+  .https.onCall(async (data: ContactUsSendEmail) => {
     const transporter = nodemailer.createTransport({
       service: `hotmail`,
       auth: {
