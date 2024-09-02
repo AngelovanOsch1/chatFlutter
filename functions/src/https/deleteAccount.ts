@@ -4,7 +4,7 @@ import { FieldValue } from '@google-cloud/firestore';
 
 admin.initializeApp();
 export const deleteAccount = functions
-  .region('europe-west1')
+  .region(`europe-west1`)
   .https.onCall(async (data: any) => {
     const userModelId = data.userModelId;
     const promises = [];
@@ -29,13 +29,13 @@ export const deleteAccount = functions
       );
       const querySnapshots = await admin
         .firestore()
-        .collection('chats')
-        .where('participants', 'array-contains', userModelId)
+        .collection(`chats`)
+        .where(`participants`, `array-contains`, userModelId)
         .get();
 
       querySnapshots.forEach((doc) => {
         promises.push(
-          doc.ref.update('participants', FieldValue.arrayRemove(userModelId)),
+          doc.ref.update(`participants`, FieldValue.arrayRemove(userModelId)),
           doc.ref.update({
             [`unreadMessageCounterForUser.${userModelId}`]:
               admin.firestore.FieldValue.delete(),
@@ -49,9 +49,9 @@ export const deleteAccount = functions
 
       await Promise.all(promises);
 
-      return { success: true, message: 'Account deleted successfully' };
+      return { success: true, message: `Account deleted successfully` };
     } catch (error) {
-      console.error('Error deleting account:', error);
-      return { success: false, message: 'Failed to delete account' };
+      console.error(`Error deleting account:`, error);
+      return { success: false, message: `Failed to delete account` };
     }
   });

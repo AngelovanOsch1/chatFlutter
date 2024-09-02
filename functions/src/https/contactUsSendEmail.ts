@@ -5,10 +5,10 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const contactUsSendEmail = functions
-  .region('europe-west1')
+  .region(`europe-west1`)
   .https.onCall(async (data: contactUsSendEmail) => {
     const transporter = nodemailer.createTransport({
-      service: 'hotmail',
+      service: `hotmail`,
       auth: {
         user: process.env.HOTMAIL_USER,
         pass: process.env.HOTMAIL_PASS,
@@ -17,17 +17,17 @@ export const contactUsSendEmail = functions
 
     const mailData = {
       from: process.env.HOTMAIL_USER,
-      to: process.env.HOTMAIL_USER,
+      to: process.env.HOTMAIL_PASS,
       subject: `Message from ${data.email}`,
       text: `From: ${data.email}\n\nMessage: ${data.message}`,
     };
 
     try {
       const info = await transporter.sendMail(mailData);
-      console.log('Email sent:', info.response);
-      return { success: true, message: 'Email sent successfully' };
+      console.log(`Email sent:`, info.response);
+      return { success: true, message: `Email sent successfully` };
     } catch (error) {
-      console.error('Error sending email:', error);
-      return { success: false, message: 'Failed to send email' };
+      console.error(`Error sending email:`, error);
+      return { success: false, message: `Failed to send email` };
     }
   });
